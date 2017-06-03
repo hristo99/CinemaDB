@@ -1,3 +1,4 @@
+var mysql = require('mysql');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -15,6 +16,11 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// Make our db accessible to our router
+app.use(function(req,res,next){
+    req.db = db;
+    next();
+});
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -26,6 +32,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/books', books);
+
+// Database
+var db = mysql.createConnection({
+  host : 'localhost',
+  database: 'cinemaDB',
+  user: 'cinemaAdmin',
+  password: 'cinema_Pass123'
+});
+db.connect();
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
