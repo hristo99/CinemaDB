@@ -1,16 +1,17 @@
 {
-  "name": "application-name",
-  "version": "0.0.1",
+  "name": "cinemadb",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node ./bin/www"
   },
   "dependencies": {
-    "express": "3.5.2",
-    "express-react-views": "^0.10.2",
-    "jade": "*",
-    "mysql": "^2.13.0",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "express": "~4.15.2",
+    "morgan": "~1.8.1",
+    "pug": "~2.0.0-beta11",
+    "serve-favicon": "~2.4.2"
   }
 }
