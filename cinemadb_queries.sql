@@ -7,7 +7,8 @@ CREATE TABLE Users (
     Password VARCHAR(60) NOT NULL,
     FirstName VARCHAR(30) NOT NULL,
     LastName VARCHAR(30) NOT NULL,
-    Age INTEGER NOT NULL
+    Age INTEGER NOT NULL,
+    Role VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE Movies (
