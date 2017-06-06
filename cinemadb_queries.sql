@@ -29,7 +29,7 @@ CREATE TABLE Projections (
 CREATE TABLE ProjectionViewers (
 	Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
     ProjectionId INTEGER NOT NULL,
-    Username INTEGER NOT NULL,
+    Username VARCHAR(15) NOT NULL,
     FOREIGN KEY(ProjectionId) REFERENCES Projections(Id),
     FOREIGN KEY(Username) REFERENCES Users(Username)
 );
@@ -38,8 +38,6 @@ CREATE TABLE Halls (
 	Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
     Seats INTEGER NOT NULL
 );
-
-ALTER TABLE Users ADD Role VARCHAR(20) NOT NULL;
 
 INSERT INTO Users 
 	(Username, Password, FirstName, LastName, Age, Role)
