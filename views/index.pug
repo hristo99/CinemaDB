@@ -3,10 +3,10 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  button#getAllBooks(onClick='getAllBooks()') Get All Books
+  button#getAllUsers(onClick='getAllUsers()') Get All Users
 
 
   script(type='text/javascript').
-     function getAllBooks(){
-       $(location).attr('href','/books');
+     function getAllUsers(){
+       $(location).attr('href','/users');
      };
