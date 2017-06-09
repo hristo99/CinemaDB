@@ -42,7 +42,7 @@ db.connect(function(err) {
   });
 
   var createTableUsers = "CREATE TABLE Users ( \
-	  Username VARCHAR(15) NOT NULL PRIMARY KEY,\
+	Username VARCHAR(15) NOT NULL PRIMARY KEY,\
     Password VARCHAR(60) NOT NULL,\
     FirstName VARCHAR(30) NOT NULL,\
     LastName VARCHAR(30) NOT NULL,\
@@ -55,7 +55,7 @@ db.connect(function(err) {
   });
 
   var createTableMovies = "CREATE TABLE Movies (\
-	  Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,\
+	Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,\
     Title VARCHAR(100) NOT NULL,\
     AgeRestriction INTEGER NOT NULL,\
     FirstProjection DATETIME NOT NULL,\
@@ -66,11 +66,23 @@ db.connect(function(err) {
     if (err) throw err;
     console.log("Created Movies table");
   });
+  
+  var createTableHalls = "CREATE TABLE Halls (\
+	Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,\
+    Seats INTEGER NOT NULL\
+    );";
+  db.query(createTableHalls, function (err, result) {
+    if (err) throw err;
+    console.log("Created Halls table");
+  });
 
   var createTableProjections = "CREATE TABLE Projections (\
-	  Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,\
+	Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,\
     MovieId INTEGER NOT NULL,\
-    FOREIGN KEY(MovieId) REFERENCES Movies(Id)\
+    HallId INTEGER NOT NULL,\
+    StartTime DATETIME NOT NULL,\
+    FOREIGN KEY(MovieId) REFERENCES Movies(Id),\
+    FOREIGN KEY(HallId) REFERENCES Halls(Id)\
     );";
   db.query(createTableProjections, function (err, result) {
     if (err) throw err;
@@ -78,7 +90,7 @@ db.connect(function(err) {
   });
 
   var createTableProjectionViewers = "CREATE TABLE ProjectionViewers (\
-	  Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,\
+	 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,\
     ProjectionId INTEGER NOT NULL,\
     Username VARCHAR(15) NOT NULL,\
     FOREIGN KEY(ProjectionId) REFERENCES Projections(Id),\
@@ -89,19 +101,10 @@ db.connect(function(err) {
     console.log("Created ProjectionViewers table");
   });
 
-  var createTableHalls = "CREATE TABLE Halls (\
-	  Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,\
-    Seats INTEGER NOT NULL\
-    );";
-  db.query(createTableHalls, function (err, result) {
-    if (err) throw err;
-    console.log("Created Halls table");
-  });
-
   var insertUsers = "INSERT INTO Users \
   	(Username, Password, FirstName, LastName, Age, Role)\
     VALUES\
-	  ( 'test', 'test', 'Testing', 'Tester', 20, 'user' ),\
+	( 'test', 'test', 'Testing', 'Tester', 20, 'user' ),\
     ( 'test2', 'test2', 'Another', 'Tester', 20, 'user' );";
   db.query(insertUsers, function (err, result) {
     if (err) throw err;
