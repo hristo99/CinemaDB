@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+var bcrypt = require('bcrypt-nodejs');
 var express = require('express');
 var session  = require('express-session');
 var path = require('path');
@@ -100,12 +101,13 @@ db.connect(function(err) {
     if (err) throw err;
     console.log("Created ProjectionViewers table");
   });
-
+  var testpass = bcrypt.hashSync('test', null, null);
+  var test2pass = bcrypt.hashSync('test2', null, null);
   var insertUsers = "INSERT INTO Users \
   	(Username, Password, FirstName, LastName, Age, Role)\
     VALUES\
-    ( 'test', 'test', 'Testing', 'Tester', 20, 'user' ),\
-    ( 'test2', 'test2', 'Another', 'Tester', 20, 'user' );";
+    ( 'test', '" + testpass + "', 'Testing', 'Tester', 20, 'user' ),\
+    ( 'test2', '" + test2pass + "', 'Another', 'Tester', 20, 'user' );";
   db.query(insertUsers, function (err, result) {
     if (err) throw err;
     console.log("Inserted users");
@@ -135,6 +137,7 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 require('./routes/routes.js')(app, passport);
+require('./config/passport')(passport, db);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  h1= CinemaDB
+  p Profile
+  button#logout(onClick='logout()') Logout
+  p#username
+  p#firstName
+  p#lastName
+  p#age
+  
+  script(type='text/javascript').
+     function renderLogin(){
+       $(location).attr('href','/login');
+     };
+
+     function renderSignup(){
+       $(location).attr('href','/signup');
+     };
+
+     function logout(){
+        $(location).attr('href', '/logout');
+     };
+

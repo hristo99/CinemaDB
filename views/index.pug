@@ -3,10 +3,21 @@ extends layout
 block content
   h1= CinemaDB
   p Welcome to CinemaDB
-  button#getAllUsers(onClick='getAllUsers()') Get All Users
+  button#renderLogin(onClick='renderLogin()') Login
+  button#renderSignup(onClick='renderSignup()') Sign up
+  //-button#getAllUsers(onClick='getAllUsers()') Get All Users
 
+
+  //- script(type='text/javascript').
+  //-    function getAllUsers(){
+  //-      $(location).attr('href','/users');
+  //-    };
 
   script(type='text/javascript').
-     function getAllUsers(){
-       $(location).attr('href','/users');
+     function renderLogin(){
+       $(location).attr('href','/login');
+     };
+
+     function renderSignup(){
+       $(location).attr('href','/signup');
      };
