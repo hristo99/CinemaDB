@@ -50,9 +50,9 @@ module.exports = function(passport, connection) {
                     var newUserMysql = {
                         Username: username,
                         Password: bcrypt.hashSync(password, null, null),  // use the generateHash function in our user model
-                        FirstName: req.param('firstName'),
-                        LastName: req.param('lastName'),
-                        Age: req.param('age'),
+                        FirstName: req.body.firstName,
+                        LastName: req.body.lastName,
+                        Age: req.body.age,
                         Role: 'user'
                     };
 
