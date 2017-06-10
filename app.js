@@ -1,13 +1,13 @@
 var mysql = require('mysql');
 var express = require('express');
+var session  = require('express-session');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-var index = require('./routes/index');
-var users = require('./routes/users');
+var passport = require('passport');
+var flash = require('connect-flash');
 
 var app = express();
 
@@ -125,9 +125,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+app.use(session({
+  secret: 'daimophilosophics',
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
 
+require('./routes/routes.js')(app, passport);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
