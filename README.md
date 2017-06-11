@@ -58,8 +58,6 @@ ExpressJS, pugJS, Bootstrap and MySQL.
 | MovieId             | INTEGER      | NOT NULL, FOREIGN KEY REFERENCES Movies(Id) |
 | HallId              | INTEGER      | NOT NULL, FOREIGN KEY REFERENCES Halls(Id)  |
 | StartTime           | DATETIME     | NOT NULL                                    |
-| LastProjection      | DATETIME     | NOT NULL                                    |
-| Length              | INTEGER      | NOT NULL                                    |
 
 ### ProjectionViewers
 | Column              | Data type    | Constraints                                      |
@@ -67,9 +65,6 @@ ExpressJS, pugJS, Bootstrap and MySQL.
 | Id (AUTO_INCREMENT) | INTEGER      | NOT NULL, PRIMARY KEY                            |
 | ProjectionId        | INTEGER      | NOT NULL, FOREIGN KEY REFERENCES Projections(Id) |
 | Username            | VARCHAR(15)  | NOT NULL, FOREIGN KEY REFERENCES Users(Username) |
-| StartTime           | DATETIME     | NOT NULL                                         |
-| LastProjection      | DATETIME     | NOT NULL                                         |
-| Length              | INTEGER      | NOT NULL                                         |
 
 ## Contributors
 Hristo Spasov - hristo.b.spasov@gmail.com
