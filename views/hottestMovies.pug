@@ -1,0 +1,9 @@
+extends layout
+
+block content
+	p Top 10 Hottest Movies
+		ul
+			each movie in movies
+				li #{movie.Title}
+				li Views #{movie.Views}
+				li

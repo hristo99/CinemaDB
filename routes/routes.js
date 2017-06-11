@@ -1,7 +1,16 @@
 module.exports = function(app, passport) {
 
-	app.get('/', function(req, res) {
-		res.render('index.pug');
+	app.get('/', function(req, res, next) {
+		var db = req.db; 
+	  	db.query("SELECT * FROM Movies ORDER BY FirstProjection DESC LIMIT 10;", function(err, results, fields) {
+	    	if (err) {
+		        res.send("errordatabase");
+		    } else if (results.length == 0) {
+		    	res.send("No movies");
+		    } else {
+		    	res.render("index", {movies:results});
+		    }
+	  	});
 	});
 
 	// =====================================
@@ -74,6 +83,24 @@ module.exports = function(app, passport) {
 	    } else{
 	        res.render("user", { title: "List of All Users",
 	                             users:results});
+	    }
+	  })
+	});
+
+	app.get('/hottestMovies', function(req, res, next) {
+	  var db = req.db;
+	  var getHottestMovies = "SELECT Movies.Title, COUNT(Movies.Title) AS Views FROM Movies\
+		INNER JOIN Projections ON Movies.Id = Projections.MovieId\
+		INNER JOIN ProjectionViewers ON Projections.Id = ProjectionViewers.ProjectionId\
+		GROUP BY Movies.Title ORDER BY Views DESC LIMIT 10;";
+	  db.query(getHottestMovies, function(err, results, fields) {
+	    if (err) {
+	        res.send("errordatabase");
+	    } else if (results.length == 0) {
+	    	console.log(results);
+		    res.send("No data");
+		} else {
+	        res.render("hottestMovies", {movies:results});
 	    }
 	  })
 	});
