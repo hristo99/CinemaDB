@@ -107,7 +107,6 @@ module.exports = function(app, passport) {
 
 	app.get('/movies', function(req, res, next) {
 		var db = req.db;
-		//console.log(req.user.Username);
 		var getAllMovies = "SELECT * FROM Movies";
 		db.query(getAllMovies, function(err, results, fields) {
 		    if (err) {
@@ -124,13 +123,13 @@ module.exports = function(app, passport) {
 	app.get('/movie/:movieId', function(req, res, next) {
 		var db = req.db;
 		var getMovie = "SELECT m.Title, m.FirstProjection, m.LastProjection,\
-			m.Length, m.AgeRestriction, p.HallId, h.Seats, p.StartTime\
+			m.Length, m.AgeRestriction, p.Id, p.HallId, h.Seats, p.StartTime\
 			FROM Projections AS p\
 			LEFT JOIN Movies AS m\
 			ON m.Id = p.MovieId\
 			LEFT JOIN Halls AS h\
 			ON p.HallId = h.Id\
-			WHERE p.StartTime > NOW() AND m.Id = " + movieId + ";";
+			WHERE p.StartTime > NOW() AND m.Id = " + req.params.movieId + ";";
 		db.query(getMovie, function(err, results, fields) {
 		    if (err) {
 		        res.send("errordatabase");
@@ -142,20 +141,40 @@ module.exports = function(app, passport) {
 		});
 	});
 
-	app.post('/movie/:movieId/buyTicket', function(req, res, next) {
+	app.get('/projection/:projectionId/buyTicket', function(req, res, next) {
 		var db = req.db;
-		/*var getAllMovies = "INSERT INTO ProjectionViewers";
-		db.query(getAllMovies, function(err, results, fields) {
-		    if (err) {
-		        res.send("errordatabase");
-		    } else if (results.length == 0) {
-		    	console.log(results);
-			    res.send("No data");
-			} else {
-		        res.render("movies", {movies:results});
-		    }
-		});*/
-		console.log(res);
+		db.query("SELECT * FROM ProjectionViewers WHERE ProjectionId = ? AND Username = ?", 
+			[req.params.projectionId, req.user.Username], 
+			function(err, rows) {
+				if (err) {
+					throw err;
+				} else if (rows.length) {
+					res.send("You've already bought ticket for this projection!");
+					return;
+				} else {
+					// if there is no user for this projection
+					// create the projection view
+					var insertProjectionViewer = "INSERT INTO ProjectionViewers\
+						(ProjectionId, Username)\
+					VALUES\
+						(?, ?)";
+					db.query(
+						insertProjectionViewer,
+						[req.params.projectionId, req.user.Username],
+						function(err, rows) {
+							if (err) {
+								console.log("Insert projection viewer error!");
+								console.log(err);
+								throw err;
+							}
+							console.log("Inserted Projection Viewer!");
+							// $(location).attr('href', '/movies');
+							res.send("You've successfully bought a ticket!");
+							return;
+						}
+					);
+				}
+		});
 	});
 };
 

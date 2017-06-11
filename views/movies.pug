@@ -1,15 +1,14 @@
 extends layout
 
 block content
+	script(type='text/javascript').
+		function getMovieData(id) {
+			console.log("something happend");
+			$(location).attr('href','/movie/' + id);
+		};
 	p Movies
 		ul
 			each m in movies
-				li #{m.Title}   
-					button#getMovieData(onClick='getMovieData(#{m.Id})') Movie info
+				li(onclick="getMovieData(" + m.Id + ")") #{m.Title}
 				li 
-
-	script(type='text/javascript').
-		function getMovieData(id) {
-			console.log(id);
-			$(location).attr('href','/movie/#{id}');
-		};
+				//-getMovieData(this.parent().id)
