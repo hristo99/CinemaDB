@@ -4,10 +4,11 @@ block content
   h1= CinemaDB
   p Profile
   button#logout(onClick='logout()') Logout
-  p#username
-  p#firstName
-  p#lastName
-  p#age
+  button#settings(onClick='settings()') Profile Settings
+  p #{user.Username}
+  p #{user.FirstName}
+  p #{user.LastName}
+  p #{user.Age}
   
   script(type='text/javascript').
      function renderLogin(){
@@ -21,4 +22,8 @@ block content
      function logout(){
         $(location).attr('href', '/logout');
      };
+
+     function settings(){
+        $(location).attr('href', '/profileSettings');
+     }
 

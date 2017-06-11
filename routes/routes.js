@@ -1,3 +1,5 @@
+var bcrypt = require('bcrypt-nodejs');
+
 module.exports = function(app, passport) {
 
 	app.get('/', function(req, res, next) {
@@ -150,7 +152,6 @@ module.exports = function(app, passport) {
 					throw err;
 				} else if (rows.length) {
 					res.send("You've already bought ticket for this projection!");
-					return;
 				} else {
 					// if there is no user for this projection
 					// create the projection view
@@ -170,11 +171,117 @@ module.exports = function(app, passport) {
 							console.log("Inserted Projection Viewer!");
 							// $(location).attr('href', '/movies');
 							res.send("You've successfully bought a ticket!");
-							return;
 						}
 					);
 				}
 		});
+	});
+
+	app.get('/boughtTickets', function(req, res, next) {
+		var db = req.db;
+		var getBoughtTickets = "SELECT Projections.Id, Movies.Title, Movies.Length, Projections.StartTime, Projections.HallId\
+			FROM ProjectionViewers LEFT JOIN Projections\
+			ON ProjectionViewers.ProjectionId = Projections.Id\
+			LEFT JOIN Movies ON Projections.MovieId = Movies.Id\
+			WHERE ProjectionViewers.Username = ?";
+		db.query(getBoughtTickets, [req.user.Username], function(err, results) {
+			if (err) {
+				throw err;
+			} else if (results.length == 0) {
+				res.send("No data");
+			} else {
+				res.render("boughtTickets", {projections: results});
+			}
+		})
+	});
+
+	app.get('/projection/:projectionId/returnTicket', function(req, res, next) {
+		var db = req.db;
+		db.query("SELECT * FROM ProjectionViewers WHERE ProjectionId = ? AND Username = ?", 
+			[req.params.projectionId, req.user.Username], 
+			function(err, rows) {
+				if (err) {
+					throw err;
+				} else if (rows.length == 0) {
+					res.send("You are not registered for this projection!");
+				} else {
+					// if user had bought ticket for this projection
+					// return ticket
+					var removeProjectionViewer = "DELETE FROM ProjectionViewers\
+						WHERE ProjectionId = ? AND Username = ?";
+					db.query(
+						removeProjectionViewer,
+						[req.params.projectionId, req.user.Username],
+						function(err, rows) {
+							if (err) {
+								console.log("Remove projection viewer error!");
+								console.log(err);
+								throw err;
+							}
+							console.log("Successfully removed Projection Viewer!");
+							// TODO REDIRECT
+							res.send("You've successfully returned a ticket!");
+						}
+					);
+				}
+		});
+	});
+
+	app.get('/profileSettings', function(req, res) {
+		res.render('profileSettings.pug');
+	});
+
+	app.post('/profileSettings', function(req, res) {
+		var db = req.db;
+		db.query(
+			"SELECT * FROM Users WHERE Username = ?", 
+			[req.user.Username],
+			function(err, result) {
+				if (err) {
+					throw err;
+				} else if (result.length == 0) {
+					res.send("No user found!");
+				} else {
+					var password = (req.body.password.length) ?
+						bcrypt.hashSync(req.body.password, null, null) : result[0].Password;  
+					var firstName = (req.body.firstName.length) ?
+						req.body.firstName : result[0].FirstName;
+					var lastName = (req.body.lastName.length) ?
+						req.body.lastName : result[0].LastName;
+					var age = (req.body.age.length) ?
+						req.body.age : result[0].Age;
+					
+					var newUserSettings = {
+						Username: req.user.Username,
+						Password: password,
+						FirstName: firstName,
+						LastName: lastName,
+						Age: age
+					};
+					var updateUser = "UPDATE Users SET\
+						Password = ?, FirstName = ?, LastName = ?, Age = ?\
+						WHERE Username = ?";
+					db.query(
+						updateUser,
+						[
+							newUserSettings.Password, 
+							newUserSettings.FirstName,
+							newUserSettings.LastName,
+							newUserSettings.Age,
+							newUserSettings.Username
+						],
+						function(err, result) {
+							if (err) {
+								throw err;
+							} else {
+								res.send("You've successfully changed your profile settings!");
+							}
+						}
+					);
+
+				}
+			}
+		);
 	});
 };
 

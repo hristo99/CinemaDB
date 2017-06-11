@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1= CinemaDB
+  p Profile Settings
+  form(method='POST' action='/profileSettings')
+    input.form-control(type='password' placeholder='Password' name='password')
+    input.form-control(type='text' placeholder='First Name' name='firstName')
+    input.form-control(type='text' placeholder='Last Name' name='lastName')
+    input.form-control(type='number' placeholder='Age' name='age')
+    button(type='submit') Submit
