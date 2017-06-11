@@ -1,0 +1,14 @@
+extends layout
+
+block content
+	p Movie info
+	p movie[0].Title
+	p Length movie[0].Length
+	p Age Restriction movie[0].AgeRestriction
+
+	button#buyTicket(onClick='buyTicket(#{movie.Id})') Buy Ticket
+
+	script(type='text/javascript').
+		function buyTicket(id) {
+			$(location).attr('href', '/movie/#{id}/buyTicket');
+		};

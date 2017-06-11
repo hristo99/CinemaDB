@@ -104,6 +104,59 @@ module.exports = function(app, passport) {
 	    }
 	  })
 	});
+
+	app.get('/movies', function(req, res, next) {
+		var db = req.db;
+		//console.log(req.user.Username);
+		var getAllMovies = "SELECT * FROM Movies";
+		db.query(getAllMovies, function(err, results, fields) {
+		    if (err) {
+		        res.send("errordatabase");
+		    } else if (results.length == 0) {
+		    	console.log(results);
+			    res.send("No data");
+			} else {
+		        res.render("movies", {movies:results});
+		    }
+		})
+	});
+
+	app.get('/movie/:movieId', function(req, res, next) {
+		var db = req.db;
+		var getMovie = "SELECT m.Title, m.FirstProjection, m.LastProjection,\
+			m.Length, m.AgeRestriction, p.HallId, h.Seats, p.StartTime\
+			FROM Projections AS p\
+			LEFT JOIN Movies AS m\
+			ON m.Id = p.MovieId\
+			LEFT JOIN Halls AS h\
+			ON p.HallId = h.Id\
+			WHERE p.StartTime > NOW() AND m.Id = " + movieId + ";";
+		db.query(getMovie, function(err, results, fields) {
+		    if (err) {
+		        res.send("errordatabase");
+		    } else if (results.length == 0) {
+			    res.send("No data");
+			} else {
+		        res.render("movie", {movie:results});
+		    }
+		});
+	});
+
+	app.post('/movie/:movieId/buyTicket', function(req, res, next) {
+		var db = req.db;
+		/*var getAllMovies = "INSERT INTO ProjectionViewers";
+		db.query(getAllMovies, function(err, results, fields) {
+		    if (err) {
+		        res.send("errordatabase");
+		    } else if (results.length == 0) {
+		    	console.log(results);
+			    res.send("No data");
+			} else {
+		        res.render("movies", {movies:results});
+		    }
+		});*/
+		console.log(res);
+	});
 };
 
 // route middleware to make sure
