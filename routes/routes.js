@@ -65,8 +65,7 @@ module.exports = function(app, passport) {
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/profile', isLoggedIn, function(req, res) {
 		res.render('profile.pug', {
-			user : req.user,
-			userRole : req.user.Role
+			user : req.user
 		});
 	});
 
@@ -78,7 +77,7 @@ module.exports = function(app, passport) {
 		res.redirect('/');
 	});
 
-	app.get('/users', function(req, res, next) {
+	app.get('/users', isAdmin, function(req, res, next) {
 	  var db = req.db; 
 	  db.query("SELECT * FROM Users;", function(err, results, fields) {
 	    if (err) {
@@ -140,16 +139,16 @@ module.exports = function(app, passport) {
 			    res.send("No data");
 			} else {
 				//console.log(req.user.Role);
-		        res.render("movie", { movie:results, user:req.user.Role });
+		        res.render("movie", { movie:results, user:req.user });
 		    }
 		});
 	});
 
-	app.get('/addMovie', function(req, res) {
+	app.get('/addMovie', isAdmin, function(req, res) {
 		res.render('addMovie.pug');
 	});
 
-	app.post('/addMovie', function(req, res, next) {
+	app.post('/addMovie', isAdmin, function(req, res, next) {
 		var db = req.db;
 		var insertMovie = "INSERT INTO Movies \
 			(Title, AgeRestriction, FirstProjection, LastProjection, Length)\
@@ -168,15 +167,15 @@ module.exports = function(app, passport) {
 		);
 	});
 
-	app.get('/addProjection', function(req, res) {
+	app.get('/addProjection', isAdmin, function(req, res) {
 		res.render('addProjection.pug');
 	});
 
-	app.post('/addProjection', function(req, res, next) {
-
+	app.post('/addProjection', isAdmin, function(req, res, next) {
+		
 	});
 
-	app.get('/editMovie/:movieId', function(req, res) {
+	app.get('/editMovie/:movieId', isAdmin, function(req, res) {
 		var db = req.db;
 		var getMovie = "SELECT * FROM Movies WHERE Id = ?;";
 		db.query(getMovie, [req.params.movieId], function(err, results, fields) {
@@ -190,7 +189,7 @@ module.exports = function(app, passport) {
 		});
 	});
 
-	app.post('/editMovie/:movieId', function(req, res, next) {
+	app.post('/editMovie/:movieId', isAdmin, function(req, res, next) {
 		var db = req.db;
 		db.query("SELECT * FROM Movies WHERE Id = ?;",
 			[req.params.movieId],
@@ -242,7 +241,7 @@ module.exports = function(app, passport) {
 			});
 	});
 
-	app.get('/deleteMovie/:movieId', function(req, res, next) {
+	app.get('/deleteMovie/:movieId', isAdmin, function(req, res, next) {
 		var db = req.db;
 		var deleteMovie = "DELETE FROM Movies WHERE Movies.Id = ?;";
 		db.query(deleteMovie, [req.params.movieId], function(err, rows){
@@ -256,7 +255,7 @@ module.exports = function(app, passport) {
 		});
 	});
 
-	app.get('/projection/:projectionId/buyTicket', function(req, res, next) {
+	app.get('/projection/:projectionId/buyTicket', isLoggedIn, function(req, res, next) {
 		var db = req.db;
 		db.query("SELECT * FROM ProjectionViewers WHERE ProjectionId = ? AND Username = ?", 
 			[req.params.projectionId, req.user.Username], 
@@ -290,7 +289,7 @@ module.exports = function(app, passport) {
 		});
 	});
 
-	app.get('/boughtTickets', function(req, res, next) {
+	app.get('/boughtTickets', isLoggedIn, function(req, res, next) {
 		var db = req.db;
 		var getBoughtTickets = "SELECT Projections.Id, Movies.Title, Movies.Length, Projections.StartTime, Projections.HallId\
 			FROM ProjectionViewers LEFT JOIN Projections\
@@ -308,7 +307,7 @@ module.exports = function(app, passport) {
 		})
 	});
 
-	app.get('/projection/:projectionId/returnTicket', function(req, res, next) {
+	app.get('/projection/:projectionId/returnTicket', isLoggedIn, function(req, res, next) {
 		var db = req.db;
 		db.query("SELECT * FROM ProjectionViewers WHERE ProjectionId = ? AND Username = ?", 
 			[req.params.projectionId, req.user.Username], 
@@ -340,11 +339,11 @@ module.exports = function(app, passport) {
 		});
 	});
 
-	app.get('/profileSettings', function(req, res) {
+	app.get('/profileSettings', isLoggedIn, function(req, res) {
 		res.render('profileSettings.pug');
 	});
 
-	app.post('/profileSettings', function(req, res) {
+	app.post('/profileSettings', isLoggedIn, function(req, res) {
 		var db = req.db;
 		db.query(
 			"SELECT * FROM Users WHERE Username = ?;", 
@@ -406,5 +405,12 @@ function isLoggedIn(req, res, next) {
 		return next();
 
 	// if they aren't redirect them to the home page
+	res.redirect('/');
+}
+
+function isAdmin(req, res, next) {
+	if (req.user.Role == 'admin') {
+		return next();
+	}
 	res.redirect('/');
 }

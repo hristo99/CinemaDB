@@ -5,7 +5,7 @@ block content
 	p #{movie[0].Title}
 	p Length #{movie[0].Length}
 	p Age Restriction #{movie[0].AgeRestriction}
-	if user == 'admin'
+	if user.Role == 'admin'
 		button(onClick="editMovie(" + movie[0].MovieId + ")") Edit movie
 	p ------
 	ul
@@ -13,7 +13,7 @@ block content
 			li(onclick="buyTicket(" + projection.Id + ")") #{projection.Title} #{projection.HallId} #{projection.Seats} #{projection.StartTime}
 			li 
 
-	if user == 'admin'
+	if user.Role == 'admin'
 		button(onClick="addProjection(" + movie[0].MovieId + ")") Add projection
 		button(onClick="deleteMovie(" + movie[0].MovieId + ")") Delete movie
 
