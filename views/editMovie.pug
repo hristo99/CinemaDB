@@ -3,8 +3,10 @@ extends layout
 block content
   h1= CinemaDB
   p #{movie[0].Title} Settings
-  form(method='POST' action='/editMovie/' + #{movie[0].Id})
+  form(method='POST' action='/editMovie/' + movie[0].Id)
     input.form-control(type='text' placeholder='Title' name='title')
     input.form-control(type='number' placeholder='AgeRestriction' name='ageRes')
+    input.form-control(type='text' placeholder='FirstProjecion' name='firstPr')
+    input.form-control(type='text' placeholder='LastProjection' name='lastPr')
     input.form-control(type='number' placeholder='Length' name='length')
     button(type='submit') Submit

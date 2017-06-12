@@ -178,7 +178,7 @@ module.exports = function(app, passport) {
 
 	app.get('/editMovie/:movieId', function(req, res) {
 		var db = req.db;
-		var getMovie = "SELECT * FROM Movies WHERE Movies.Id = ?;";
+		var getMovie = "SELECT * FROM Movies WHERE Id = ?;";
 		db.query(getMovie, [req.params.movieId], function(err, results, fields) {
 			if (err) {
 		        res.send("errordatabase");
@@ -192,7 +192,54 @@ module.exports = function(app, passport) {
 
 	app.post('/editMovie/:movieId', function(req, res, next) {
 		var db = req.db;
-		//implement
+		db.query("SELECT * FROM Movies WHERE Id = ?;",
+			[req.params.movieId],
+			function(err, result) {
+				if (err) {
+					throw err;
+				} else if (result.length == 0) {
+					res.send("No Movie Found");
+				} else {
+					var title = (req.body.title.length) ?
+						req.body.title : result[0].Title;
+					var ageRes = (req.body.ageRes.length) ?
+						req.body.ageRes : result[0].AgeRestriction;
+					var firstPr = (req.body.firstPr.length) ?
+						req.body.firstPr : result[0].FirstProjection;
+					var lastPr = (req.body.lastPr.length) ? 
+						req.body.lastPr : result[0].LastProjection;
+					var length = (req.body.length.length) ?
+						req.body.length : result[0].Length;
+
+					var newMovieEdit = {
+						Title : title,
+						AgeRestriction : ageRes,
+						FirstProjection : firstPr,
+						LastProjection : lastPr,
+						Length : length
+					};
+					var updateMovies = "UPDATE Movies SET \
+						Title = ?, AgeRestriction = ?, FirstProjection = ?, \
+						LastProjection = ?, Length = ? \
+						WHERE Id = ?;";
+					db.query(updateMovies,
+						[
+							newMovieEdit.Title,
+							newMovieEdit.AgeRestriction,
+							newMovieEdit.FirstProjection,
+							newMovieEdit.LastProjection,
+							newMovieEdit.Length,
+							req.params.movieId
+						],
+						function(err, result) {
+							if (err) {
+								throw err;
+							} else {
+								res.send("Successfully updated movie");
+							}
+						});
+				}
+			});
 	});
 
 	app.get('/deleteMovie/:movieId', function(req, res, next) {
@@ -300,7 +347,7 @@ module.exports = function(app, passport) {
 	app.post('/profileSettings', function(req, res) {
 		var db = req.db;
 		db.query(
-			"SELECT * FROM Users WHERE Username = ?", 
+			"SELECT * FROM Users WHERE Username = ?;", 
 			[req.user.Username],
 			function(err, result) {
 				if (err) {
@@ -326,7 +373,7 @@ module.exports = function(app, passport) {
 					};
 					var updateUser = "UPDATE Users SET\
 						Password = ?, FirstName = ?, LastName = ?, Age = ?\
-						WHERE Username = ?";
+						WHERE Username = ?;";
 					db.query(
 						updateUser,
 						[
