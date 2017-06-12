@@ -23,19 +23,19 @@ block content
 
 	script(type='text/javascript').
 		function buyTicket(id) {
-			$(location).attr('href', '/projection/' + id + '/buyTicket');
+			$(location).attr('href', '/projections/' + id + '/buyTicket');
 		};
 
 		function editMovie(id) {
-			$(location).attr('href', '/editMovie/' + id);
+			$(location).attr('href', '/movies/' + id + '/edit');
 		};
 
 		function deleteMovie(id) {
-			$(location).attr('href', '/deleteMovie/' + id);
+			$(location).attr('href', '/movies/' + id + '/remove');
 		};
 
 		function addProjection(id) {
-			$(location).attr('href', '/movie/' + id + '/addProjection');
+			$(location).attr('href', '/movies/' + id + '/addProjection');
 		}
 
 		function editProjection(id) {

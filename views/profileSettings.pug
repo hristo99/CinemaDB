@@ -3,7 +3,7 @@ extends layout
 block content
   h1= CinemaDB
   p Profile Settings
-  form(method='POST' action='/profileSettings')
+  form(method='POST' action='/profile/settings')
     input.form-control(type='password' placeholder='Password' name='password')
     input.form-control(type='text' placeholder='First Name' name='firstName')
     input.form-control(type='text' placeholder='Last Name' name='lastName')

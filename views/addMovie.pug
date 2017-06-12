@@ -2,7 +2,7 @@ extends layout
 
 block content
 	p Add movie
-	form(method='POST' action='/addMovie')
+	form(method='POST' action='/movies/add')
 		input.form-control(type='text' placeholder='Title' name='title')
 		input.form-control(type='number' placeholder='AgeRestriction' name='ageRes')
 		input.form-control(type='text' placeholder='FirstProjecion' name='firstPr')
