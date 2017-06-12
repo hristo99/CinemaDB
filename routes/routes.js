@@ -65,7 +65,8 @@ module.exports = function(app, passport) {
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/profile', isLoggedIn, function(req, res) {
 		res.render('profile.pug', {
-			user : req.user // get the user out of session and pass to template
+			user : req.user,
+			userRole : req.user.Role
 		});
 	});
 
@@ -124,7 +125,7 @@ module.exports = function(app, passport) {
 
 	app.get('/movie/:movieId', function(req, res, next) {
 		var db = req.db;
-		var getMovie = "SELECT m.Title, m.FirstProjection, m.LastProjection,\
+		var getMovie = "SELECT p.MovieId, m.Title, m.FirstProjection, m.LastProjection,\
 			m.Length, m.AgeRestriction, p.Id, p.HallId, h.Seats, p.StartTime\
 			FROM Projections AS p\
 			LEFT JOIN Movies AS m\
@@ -138,8 +139,80 @@ module.exports = function(app, passport) {
 		    } else if (results.length == 0) {
 			    res.send("No data");
 			} else {
-		        res.render("movie", {movie:results});
+				//console.log(req.user.Role);
+		        res.render("movie", { movie:results, user:req.user.Role });
 		    }
+		});
+	});
+
+	app.get('/addMovie', function(req, res) {
+		res.render('addMovie.pug');
+	});
+
+	app.post('/addMovie', function(req, res, next) {
+		var db = req.db;
+		var insertMovie = "INSERT INTO Movies \
+			(Title, AgeRestriction, FirstProjection, LastProjection, Length)\
+		VALUES\
+				(?, ?, NOW(), NOW(), ?)";
+		console.log(req.body.title);
+		console.log(req.body.ageRes);
+		console.log(req.body.length);
+		db.query(insertMovie, 
+			[req.body.title, req.body.ageRes, req.body.length],
+			function(err, rows) {
+				if (err) {
+					console.log("Insert movie error!");
+					res.redirect('/profile'); //temporary
+					//throw err;
+				}
+				console.log("Inserted Movie!");
+				window.alert("Movie added");
+				//res.send("Movie added");
+				res.redirect('/profile');
+			}
+		);
+	});
+
+	app.get('/addProjection', function(req, res) {
+		res.render('addProjection.pug');
+	});
+
+	app.post('/addProjection', function(req, res, next) {
+
+	});
+
+	app.get('/editMovie/:movieId', function(req, res) {
+		var db = req.db;
+		var getMovie = "SELECT * FROM Movies WHERE Movies.Id = ?;";
+		db.query(getMovie, [req.params.movieId], function(err, results, fields) {
+			if (err) {
+		        res.send("errordatabase");
+		    } else if (results.length == 0) {
+			    res.send("No data");
+			} else {
+				res.render('editMovie.pug', {movie:results});
+			}
+		});
+	});
+
+	app.post('/editMovie/:movieId', function(req, res, next) {
+		var db = req.db;
+		//implement
+	});
+
+	app.get('deleteMovie/:movieId', function(req, res, next) {
+		var db = req.db;
+		var deleteMovie = "DELETE FROM Movies WHERE Movie.Id = ?;";
+		db.query(deleteMovie, [req.params.movieId], function(err, rows){
+			if (err) {
+				throw err;
+			} else if (rows.length) {
+				res.send("Qakata rabota");
+			} else {
+				res.send("Movie deleted");
+			}
+			//res.redirect('/movies');
 		});
 	});
 

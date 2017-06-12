@@ -107,6 +107,7 @@ db.connect(function(err) {
   var radito3pass = bcrypt.hashSync('0987654321', null, null);
   var santapass = bcrypt.hashSync('northpole', null, null);
   var dontpass = bcrypt.hashSync('123456', null, null);
+  var adminPass = bcrypt.hashSync('adminPass', null, null);
   var insertUsers = "INSERT INTO Users \
   	(Username, Password, FirstName, LastName, Age, Role)\
     VALUES\
@@ -115,7 +116,8 @@ db.connect(function(err) {
     ( 'hspasov', '" + hspasovpass + "', 'Hristo', 'Spasov', 17, 'user' ),\
     ( 'radito3', '" + radito3pass + "', 'Rangel', 'Ivanov', 17, 'user' ),\
     ( 'santa', '" + santapass + "', 'Santa', 'Claus', 200, 'user' ),\
-    ( 'dont', '" + dontpass + "', 'Donald', 'Trump', 75, 'user' );";
+    ( 'dont', '" + dontpass + "', 'Donald', 'Trump', 75, 'user' ),\
+    ( 'admin', '" + adminPass + "', 'Kiril', 'Mitov', '30', 'admin');";
   db.query(insertUsers, function (err, result) {
     if (err) throw err;
     console.log("Inserted users");

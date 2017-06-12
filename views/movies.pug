@@ -3,7 +3,6 @@ extends layout
 block content
 	script(type='text/javascript').
 		function getMovieData(id) {
-			console.log("something happend");
 			$(location).attr('href','/movie/' + id);
 		};
 	p Movies
@@ -11,4 +10,3 @@ block content
 			each m in movies
 				li(onclick="getMovieData(" + m.Id + ")") #{m.Title}
 				li 
-				//-getMovieData(this.parent().id)

@@ -5,12 +5,27 @@ block content
 	p #{movie[0].Title}
 	p Length #{movie[0].Length}
 	p Age Restriction #{movie[0].AgeRestriction}
+	if user == 'admin'
+		button(onClick="editMovie(" + movie[0].MovieId + ")") Edit movie
+	p ------
 	ul
 		each projection in movie
 			li(onclick="buyTicket(" + projection.Id + ")") #{projection.Title} #{projection.HallId} #{projection.Seats} #{projection.StartTime}
 			li 
 
+	if user == 'admin'
+		button(onClick="addProjection(" + movie[0].MovieId + ")") Add projection
+		button(onClick="deleteMovie(" + movie[0].MovieId + ")") Delete movie
+
 	script(type='text/javascript').
 		function buyTicket(id) {
 			$(location).attr('href', '/projection/' + id + '/buyTicket');
+		};
+
+		function editMovie(id) {
+			$(location).attr('href', '/editMovie/' + id);
+		};
+
+		function deleteMovie(id) {
+			$(location).attr('href', '/deleteMovie/' + id);
 		};

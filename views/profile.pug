@@ -5,6 +5,8 @@ block content
   p Profile
   button#logout(onClick='logout()') Logout
   button#settings(onClick='settings()') Profile Settings
+  if userRole == 'admin'
+    button(onClick='addMovie()') Add movie
   p #{user.Username}
   p #{user.FirstName}
   p #{user.LastName}
@@ -25,5 +27,9 @@ block content
 
      function settings(){
         $(location).attr('href', '/profileSettings');
-     }
+     };
+
+     function addMovie() {
+        $(location).attr('href', '/addMovie');
+     };
 
