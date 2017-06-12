@@ -5,15 +5,19 @@ block content
 	p #{movie[0].Title}
 	p Length #{movie[0].Length}
 	p Age Restriction #{movie[0].AgeRestriction}
-	if user.Role == 'admin'
+	if user && user.Role == 'admin'
 		button(onClick="editMovie(" + movie[0].MovieId + ")") Edit movie
 	p ------
 	ul
 		each projection in movie
-			li(onclick="buyTicket(" + projection.Id + ")") #{projection.Title} #{projection.HallId} #{projection.Seats} #{projection.StartTime}
+			li #{projection.Title} #{projection.HallId} #{projection.Seats} #{projection.StartTime}
+				button(onclick="buyTicket(" + projection.Id + ")") Buy Ticket
+				if user && user.Role == 'admin'
+					button(onclick="editProjection(" + projection.Id + ")") Edit Projection
+					button(onclick="removeProjection(" + projection.Id + ")") Remove Projection
 			li 
 
-	if user.Role == 'admin'
+	if user && user.Role == 'admin'
 		button(onClick="addProjection(" + movie[0].MovieId + ")") Add projection
 		button(onClick="deleteMovie(" + movie[0].MovieId + ")") Delete movie
 
@@ -29,3 +33,15 @@ block content
 		function deleteMovie(id) {
 			$(location).attr('href', '/deleteMovie/' + id);
 		};
+
+		function addProjection(id) {
+			$(location).attr('href', '/movie/' + id + '/addProjection');
+		}
+
+		function editProjection(id) {
+			$(location).attr('href', '/projections/' + id + '/edit');
+		}
+
+		function removeProjection(id) {
+			$(location).attr('href', '/projections/' + id + '/remove');
+		}

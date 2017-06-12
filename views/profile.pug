@@ -5,7 +5,7 @@ block content
   p Profile
   button#logout(onClick='logout()') Logout
   button#settings(onClick='settings()') Profile Settings
-  if user.Role == 'admin'
+  if user && user.Role == 'admin'
     button(onClick='addMovie()') Add movie
   p #{user.Username}
   p #{user.FirstName}

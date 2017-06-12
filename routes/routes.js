@@ -136,11 +136,131 @@ module.exports = function(app, passport) {
 		    if (err) {
 		        res.send("errordatabase");
 		    } else if (results.length == 0) {
-			    res.send("No data");
+				if (req.user && req.user.Role != 'admin') {
+					res.send("No data");
+				}
+				getMovie = "SELECT m.Id AS MovieId, m.Title, m.FirstProjection, m.LastProjection,\
+					m.Length, m.AgeRestriction FROM Movies AS m\
+					WHERE m.Id = " + req.params.movieId + ";";
+				db.query(getMovie, function(err, results, fields) {
+					if (err) {
+						res.send("errordatabase");
+					} else if (results.length == 0) {
+						res.send("No data");
+					} else {
+						res.render("movie", { movie:results, user:req.user });
+					}
+				});
 			} else {
 				//console.log(req.user.Role);
 		        res.render("movie", { movie:results, user:req.user });
 		    }
+		});
+	});
+
+	app.get('/movie/:movieId/addProjection', isAdmin, function(req, res) {
+		res.render('addProjection.pug', { movieId: req.params.movieId});
+	});
+
+	app.post('/movie/:movieId/addProjection', isAdmin, function(req, res) {
+		var db = req.db;
+		var insertProjection = "INSERT INTO Projections\
+			(MovieId, HallId, StartTime)\
+		VALUES\
+			(?, ?, ?);";
+		db.query(
+			insertProjection,
+			[
+				req.params.movieId,
+				req.body.hallId,
+				req.body.startTime
+			],
+			function(err, rows) {
+				if (err) {
+					console.log(err);
+					res.send("Insert projection error!");
+				}
+				console.log("Inserted projection!");
+				res.send("Projection added!");
+			}
+		);
+	});
+
+	app.get('/projections/:projectionId/edit', isAdmin, function(req, res) {
+		res.render('editProjection.pug', { projectionId: req.params.projectionId});
+	});
+	
+	app.post('/projections/:projectionId/edit', isAdmin, function(req, res, next) {
+		var db = req.db;
+		db.query("SELECT * FROM Projections WHERE Id = ?;",
+			[req.params.projectionId],
+			function(err, result) {
+				if (err) {
+					throw err;
+				} else if (result.length == 0) {
+					res.send("No Projection Found");
+				} else {
+					var movieId = (req.body.movieId) ?
+						req.body.movieId : result[0].MovieId;
+					var hallId = (req.body.hallId) ?
+						req.body.hallId : result[0].HallId;
+					var startTime = (req.body.startTime.length) ?
+						req.body.startTime : result[0].StartTime;
+
+					var newProjectionEdit = {
+						MovieId : movieId,
+						HallId : hallId,
+						StartTime : startTime
+					};
+					var updateProjections = "UPDATE Projections SET \
+						MovieId = ?, HallId = ?, StartTime = ?\
+						WHERE Id = ?;";
+					db.query(
+						updateProjections,
+						[
+							newProjectionEdit.MovieId,
+							newProjectionEdit.HallId,
+							newProjectionEdit.StartTime,
+							req.params.projectionId
+						],
+						function(err, result) {
+							if (err) {
+								throw err;
+							} else {
+								res.send("Successfully updated projection");
+							}
+						}
+					);
+				}
+			});
+	});
+
+	app.get('/projections/:projectionId/remove', isAdmin, function(req, res, next) {
+		var db = req.db;
+		db.query("SELECT * FROM Projections WHERE Id = ?;", 
+			[req.params.projectionId], 
+			function(err, rows) {
+				if (err) {
+					throw err;
+				} else if (rows.length == 0) {
+					res.send("Invalid projection!");
+				} else {
+					var removeProjection = "DELETE FROM Projections\
+						WHERE Id = ?;";
+					db.query(
+						removeProjection,
+						[req.params.projectionId],
+						function(err, rows) {
+							if (err) {
+								console.log("Remove projection error!");
+								console.log(err);
+								throw err;
+							}
+							console.log("Successfully removed Projection!");
+							res.send("You've successfully removed a projection!");
+						}
+					);
+				}
 		});
 	});
 
@@ -158,21 +278,12 @@ module.exports = function(app, passport) {
 			[req.body.title, req.body.ageRes, req.body.firstPr, req.body.lastPr, req.body.length],
 			function(err, rows) {
 				if (err) {
-					console.log("Insert movie error!");
 					res.send("Insert movie error");
 				}
 				console.log("Inserted Movie!");
 				res.send("Movie added");
 			}
 		);
-	});
-
-	app.get('/addProjection', isAdmin, function(req, res) {
-		res.render('addProjection.pug');
-	});
-
-	app.post('/addProjection', isAdmin, function(req, res, next) {
-		
 	});
 
 	app.get('/editMovie/:movieId', isAdmin, function(req, res) {
@@ -201,13 +312,13 @@ module.exports = function(app, passport) {
 				} else {
 					var title = (req.body.title.length) ?
 						req.body.title : result[0].Title;
-					var ageRes = (req.body.ageRes.length) ?
+					var ageRes = (req.body.ageRes) ?
 						req.body.ageRes : result[0].AgeRestriction;
 					var firstPr = (req.body.firstPr.length) ?
 						req.body.firstPr : result[0].FirstProjection;
 					var lastPr = (req.body.lastPr.length) ? 
 						req.body.lastPr : result[0].LastProjection;
-					var length = (req.body.length.length) ?
+					var length = (req.body.length) ?
 						req.body.length : result[0].Length;
 
 					var newMovieEdit = {
@@ -360,7 +471,7 @@ module.exports = function(app, passport) {
 						req.body.firstName : result[0].FirstName;
 					var lastName = (req.body.lastName.length) ?
 						req.body.lastName : result[0].LastName;
-					var age = (req.body.age.length) ?
+					var age = (req.body.age) ?
 						req.body.age : result[0].Age;
 					
 					var newUserSettings = {
