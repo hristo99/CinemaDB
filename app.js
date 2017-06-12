@@ -82,7 +82,7 @@ db.connect(function(err) {
     MovieId INTEGER NOT NULL,\
     HallId INTEGER NOT NULL,\
     StartTime DATETIME NOT NULL,\
-    FOREIGN KEY(MovieId) REFERENCES Movies(Id),\
+    FOREIGN KEY(MovieId) REFERENCES Movies(Id) ON DELETE CASCADE,\
     FOREIGN KEY(HallId) REFERENCES Halls(Id)\
     );";
   db.query(createTableProjections, function (err, result) {
@@ -94,7 +94,7 @@ db.connect(function(err) {
     Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,\
     ProjectionId INTEGER NOT NULL,\
     Username VARCHAR(15) NOT NULL,\
-    FOREIGN KEY(ProjectionId) REFERENCES Projections(Id),\
+    FOREIGN KEY(ProjectionId) REFERENCES Projections(Id) ON DELETE CASCADE,\
     FOREIGN KEY(Username) REFERENCES Users(Username)\
     );";
   db.query(createTableProjectionViewers, function (err, result) {

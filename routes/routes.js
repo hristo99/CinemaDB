@@ -154,22 +154,16 @@ module.exports = function(app, passport) {
 		var insertMovie = "INSERT INTO Movies \
 			(Title, AgeRestriction, FirstProjection, LastProjection, Length)\
 		VALUES\
-				(?, ?, NOW(), NOW(), ?)";
-		console.log(req.body.title);
-		console.log(req.body.ageRes);
-		console.log(req.body.length);
+				(?, ?, ?, ?, ?)";
 		db.query(insertMovie, 
-			[req.body.title, req.body.ageRes, req.body.length],
+			[req.body.title, req.body.ageRes, req.body.firstPr, req.body.lastPr, req.body.length],
 			function(err, rows) {
 				if (err) {
 					console.log("Insert movie error!");
-					res.redirect('/profile'); //temporary
-					//throw err;
+					res.send("Insert movie error");
 				}
 				console.log("Inserted Movie!");
-				window.alert("Movie added");
-				//res.send("Movie added");
-				res.redirect('/profile');
+				res.send("Movie added");
 			}
 		);
 	});
@@ -201,9 +195,9 @@ module.exports = function(app, passport) {
 		//implement
 	});
 
-	app.get('deleteMovie/:movieId', function(req, res, next) {
+	app.get('/deleteMovie/:movieId', function(req, res, next) {
 		var db = req.db;
-		var deleteMovie = "DELETE FROM Movies WHERE Movie.Id = ?;";
+		var deleteMovie = "DELETE FROM Movies WHERE Movies.Id = ?;";
 		db.query(deleteMovie, [req.params.movieId], function(err, rows){
 			if (err) {
 				throw err;
@@ -212,7 +206,6 @@ module.exports = function(app, passport) {
 			} else {
 				res.send("Movie deleted");
 			}
-			//res.redirect('/movies');
 		});
 	});
 
