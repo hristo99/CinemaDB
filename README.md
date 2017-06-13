@@ -5,19 +5,25 @@ A DB systems project
 CinemaDB is a web application for managing movies, projections and projection viewers in cinemas.
 
 ## Instruction Manual
-1. Check out the source code from git
+1. Make sure you have NodeJS installed and an active MySQL service is available.
+2. Check out the source code from git
 ```groovy
 git clone https://github.com/hristo99/CinemaDB.git
 ```
-2. Open CinemaDB main dir
+3. Properly configure CinemaDB/config/database.js
+4. Create database
 ```groovy
-cd ./CinemaDB
+node CinemaDB/scripts/createDatabase.js
 ```
-3. Install dependencies
+5. Open CinemaDB main dir
+```groovy
+cd CinemaDB
+```
+6. Install dependencies
 ```groovy
 npm install
 ```
-4. Start application
+7. Start application
 ```groovy
 npm start
 ```

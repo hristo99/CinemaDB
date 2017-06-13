@@ -1,25 +1,26 @@
 var mysql = require('mysql');
 var bcrypt = require('bcrypt-nodejs');
+var dbconfig = require('../config/database');
 
 var connection = mysql.createConnection({
-  host : 'localhost',
-  user: 'cinemaAdmin',
-  password: 'cinema_Pass123'
+  host : dbconfig.connection.host,
+  user: dbconfig.connection.user,
+  password: dbconfig.connection.password
 });
 
-connection.query("DROP DATABASE IF EXISTS cinemaDB;", err => {
+connection.query(`DROP DATABASE IF EXISTS ${dbconfig.database};`, err => {
     if (err) throw err;
     console.log("No database");
 });
 
-connection.query("CREATE DATABASE cinemaDB CHARACTER SET utf8;", err => {
+connection.query(`CREATE DATABASE ${dbconfig.database} CHARACTER SET utf8;`, err => {
     if (err) throw err;
     console.log("Database created");
 });
 
-connection.query("USE cinemaDB;", err => {
+connection.query(`USE ${dbconfig.database};`, err => {
     if (err) throw err;
-    console.log("Using cinemaDB");
+    console.log(`Using ${dbconfig.database}`);
 });
 
 var createTableUsers = `CREATE TABLE Users (

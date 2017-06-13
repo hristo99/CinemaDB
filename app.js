@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var flash = require('connect-flash');
+var dbconfig = require('./config/database');
 
 var app = express();
 
@@ -16,10 +17,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 var db = mysql.createConnection({
-  host : 'localhost',
-  user: 'cinemaAdmin',
-  password: 'cinema_Pass123',
-  database: 'cinemaDB'
+  host : dbconfig.connection.host,
+  user: dbconfig.connection.user,
+  password: dbconfig.connection.password,
+  database: dbconfig.database
 });
 
 // Make our db accessible to our router
