@@ -2,9 +2,9 @@ var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function(app, passport) {
 
-	app.get('/', function(req, res, next) {
+	app.get('/', (req, res, next) => {
 		var db = req.db; 
-	  	db.query("SELECT * FROM Movies ORDER BY FirstProjection DESC LIMIT 10;", function(err, results, fields) {
+	  	db.query("SELECT * FROM Movies ORDER BY FirstProjection DESC LIMIT 10;", (err, results, fields) => {
 	    	if (err) {
 		        res.send("errordatabase");
 		    } else if (results.length == 0) {
@@ -15,7 +15,7 @@ module.exports = function(app, passport) {
 	  	});
 	});
 
-	app.get('/login', function(req, res) {
+	app.get('/login', (req, res) => {
 		res.render('login.pug', { message: req.flash('loginMessage') });
 	});
 
@@ -24,7 +24,7 @@ module.exports = function(app, passport) {
             failureRedirect : '/login',
             failureFlash : true
 		}),
-        function(req, res) {
+        (req, res) => {
             console.log("hello");
 
             if (req.body.remember) {
@@ -35,7 +35,7 @@ module.exports = function(app, passport) {
         res.redirect('/');
     });
 
-	app.get('/signup', function(req, res) {
+	app.get('/signup', (req, res) => {
 		res.render('signup.pug', { message: req.flash('signupMessage') });
 	});
 
@@ -45,27 +45,27 @@ module.exports = function(app, passport) {
 		failureFlash : true
 	}));
 
-	app.get('/logout', function(req, res) {
+	app.get('/logout', (req, res) => {
 		req.logout();
 		res.redirect('/');
 	});
 
-	app.get('/profile', isLoggedIn, function(req, res) {
+	app.get('/profile', isLoggedIn, (req, res) => {
 		res.render('profile.pug', {
 			user : req.user
 		});
 	});
 
-	app.get('/profile/settings', isLoggedIn, function(req, res) {
+	app.get('/profile/settings', isLoggedIn, (req, res) => {
 		res.render('profileSettings.pug');
 	});
 
-	app.post('/profile/settings', isLoggedIn, function(req, res) {
+	app.post('/profile/settings', isLoggedIn, (req, res) => {
 		var db = req.db;
 		db.query(
 			"SELECT * FROM Users WHERE Username = ?;", 
 			[req.user.Username],
-			function(err, result) {
+			(err, result) => {
 				if (err) {
 					throw err;
 				} else if (result.length == 0) {
@@ -99,7 +99,7 @@ module.exports = function(app, passport) {
 							newUserSettings.Age,
 							newUserSettings.Username
 						],
-						function(err, result) {
+						(err, result) => {
 							if (err) {
 								throw err;
 							} else {
@@ -112,9 +112,9 @@ module.exports = function(app, passport) {
 		);
 	});
 
-	app.get('/users', isAdmin, function(req, res, next) {
+	app.get('/users', isAdmin, (req, res, next) => {
 	  var db = req.db; 
-	  db.query("SELECT * FROM Users;", function(err, results, fields) {
+	  db.query("SELECT * FROM Users;", (err, results, fields) => {
 	    if (err) {
 	        res.send("errordatabase");
 	    } else{
@@ -124,10 +124,10 @@ module.exports = function(app, passport) {
 	  })
 	});
 
-	app.get('/movies', function(req, res, next) {
+	app.get('/movies', (req, res, next) => {
 		var db = req.db;
 		var getAllMovies = "SELECT * FROM Movies";
-		db.query(getAllMovies, function(err, results, fields) {
+		db.query(getAllMovies, (err, results, fields) => {
 		    if (err) {
 		        res.send("errordatabase");
 		    } else if (results.length == 0) {
@@ -139,13 +139,13 @@ module.exports = function(app, passport) {
 		})
 	});
 
-	app.get('/movies/hottest', function(req, res, next) {
+	app.get('/movies/hottest', (req, res, next) => {
 	  var db = req.db;
 	  var getHottestMovies = "SELECT Movies.Title, COUNT(Movies.Title) AS Views FROM Movies\
 		INNER JOIN Projections ON Movies.Id = Projections.MovieId\
 		INNER JOIN ProjectionViewers ON Projections.Id = ProjectionViewers.ProjectionId\
 		GROUP BY Movies.Title ORDER BY Views DESC LIMIT 10;";
-	  db.query(getHottestMovies, function(err, results, fields) {
+	  db.query(getHottestMovies, (err, results, fields) => {
 	    if (err) {
 	        res.send("errordatabase");
 	    } else if (results.length == 0) {
@@ -157,11 +157,11 @@ module.exports = function(app, passport) {
 	  })
 	});
 
-	app.get('/movies/add', isAdmin, function(req, res) {
+	app.get('/movies/add', isAdmin, (req, res) => {
 		res.render('addMovie.pug');
 	});
 
-	app.post('/movies/add', isAdmin, function(req, res, next) {
+	app.post('/movies/add', isAdmin, (req, res, next) => {
 		var db = req.db;
 		var insertMovie = "INSERT INTO Movies \
 			(Title, AgeRestriction, FirstProjection, LastProjection, Length)\
@@ -169,7 +169,7 @@ module.exports = function(app, passport) {
 				(?, ?, ?, ?, ?)";
 		db.query(insertMovie, 
 			[req.body.title, req.body.ageRes, req.body.firstPr, req.body.lastPr, req.body.length],
-			function(err, rows) {
+			(err, rows) => {
 				if (err) {
 					res.send("Insert movie error");
 				}
@@ -179,7 +179,7 @@ module.exports = function(app, passport) {
 		);
 	});
 
-	app.get('/movies/:movieId', function(req, res, next) {
+	app.get('/movies/:movieId', (req, res, next) => {
 		var db = req.db;
 		var getMovie = "SELECT p.MovieId, m.Title, m.FirstProjection, m.LastProjection,\
 			m.Length, m.AgeRestriction, p.Id, p.HallId, h.Seats, p.StartTime\
@@ -189,7 +189,7 @@ module.exports = function(app, passport) {
 			LEFT JOIN Halls AS h\
 			ON p.HallId = h.Id\
 			WHERE p.StartTime > NOW() AND m.Id = " + req.params.movieId + ";";
-		db.query(getMovie, function(err, results, fields) {
+		db.query(getMovie, (err, results, fields) => {
 		    if (err) {
 		        res.send("errordatabase");
 		    } else if (results.length == 0) {
@@ -199,7 +199,7 @@ module.exports = function(app, passport) {
 				getMovie = "SELECT m.Id AS MovieId, m.Title, m.FirstProjection, m.LastProjection,\
 					m.Length, m.AgeRestriction FROM Movies AS m\
 					WHERE m.Id = " + req.params.movieId + ";";
-				db.query(getMovie, function(err, results, fields) {
+				db.query(getMovie, (err, results, fields) => {
 					if (err) {
 						res.send("errordatabase");
 					} else if (results.length == 0) {
@@ -214,10 +214,10 @@ module.exports = function(app, passport) {
 		});
 	});
 
-	app.get('/movies/:movieId/edit', isAdmin, function(req, res) {
+	app.get('/movies/:movieId/edit', isAdmin, (req, res) => {
 		var db = req.db;
 		var getMovie = "SELECT * FROM Movies WHERE Id = ?;";
-		db.query(getMovie, [req.params.movieId], function(err, results, fields) {
+		db.query(getMovie, [req.params.movieId], (err, results, fields) => {
 			if (err) {
 		        res.send("errordatabase");
 		    } else if (results.length == 0) {
@@ -228,11 +228,11 @@ module.exports = function(app, passport) {
 		});
 	});
 
-	app.post('/movies/:movieId/edit', isAdmin, function(req, res, next) {
+	app.post('/movies/:movieId/edit', isAdmin, (req, res, next) => {
 		var db = req.db;
 		db.query("SELECT * FROM Movies WHERE Id = ?;",
 			[req.params.movieId],
-			function(err, result) {
+			(err, result) => {
 				if (err) {
 					throw err;
 				} else if (result.length == 0) {
@@ -269,7 +269,7 @@ module.exports = function(app, passport) {
 							newMovieEdit.Length,
 							req.params.movieId
 						],
-						function(err, result) {
+						(err, result) => {
 							if (err) {
 								throw err;
 							} else {
@@ -282,10 +282,10 @@ module.exports = function(app, passport) {
 		);
 	});
 
-	app.get('/movies/:movieId/remove', isAdmin, function(req, res, next) {
+	app.get('/movies/:movieId/remove', isAdmin, (req, res, next) => {
 		var db = req.db;
 		var deleteMovie = "DELETE FROM Movies WHERE Movies.Id = ?;";
-		db.query(deleteMovie, [req.params.movieId], function(err, rows){
+		db.query(deleteMovie, [req.params.movieId], (err, rows) => {
 			if (err) {
 				throw err;
 			} else if (rows.length) {
@@ -296,11 +296,11 @@ module.exports = function(app, passport) {
 		});
 	});
 
-	app.get('/movies/:movieId/addProjection', isAdmin, function(req, res) {
+	app.get('/movies/:movieId/addProjection', isAdmin, (req, res) => {
 		res.render('addProjection.pug', { movieId: req.params.movieId});
 	});
 
-	app.post('/movies/:movieId/addProjection', isAdmin, function(req, res) {
+	app.post('/movies/:movieId/addProjection', isAdmin, (req, res) => {
 		var db = req.db;
 		var insertProjection = "INSERT INTO Projections\
 			(MovieId, HallId, StartTime)\
@@ -313,7 +313,7 @@ module.exports = function(app, passport) {
 				req.body.hallId,
 				req.body.startTime
 			],
-			function(err, rows) {
+			(err, rows) => {
 				if (err) {
 					console.log(err);
 					res.send("Insert projection error!");
@@ -324,14 +324,14 @@ module.exports = function(app, passport) {
 		);
 	});
 
-	app.get('/boughtTickets', isLoggedIn, function(req, res, next) {
+	app.get('/boughtTickets', isLoggedIn, (req, res, next) => {
 		var db = req.db;
 		var getBoughtTickets = "SELECT Projections.Id, Movies.Title, Movies.Length, Projections.StartTime, Projections.HallId\
 			FROM ProjectionViewers LEFT JOIN Projections\
 			ON ProjectionViewers.ProjectionId = Projections.Id\
 			LEFT JOIN Movies ON Projections.MovieId = Movies.Id\
 			WHERE ProjectionViewers.Username = ?";
-		db.query(getBoughtTickets, [req.user.Username], function(err, results) {
+		db.query(getBoughtTickets, [req.user.Username], (err, results) => {
 			if (err) {
 				throw err;
 			} else if (results.length == 0) {
@@ -342,11 +342,11 @@ module.exports = function(app, passport) {
 		})
 	});
 
-	app.get('/projections/:projectionId/buyTicket', isLoggedIn, function(req, res, next) {
+	app.get('/projections/:projectionId/buyTicket', isLoggedIn, (req, res, next) => {
 		var db = req.db;
 		db.query("SELECT * FROM ProjectionViewers WHERE ProjectionId = ? AND Username = ?", 
 			[req.params.projectionId, req.user.Username], 
-			function(err, rows) {
+			(err, rows) => {
 				if (err) {
 					throw err;
 				} else if (rows.length) {
@@ -359,7 +359,7 @@ module.exports = function(app, passport) {
 					db.query(
 						insertProjectionViewer,
 						[req.params.projectionId, req.user.Username],
-						function(err, rows) {
+						(err, rows) => {
 							if (err) {
 								console.log("Insert projection viewer error!");
 								console.log(err);
@@ -373,11 +373,11 @@ module.exports = function(app, passport) {
 		});
 	});
 
-	app.get('/projections/:projectionId/returnTicket', isLoggedIn, function(req, res, next) {
+	app.get('/projections/:projectionId/returnTicket', isLoggedIn, (req, res, next) => {
 		var db = req.db;
 		db.query("SELECT * FROM ProjectionViewers WHERE ProjectionId = ? AND Username = ?", 
 			[req.params.projectionId, req.user.Username], 
-			function(err, rows) {
+			(err, rows) => {
 				if (err) {
 					throw err;
 				} else if (rows.length == 0) {
@@ -388,7 +388,7 @@ module.exports = function(app, passport) {
 					db.query(
 						removeProjectionViewer,
 						[req.params.projectionId, req.user.Username],
-						function(err, rows) {
+						(err, rows) => {
 							if (err) {
 								console.log("Remove projection viewer error!");
 								console.log(err);
@@ -403,15 +403,15 @@ module.exports = function(app, passport) {
 		);
 	});
 
-	app.get('/projections/:projectionId/edit', isAdmin, function(req, res) {
+	app.get('/projections/:projectionId/edit', isAdmin, (req, res) => {
 		res.render('editProjection.pug', { projectionId: req.params.projectionId});
 	});
 	
-	app.post('/projections/:projectionId/edit', isAdmin, function(req, res, next) {
+	app.post('/projections/:projectionId/edit', isAdmin, (req, res, next) => {
 		var db = req.db;
 		db.query("SELECT * FROM Projections WHERE Id = ?;",
 			[req.params.projectionId],
-			function(err, result) {
+			(err, result) => {
 				if (err) {
 					throw err;
 				} else if (result.length == 0) {
@@ -440,7 +440,7 @@ module.exports = function(app, passport) {
 							newProjectionEdit.StartTime,
 							req.params.projectionId
 						],
-						function(err, result) {
+						(err, result) => {
 							if (err) {
 								throw err;
 							} else {
@@ -453,11 +453,11 @@ module.exports = function(app, passport) {
 		);
 	});
 
-	app.get('/projections/:projectionId/remove', isAdmin, function(req, res, next) {
+	app.get('/projections/:projectionId/remove', isAdmin, (req, res, next) => {
 		var db = req.db;
 		db.query("SELECT * FROM Projections WHERE Id = ?;", 
 			[req.params.projectionId], 
-			function(err, rows) {
+			(err, rows) => {
 				if (err) {
 					throw err;
 				} else if (rows.length == 0) {
@@ -468,7 +468,7 @@ module.exports = function(app, passport) {
 					db.query(
 						removeProjection,
 						[req.params.projectionId],
-						function(err, rows) {
+						(err, rows) => {
 							if (err) {
 								console.log("Remove projection error!");
 								console.log(err);

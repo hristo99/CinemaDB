@@ -23,21 +23,21 @@ var db = mysql.createConnection({
   password: 'cinema_Pass123'
 });
 
-db.connect(function(err) {
+db.connect(err => {
   if (err) throw err;
   console.log("Connected!");
 
-  db.query("DROP DATABASE IF EXISTS cinemaDB;", function (err, result) {
+  db.query("DROP DATABASE IF EXISTS cinemaDB;", (err, result) => {
     if (err) throw err;
     console.log("No database");
   });
 
-  db.query("CREATE DATABASE cinemaDB CHARACTER SET utf8;", function (err, result) {
+  db.query("CREATE DATABASE cinemaDB CHARACTER SET utf8;", (err, result) => {
     if (err) throw err;
     console.log("Database created");
   });
 
-  db.query("USE cinemaDB;", function (err, result) {
+  db.query("USE cinemaDB;", (err, result) => {
     if (err) throw err;
     console.log("Using cinemaDB");
   });
@@ -50,7 +50,7 @@ db.connect(function(err) {
     Age INTEGER NOT NULL,\
     Role VARCHAR(20) NOT NULL\
     );";
-  db.query(createTableUsers, function (err, result) {
+  db.query(createTableUsers, (err, result) => {
     if (err) throw err;
     console.log("Created Users table");
   });
@@ -63,7 +63,7 @@ db.connect(function(err) {
     LastProjection DATETIME NOT NULL,\
     Length INTEGER NOT NULL\
     );";
-  db.query(createTableMovies, function (err, result) {
+  db.query(createTableMovies, (err, result) => {
     if (err) throw err;
     console.log("Created Movies table");
   });
@@ -72,7 +72,7 @@ db.connect(function(err) {
     Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,\
     Seats INTEGER NOT NULL\
     );";
-  db.query(createTableHalls, function (err, result) {
+  db.query(createTableHalls, (err, result) => {
     if (err) throw err;
     console.log("Created Halls table");
   });
@@ -85,7 +85,7 @@ db.connect(function(err) {
     FOREIGN KEY(MovieId) REFERENCES Movies(Id) ON DELETE CASCADE,\
     FOREIGN KEY(HallId) REFERENCES Halls(Id)\
     );";
-  db.query(createTableProjections, function (err, result) {
+  db.query(createTableProjections, (err, result) => {
     if (err) throw err;
     console.log("Created Projections table");
   });
@@ -97,7 +97,7 @@ db.connect(function(err) {
     FOREIGN KEY(ProjectionId) REFERENCES Projections(Id) ON DELETE CASCADE,\
     FOREIGN KEY(Username) REFERENCES Users(Username)\
     );";
-  db.query(createTableProjectionViewers, function (err, result) {
+  db.query(createTableProjectionViewers, (err, result) => {
     if (err) throw err;
     console.log("Created ProjectionViewers table");
   });
@@ -118,7 +118,7 @@ db.connect(function(err) {
     ( 'santa', '" + santapass + "', 'Santa', 'Claus', 200, 'user' ),\
     ( 'dont', '" + dontpass + "', 'Donald', 'Trump', 75, 'user' ),\
     ( 'admin', '" + adminPass + "', 'Kiril', 'Mitov', '30', 'admin');";
-  db.query(insertUsers, function (err, result) {
+  db.query(insertUsers, (err, result) => {
     if (err) throw err;
     console.log("Inserted users");
   });
@@ -133,7 +133,7 @@ VALUES\
     ( 'Black Swan', 16, '2016-10-05 11:40:00', '2016-12-01 23:10:00', 135 ),\
     ( 'Star Wars', 0, '2017-11-30 08:50:00', '2018-02-18 19:25:00', 152 ),\
     ( 'The Dictator', 12, '2015-09-04 12:30:00', '2015-12-28 21:45:00', 93 );";
-    db.query(insertMovies, function (err, result) {
+    db.query(insertMovies, (err, result) => {
     	if (err) throw err;
     	console.log("Inserted movies");
     });
@@ -146,7 +146,7 @@ VALUES\
 	    (50),\
 	    (148),\
 	    (74);";
-	db.query(insertHalls, function (err, result) {
+	db.query(insertHalls, (err, result) => {
     	if (err) throw err;
     	console.log("Inserted halls");
     });
@@ -204,7 +204,7 @@ VALUES\
 	    (7, 2, '2015-10-04 17:30:00'),\
 	    (7, 2, '2015-11-04 17:30:00'),\
 	    (7, 2, '2015-12-28 21:45:00');";
-	db.query(insertProjections, function (err, result) {
+	db.query(insertProjections, (err, result) => {
     	if (err) throw err;
     	console.log("Inserted Projections");
     });
@@ -246,14 +246,14 @@ VALUES\
 	    (31, 'radito3'),\
 	    (19, 'radito3'),\
 	    (20, 'radito3');";
-	db.query(insertProjectionViewers, function (err, result) {
+	db.query(insertProjectionViewers, (err, result) => {
     	if (err) throw err;
     	console.log("Inserted ProjectionViewers");
     });
 });
 
 // Make our db accessible to our router
-app.use(function(req,res,next){
+app.use((req,res,next) => {
     req.db = db;
     next();
 });
@@ -278,14 +278,14 @@ require('./routes/routes.js')(app, passport);
 require('./config/passport')(passport, db);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
