@@ -3,7 +3,7 @@ extends layout
 block content
   h1= CinemaDB
   p #{movie[0].Title} Settings
-  form(method='POST' action='/movies/' + movie[0].Id + '/edit')
+  form(method='POST' action=`/movies/${movie[0].Id}/edit`)
     input.form-control(type='text' placeholder='Title' name='title')
     input.form-control(type='number' placeholder='AgeRestriction' name='ageRes')
     input.form-control(type='text' placeholder='FirstProjecion' name='firstPr')

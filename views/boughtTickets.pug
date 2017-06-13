@@ -4,9 +4,9 @@ block content
 	p Tickets you've bought
 	ul
 		each projection in projections
-			li(onclick="returnTicket(" + projection.Id + ")") #{projection.Title} #{projection.Length} #{projection.StartTime} #{projection.HallId} 
+			li(onclick=`returnTicket(${projection.Id})`) #{projection.Title} #{projection.Length} #{projection.StartTime} #{projection.HallId} 
 
 	script(type='text/javascript').
 		function returnTicket(id) {
-			$(location).attr('href', '/projections/' + id + '/returnTicket');
+			$(location).attr('href', `/projections/${id}/returnTicket`);
 		};

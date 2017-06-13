@@ -6,42 +6,42 @@ block content
 	p Length #{movie[0].Length}
 	p Age Restriction #{movie[0].AgeRestriction}
 	if user && user.Role == 'admin'
-		button(onClick="editMovie(" + movie[0].MovieId + ")") Edit movie
+		button(onClick=`editMovie(${movie[0].MovieId})`) Edit movie
 	p ------
 	ul
 		each projection in movie
 			li #{projection.Title} #{projection.HallId} #{projection.Seats} #{projection.StartTime}
-				button(onclick="buyTicket(" + projection.Id + ")") Buy Ticket
+				button(onclick=`buyTicket(${projection.Id})`) Buy Ticket
 				if user && user.Role == 'admin'
-					button(onclick="editProjection(" + projection.Id + ")") Edit Projection
-					button(onclick="removeProjection(" + projection.Id + ")") Remove Projection
+					button(onclick=`editProjection(${projection.Id})`) Edit Projection
+					button(onclick=`removeProjection(${projection.Id})`) Remove Projection
 			li 
 
 	if user && user.Role == 'admin'
-		button(onClick="addProjection(" + movie[0].MovieId + ")") Add projection
-		button(onClick="deleteMovie(" + movie[0].MovieId + ")") Delete movie
+		button(onClick=`addProjection(${movie[0].MovieId})`) Add projection
+		button(onClick=`deleteMovie(${movie[0].MovieId})`) Delete movie
 
 	script(type='text/javascript').
 		function buyTicket(id) {
-			$(location).attr('href', '/projections/' + id + '/buyTicket');
+			$(location).attr('href', `/projections/${id}/buyTicket`);
 		};
 
 		function editMovie(id) {
-			$(location).attr('href', '/movies/' + id + '/edit');
+			$(location).attr('href', `/movies/${id}/edit`);
 		};
 
 		function deleteMovie(id) {
-			$(location).attr('href', '/movies/' + id + '/remove');
+			$(location).attr('href', `/movies/${id}/remove`);
 		};
 
 		function addProjection(id) {
-			$(location).attr('href', '/movies/' + id + '/addProjection');
+			$(location).attr('href', `/movies/${id}/addProjection`);
 		}
 
 		function editProjection(id) {
-			$(location).attr('href', '/projections/' + id + '/edit');
+			$(location).attr('href', `/projections/${id}/edit`);
 		}
 
 		function removeProjection(id) {
-			$(location).attr('href', '/projections/' + id + '/remove');
+			$(location).attr('href', `/projections/${id}/remove`);
 		}

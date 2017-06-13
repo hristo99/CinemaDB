@@ -10,13 +10,13 @@ module.exports = function(app, passport) {
 		    } else if (results.length == 0) {
 		    	res.send("No movies");
 		    } else {
-		    	res.render("index", {movies:results});
+		    	res.render('index', {movies:results});
 		    }
 	  	});
 	});
 
 	app.get('/login', (req, res) => {
-		res.render('login.pug', { message: req.flash('loginMessage') });
+		res.render('login', { message: req.flash('loginMessage') });
 	});
 
 	app.post('/login', passport.authenticate('local-login', {
@@ -36,7 +36,7 @@ module.exports = function(app, passport) {
     });
 
 	app.get('/signup', (req, res) => {
-		res.render('signup.pug', { message: req.flash('signupMessage') });
+		res.render('signup', { message: req.flash('signupMessage') });
 	});
 
 	app.post('/signup', passport.authenticate('local-signup', {
@@ -51,13 +51,13 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/profile', isLoggedIn, (req, res) => {
-		res.render('profile.pug', {
+		res.render('profile', {
 			user : req.user
 		});
 	});
 
 	app.get('/profile/settings', isLoggedIn, (req, res) => {
-		res.render('profileSettings.pug');
+		res.render('profileSettings');
 	});
 
 	app.post('/profile/settings', isLoggedIn, (req, res) => {
@@ -80,24 +80,17 @@ module.exports = function(app, passport) {
 					var age = (req.body.age) ?
 						req.body.age : result[0].Age;
 					
-					var newUserSettings = {
-						Username: req.user.Username,
-						Password: password,
-						FirstName: firstName,
-						LastName: lastName,
-						Age: age
-					};
 					var updateUser = `UPDATE Users SET
 						Password = ?, FirstName = ?, LastName = ?, Age = ?
 						WHERE Username = ?;`;
 					db.query(
 						updateUser,
 						[
-							newUserSettings.Password, 
-							newUserSettings.FirstName,
-							newUserSettings.LastName,
-							newUserSettings.Age,
-							newUserSettings.Username
+							password, 
+							firstName,
+							lastName,
+							age,
+							req.user.Username
 						],
 						(err, result) => {
 							if (err) {
@@ -118,7 +111,7 @@ module.exports = function(app, passport) {
 	    if (err) {
 	        res.send("errordatabase");
 	    } else{
-	        res.render("user", { title: "List of All Users",
+	        res.render('user', { title: "List of All Users",
 	                             users:results});
 	    }
 	  })
@@ -134,7 +127,7 @@ module.exports = function(app, passport) {
 		    	console.log(results);
 			    res.send("No data");
 			} else {
-		        res.render("movies", {movies:results});
+		        res.render('movies', {movies:results});
 		    }
 		})
 	});
@@ -152,13 +145,13 @@ module.exports = function(app, passport) {
 	    	console.log(results);
 		    res.send("No data");
 		} else {
-	        res.render("hottestMovies", {movies:results});
+	        res.render('hottestMovies', {movies:results});
 	    }
 	  })
 	});
 
 	app.get('/movies/add', isAdmin, (req, res) => {
-		res.render('addMovie.pug');
+		res.render('addMovie');
 	});
 
 	app.post('/movies/add', isAdmin, (req, res, next) => {
@@ -205,11 +198,11 @@ module.exports = function(app, passport) {
 					} else if (results.length == 0) {
 						res.send("No data");
 					} else {
-						res.render("movie", { movie:results, user:req.user });
+						res.render('movie', { movie:results, user:req.user });
 					}
 				});
 			} else {
-		        res.render("movie", { movie:results, user:req.user });
+		        res.render('movie', { movie:results, user:req.user });
 		    }
 		});
 	});
@@ -223,7 +216,7 @@ module.exports = function(app, passport) {
 		    } else if (results.length == 0) {
 			    res.send("No data");
 			} else {
-				res.render('editMovie.pug', {movie:results});
+				res.render('editMovie', {movie:results});
 			}
 		});
 	});
@@ -248,25 +241,17 @@ module.exports = function(app, passport) {
 						req.body.lastPr : result[0].LastProjection;
 					var length = (req.body.length) ?
 						req.body.length : result[0].Length;
-
-					var newMovieEdit = {
-						Title : title,
-						AgeRestriction : ageRes,
-						FirstProjection : firstPr,
-						LastProjection : lastPr,
-						Length : length
-					};
 					var updateMovies = `UPDATE Movies SET
 						Title = ?, AgeRestriction = ?, FirstProjection = ?,
 						LastProjection = ?, Length = ?
 						WHERE Id = ?;`;
 					db.query(updateMovies,
 						[
-							newMovieEdit.Title,
-							newMovieEdit.AgeRestriction,
-							newMovieEdit.FirstProjection,
-							newMovieEdit.LastProjection,
-							newMovieEdit.Length,
+							title,
+							ageRes,
+							firstPr,
+							lastPr,
+							length,
 							req.params.movieId
 						],
 						(err, result) => {
@@ -297,7 +282,7 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/movies/:movieId/addProjection', isAdmin, (req, res) => {
-		res.render('addProjection.pug', { movieId: req.params.movieId});
+		res.render('addProjection', { movieId: req.params.movieId});
 	});
 
 	app.post('/movies/:movieId/addProjection', isAdmin, (req, res) => {
@@ -337,7 +322,7 @@ module.exports = function(app, passport) {
 			} else if (results.length == 0) {
 				res.send("No data");
 			} else {
-				res.render("boughtTickets", {projections: results});
+				res.render('boughtTickets', {projections: results});
 			}
 		})
 	});
@@ -404,7 +389,7 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/projections/:projectionId/edit', isAdmin, (req, res) => {
-		res.render('editProjection.pug', { projectionId: req.params.projectionId});
+		res.render('editProjection', { projectionId: req.params.projectionId});
 	});
 	
 	app.post('/projections/:projectionId/edit', isAdmin, (req, res, next) => {
@@ -424,20 +409,15 @@ module.exports = function(app, passport) {
 					var startTime = (req.body.startTime.length) ?
 						req.body.startTime : result[0].StartTime;
 
-					var newProjectionEdit = {
-						MovieId : movieId,
-						HallId : hallId,
-						StartTime : startTime
-					};
 					var updateProjections = `UPDATE Projections SET
 						MovieId = ?, HallId = ?, StartTime = ?
 						WHERE Id = ?;`;
 					db.query(
 						updateProjections,
 						[
-							newProjectionEdit.MovieId,
-							newProjectionEdit.HallId,
-							newProjectionEdit.StartTime,
+							movieId,
+							hallId,
+							startTime,
 							req.params.projectionId
 						],
 						(err, result) => {

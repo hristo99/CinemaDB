@@ -3,7 +3,7 @@ extends layout
 block content
   h1= CinemaDB
   p Projection #{projectionId} Settings
-  form(method='POST' action='/projections/' + projectionId + '/edit')
+  form(method='POST' action=`/projections/${projectionId}/edit`)
     input.form-control(type='number' placeholder='Movie Id' name='movieId')
     input.form-control(type='number' placeholder='Hall Id' name='hallId')
     input.form-control(type='text' placeholder='Start Time' name='startTime')
