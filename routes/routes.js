@@ -87,9 +87,9 @@ module.exports = function(app, passport) {
 						LastName: lastName,
 						Age: age
 					};
-					var updateUser = "UPDATE Users SET\
-						Password = ?, FirstName = ?, LastName = ?, Age = ?\
-						WHERE Username = ?;";
+					var updateUser = `UPDATE Users SET
+						Password = ?, FirstName = ?, LastName = ?, Age = ?
+						WHERE Username = ?;`;
 					db.query(
 						updateUser,
 						[
@@ -141,10 +141,10 @@ module.exports = function(app, passport) {
 
 	app.get('/movies/hottest', (req, res, next) => {
 	  var db = req.db;
-	  var getHottestMovies = "SELECT Movies.Title, COUNT(Movies.Title) AS Views FROM Movies\
-		INNER JOIN Projections ON Movies.Id = Projections.MovieId\
-		INNER JOIN ProjectionViewers ON Projections.Id = ProjectionViewers.ProjectionId\
-		GROUP BY Movies.Title ORDER BY Views DESC LIMIT 10;";
+	  var getHottestMovies = `SELECT Movies.Title, COUNT(Movies.Title) AS Views FROM Movies
+		INNER JOIN Projections ON Movies.Id = Projections.MovieId
+		INNER JOIN ProjectionViewers ON Projections.Id = ProjectionViewers.ProjectionId
+		GROUP BY Movies.Title ORDER BY Views DESC LIMIT 10;`;
 	  db.query(getHottestMovies, (err, results, fields) => {
 	    if (err) {
 	        res.send("errordatabase");
@@ -163,10 +163,10 @@ module.exports = function(app, passport) {
 
 	app.post('/movies/add', isAdmin, (req, res, next) => {
 		var db = req.db;
-		var insertMovie = "INSERT INTO Movies \
-			(Title, AgeRestriction, FirstProjection, LastProjection, Length)\
-		VALUES\
-				(?, ?, ?, ?, ?)";
+		var insertMovie = `INSERT INTO Movies
+			(Title, AgeRestriction, FirstProjection, LastProjection, Length)
+		VALUES
+				(?, ?, ?, ?, ?);`;
 		db.query(insertMovie, 
 			[req.body.title, req.body.ageRes, req.body.firstPr, req.body.lastPr, req.body.length],
 			(err, rows) => {
@@ -181,14 +181,14 @@ module.exports = function(app, passport) {
 
 	app.get('/movies/:movieId', (req, res, next) => {
 		var db = req.db;
-		var getMovie = "SELECT p.MovieId, m.Title, m.FirstProjection, m.LastProjection,\
-			m.Length, m.AgeRestriction, p.Id, p.HallId, h.Seats, p.StartTime\
-			FROM Projections AS p\
-			LEFT JOIN Movies AS m\
-			ON m.Id = p.MovieId\
-			LEFT JOIN Halls AS h\
-			ON p.HallId = h.Id\
-			WHERE p.StartTime > NOW() AND m.Id = " + req.params.movieId + ";";
+		var getMovie = `SELECT p.MovieId, m.Title, m.FirstProjection, m.LastProjection,
+			m.Length, m.AgeRestriction, p.Id, p.HallId, h.Seats, p.StartTime
+			FROM Projections AS p
+			LEFT JOIN Movies AS m
+			ON m.Id = p.MovieId
+			LEFT JOIN Halls AS h
+			ON p.HallId = h.Id
+			WHERE p.StartTime > NOW() AND m.Id = ${req.params.movieId};`;
 		db.query(getMovie, (err, results, fields) => {
 		    if (err) {
 		        res.send("errordatabase");
@@ -196,9 +196,9 @@ module.exports = function(app, passport) {
 				if (req.user && req.user.Role != 'admin') {
 					res.send("No data");
 				}
-				getMovie = "SELECT m.Id AS MovieId, m.Title, m.FirstProjection, m.LastProjection,\
-					m.Length, m.AgeRestriction FROM Movies AS m\
-					WHERE m.Id = " + req.params.movieId + ";";
+				getMovie = `SELECT m.Id AS MovieId, m.Title, m.FirstProjection, m.LastProjection,
+					m.Length, m.AgeRestriction FROM Movies AS m
+					WHERE m.Id = ${req.params.movieId};`;
 				db.query(getMovie, (err, results, fields) => {
 					if (err) {
 						res.send("errordatabase");
@@ -256,10 +256,10 @@ module.exports = function(app, passport) {
 						LastProjection : lastPr,
 						Length : length
 					};
-					var updateMovies = "UPDATE Movies SET \
-						Title = ?, AgeRestriction = ?, FirstProjection = ?, \
-						LastProjection = ?, Length = ? \
-						WHERE Id = ?;";
+					var updateMovies = `UPDATE Movies SET
+						Title = ?, AgeRestriction = ?, FirstProjection = ?,
+						LastProjection = ?, Length = ?
+						WHERE Id = ?;`;
 					db.query(updateMovies,
 						[
 							newMovieEdit.Title,
@@ -302,10 +302,10 @@ module.exports = function(app, passport) {
 
 	app.post('/movies/:movieId/addProjection', isAdmin, (req, res) => {
 		var db = req.db;
-		var insertProjection = "INSERT INTO Projections\
-			(MovieId, HallId, StartTime)\
-		VALUES\
-			(?, ?, ?);";
+		var insertProjection = `INSERT INTO Projections
+			(MovieId, HallId, StartTime)
+		VALUES
+			(?, ?, ?);`;
 		db.query(
 			insertProjection,
 			[
@@ -326,11 +326,11 @@ module.exports = function(app, passport) {
 
 	app.get('/boughtTickets', isLoggedIn, (req, res, next) => {
 		var db = req.db;
-		var getBoughtTickets = "SELECT Projections.Id, Movies.Title, Movies.Length, Projections.StartTime, Projections.HallId\
-			FROM ProjectionViewers LEFT JOIN Projections\
-			ON ProjectionViewers.ProjectionId = Projections.Id\
-			LEFT JOIN Movies ON Projections.MovieId = Movies.Id\
-			WHERE ProjectionViewers.Username = ?";
+		var getBoughtTickets = `SELECT Projections.Id, Movies.Title, Movies.Length, Projections.StartTime, Projections.HallId
+			FROM ProjectionViewers LEFT JOIN Projections
+			ON ProjectionViewers.ProjectionId = Projections.Id
+			LEFT JOIN Movies ON Projections.MovieId = Movies.Id
+			WHERE ProjectionViewers.Username = ?`;
 		db.query(getBoughtTickets, [req.user.Username], (err, results) => {
 			if (err) {
 				throw err;
@@ -352,10 +352,10 @@ module.exports = function(app, passport) {
 				} else if (rows.length) {
 					res.send("You've already bought ticket for this projection!");
 				} else {
-					var insertProjectionViewer = "INSERT INTO ProjectionViewers\
-						(ProjectionId, Username)\
-					VALUES\
-						(?, ?)";
+					var insertProjectionViewer = `INSERT INTO ProjectionViewers
+						(ProjectionId, Username)
+					VALUES
+						(?, ?)`;
 					db.query(
 						insertProjectionViewer,
 						[req.params.projectionId, req.user.Username],
@@ -383,8 +383,8 @@ module.exports = function(app, passport) {
 				} else if (rows.length == 0) {
 					res.send("You are not registered for this projection!");
 				} else {
-					var removeProjectionViewer = "DELETE FROM ProjectionViewers\
-						WHERE ProjectionId = ? AND Username = ?";
+					var removeProjectionViewer = `DELETE FROM ProjectionViewers
+						WHERE ProjectionId = ? AND Username = ?`;
 					db.query(
 						removeProjectionViewer,
 						[req.params.projectionId, req.user.Username],
@@ -429,9 +429,9 @@ module.exports = function(app, passport) {
 						HallId : hallId,
 						StartTime : startTime
 					};
-					var updateProjections = "UPDATE Projections SET \
-						MovieId = ?, HallId = ?, StartTime = ?\
-						WHERE Id = ?;";
+					var updateProjections = `UPDATE Projections SET
+						MovieId = ?, HallId = ?, StartTime = ?
+						WHERE Id = ?;`;
 					db.query(
 						updateProjections,
 						[
@@ -463,8 +463,8 @@ module.exports = function(app, passport) {
 				} else if (rows.length == 0) {
 					res.send("Invalid projection!");
 				} else {
-					var removeProjection = "DELETE FROM Projections\
-						WHERE Id = ?;";
+					var removeProjection = `DELETE FROM Projections
+						WHERE Id = ?;`;
 					db.query(
 						removeProjection,
 						[req.params.projectionId],
