@@ -40,7 +40,7 @@ module.exports = function(passport, connection) {
                     connection.query(
                         insertQuery,
                         [newUserMysql.Username, newUserMysql.Password, newUserMysql.FirstName, newUserMysql.LastName, newUserMysql.Age, newUserMysql.Role],
-                        (err, rows) => {
+                        err => {
                             return done(null, newUserMysql);
                     });
                 }

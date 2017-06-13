@@ -7,19 +7,19 @@ var connection = mysql.createConnection({
   password: 'cinema_Pass123'
 });
 
-connection.query("DROP DATABASE IF EXISTS cinemaDB;", (err, result) => {
-if (err) throw err;
-console.log("No database");
+connection.query("DROP DATABASE IF EXISTS cinemaDB;", err => {
+    if (err) throw err;
+    console.log("No database");
 });
 
-connection.query("CREATE DATABASE cinemaDB CHARACTER SET utf8;", (err, result) => {
-if (err) throw err;
-console.log("Database created");
+connection.query("CREATE DATABASE cinemaDB CHARACTER SET utf8;", err => {
+    if (err) throw err;
+    console.log("Database created");
 });
 
-connection.query("USE cinemaDB;", (err, result) => {
-if (err) throw err;
-console.log("Using cinemaDB");
+connection.query("USE cinemaDB;", err => {
+    if (err) throw err;
+    console.log("Using cinemaDB");
 });
 
 var createTableUsers = `CREATE TABLE Users (
@@ -30,9 +30,9 @@ LastName VARCHAR(30) NOT NULL,
 Age INTEGER NOT NULL,
 Role VARCHAR(20) NOT NULL
 );`;
-connection.query(createTableUsers, (err, result) => {
-if (err) throw err;
-console.log("Created Users table");
+connection.query(createTableUsers, err => {
+    if (err) throw err;
+    console.log("Created Users table");
 });
 
 var createTableMovies = `CREATE TABLE Movies (
@@ -43,18 +43,18 @@ FirstProjection DATETIME NOT NULL,
 LastProjection DATETIME NOT NULL,
 Length INTEGER NOT NULL
 );`;
-connection.query(createTableMovies, (err, result) => {
-if (err) throw err;
-console.log("Created Movies table");
+connection.query(createTableMovies, err => {
+    if (err) throw err;
+    console.log("Created Movies table");
 });
 
 var createTableHalls = `CREATE TABLE Halls (
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
 Seats INTEGER NOT NULL
 );`;
-connection.query(createTableHalls, (err, result) => {
-if (err) throw err;
-console.log("Created Halls table");
+connection.query(createTableHalls, err => {
+    if (err) throw err;
+    console.log("Created Halls table");
 });
 
 var createTableProjections = `CREATE TABLE Projections (
@@ -65,9 +65,9 @@ StartTime DATETIME NOT NULL,
 FOREIGN KEY(MovieId) REFERENCES Movies(Id) ON DELETE CASCADE,
 FOREIGN KEY(HallId) REFERENCES Halls(Id)
 );`;
-connection.query(createTableProjections, (err, result) => {
-if (err) throw err;
-console.log("Created Projections table");
+connection.query(createTableProjections, err => {
+    if (err) throw err;
+    console.log("Created Projections table");
 });
 
 var createTableProjectionViewers = `CREATE TABLE ProjectionViewers (
@@ -77,10 +77,11 @@ Username VARCHAR(15) NOT NULL,
 FOREIGN KEY(ProjectionId) REFERENCES Projections(Id) ON DELETE CASCADE,
 FOREIGN KEY(Username) REFERENCES Users(Username)
 );`;
-connection.query(createTableProjectionViewers, (err, result) => {
-if (err) throw err;
-console.log("Created ProjectionViewers table");
+connection.query(createTableProjectionViewers, err => {
+    if (err) throw err;
+    console.log("Created ProjectionViewers table");
 });
+
 var testpass = bcrypt.hashSync('test', null, null);
 var test2pass = bcrypt.hashSync('test2', null, null);
 var hspasovpass = bcrypt.hashSync('1234567890', null , null);
@@ -89,31 +90,31 @@ var santapass = bcrypt.hashSync('northpole', null, null);
 var dontpass = bcrypt.hashSync('123456', null, null);
 var adminPass = bcrypt.hashSync('adminPass', null, null);
 var insertUsers = `INSERT INTO Users 
-(Username, Password, FirstName, LastName, Age, Role)
+    (Username, Password, FirstName, LastName, Age, Role)
 VALUES
-( 'test', '${testpass}', 'Testing', 'Tester', 20, 'user' ),
-( 'test2', '${test2pass}', 'Another', 'Tester', 20, 'user' ),
-( 'hspasov', '${hspasovpass}', 'Hristo', 'Spasov', 17, 'user' ),
-( 'radito3', '${radito3pass}', 'Rangel', 'Ivanov', 17, 'user' ),
-( 'santa', '${santapass}', 'Santa', 'Claus', 200, 'user' ),
-( 'dont', '${dontpass}', 'Donald', 'Trump', 75, 'user' ),
-( 'admin', '${adminPass}', 'Kiril', 'Mitov', '30', 'admin');`;
-connection.query(insertUsers, (err, result) => {
-if (err) throw err;
-console.log("Inserted users");
+    ( 'test', '${testpass}', 'Testing', 'Tester', 20, 'user' ),
+    ( 'test2', '${test2pass}', 'Another', 'Tester', 20, 'user' ),
+    ( 'hspasov', '${hspasovpass}', 'Hristo', 'Spasov', 17, 'user' ),
+    ( 'radito3', '${radito3pass}', 'Rangel', 'Ivanov', 17, 'user' ),
+    ( 'santa', '${santapass}', 'Santa', 'Claus', 200, 'user' ),
+    ( 'dont', '${dontpass}', 'Donald', 'Trump', 75, 'user' ),
+    ( 'admin', '${adminPass}', 'Kiril', 'Mitov', '30', 'admin');`;
+connection.query(insertUsers, err => {
+    if (err) throw err;
+    console.log("Inserted users");
 });
 
 var insertMovies = `INSERT INTO Movies
-(Title, AgeRestriction, FirstProjection, LastProjection, Length)
+    (Title, AgeRestriction, FirstProjection, LastProjection, Length)
 VALUES
-( 'Pirates of the Carribean', 18, '2017-04-04 08:30:00', '2017-05-20 19:20:00', 120 ),
-( 'Sample Movie Name', 0, '2017-06-01 09:45:00', '2017-07-30 21:00:00', 100 ),
-( 'Finding Dory', 0, '2016-07-21 08:00:00', '2016-09-20 21:00:00', 83 ),
-( 'The Changeling', 12, '2017-01-03 07:00:00', '2017-04-30 22:15:00', 141 ),
-( 'Black Swan', 16, '2016-10-05 11:40:00', '2016-12-01 23:10:00', 135 ),
-( 'Star Wars', 0, '2017-11-30 08:50:00', '2018-02-18 19:25:00', 152 ),
-( 'The Dictator', 12, '2015-09-04 12:30:00', '2015-12-28 21:45:00', 93 );`;
-connection.query(insertMovies, (err, result) => {
+    ( 'Pirates of the Carribean', 18, '2017-04-04 08:30:00', '2017-05-20 19:20:00', 120 ),
+    ( 'Sample Movie Name', 0, '2017-06-01 09:45:00', '2017-07-30 21:00:00', 100 ),
+    ( 'Finding Dory', 0, '2016-07-21 08:00:00', '2016-09-20 21:00:00', 83 ),
+    ( 'The Changeling', 12, '2017-01-03 07:00:00', '2017-04-30 22:15:00', 141 ),
+    ( 'Black Swan', 16, '2016-10-05 11:40:00', '2016-12-01 23:10:00', 135 ),
+    ( 'Star Wars', 0, '2017-11-30 08:50:00', '2018-02-18 19:25:00', 152 ),
+    ( 'The Dictator', 12, '2015-09-04 12:30:00', '2015-12-28 21:45:00', 93 );`;
+connection.query(insertMovies, err => {
     if (err) throw err;
     console.log("Inserted movies");
 });
@@ -126,7 +127,7 @@ VALUES
     (50),
     (148),
     (74);`;
-connection.query(insertHalls, (err, result) => {
+connection.query(insertHalls, err => {
     if (err) throw err;
     console.log("Inserted halls");
 });
@@ -184,7 +185,7 @@ VALUES
     (7, 2, '2015-10-04 17:30:00'),
     (7, 2, '2015-11-04 17:30:00'),
     (7, 2, '2015-12-28 21:45:00');`;
-connection.query(insertProjections, (err, result) => {
+connection.query(insertProjections, err => {
     if (err) throw err;
     console.log("Inserted Projections");
 });
@@ -226,7 +227,7 @@ VALUES
     (31, 'radito3'),
     (19, 'radito3'),
     (20, 'radito3');`;
-connection.query(insertProjectionViewers, (err, result) => {
+connection.query(insertProjectionViewers, err => {
     if (err) throw err;
     console.log("Inserted ProjectionViewers");
 });

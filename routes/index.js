@@ -1,0 +1,87 @@
+var express = require('express');
+var passport = require('passport');
+var securityCheck = require('./../modules/securityCheck.js');
+var router = express.Router();
+
+router.get('/', (req, res) => {
+	var db = req.db; 
+	db.query("SELECT * FROM Movies ORDER BY FirstProjection DESC LIMIT 10;", (err, results) => {
+		if (err) {
+			console.log(err);
+			res.status(500).send('Internal Server Error');
+		} else if (results.length == 0) {
+			res.status(204).send('No movies found');
+		} else {
+			res.render('index', {movies:results});
+		}
+	});
+});
+
+router.get('/login', (req, res) => {
+	res.render('login', { message: req.flash('loginMessage') });
+});
+
+router.post('/login', passport.authenticate('local-login', {
+		successRedirect : '/profile',
+		failureRedirect : '/login',
+		failureFlash : true
+	}),
+	(req, res) => {
+		console.log("hello");
+
+		if (req.body.remember) {
+			req.session.cookie.maxAge = 1000 * 60 * 3;
+		} else {
+			req.session.cookie.expires = false;
+		}
+	res.redirect('/');
+});
+
+router.get('/signup', (req, res) => {
+	res.render('signup', { message: req.flash('signupMessage') });
+});
+
+router.post('/signup', passport.authenticate('local-signup', {
+	successRedirect : '/profile',
+	failureRedirect : '/signup',
+	failureFlash : true
+}));
+
+router.get('/logout', (req, res) => {
+	req.logout();
+	res.redirect('/');
+});
+
+router.get('/users', securityCheck.isAdmin, (req, res) => {
+	var db = req.db; 
+	db.query("SELECT * FROM Users;", (err, results) => {
+	if (err) {
+		console.log(err);
+		res.status(500).send('Internal Server Error');
+	} else{
+		res.render('user', { title: "List of All Users",
+								users:results});
+	}
+	})
+});
+
+router.get('/boughtTickets', securityCheck.isLoggedIn, (req, res) => {
+	var db = req.db;
+	var getBoughtTickets = `SELECT Projections.Id, Movies.Title, Movies.Length, Projections.StartTime, Projections.HallId
+		FROM ProjectionViewers LEFT JOIN Projections
+		ON ProjectionViewers.ProjectionId = Projections.Id
+		LEFT JOIN Movies ON Projections.MovieId = Movies.Id
+		WHERE ProjectionViewers.Username = ?`;
+	db.query(getBoughtTickets, [req.user.Username], (err, results) => {
+		if (err) {
+			console.log(err);
+			res.status(500).send('Internal Server Error');
+		} else if (results.length == 0) {
+			res.status(204).send('No bought tickets found');
+		} else {
+			res.render('boughtTickets', {projections: results});
+		}
+	})
+});
+
+module.exports = router;
