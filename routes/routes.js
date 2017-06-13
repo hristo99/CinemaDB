@@ -6,9 +6,10 @@ module.exports = function(app, passport) {
 		var db = req.db; 
 	  	db.query("SELECT * FROM Movies ORDER BY FirstProjection DESC LIMIT 10;", (err, results, fields) => {
 	    	if (err) {
-		        res.send("errordatabase");
+				console.log(err);
+		        res.status(500).send('Internal Server Error');
 		    } else if (results.length == 0) {
-		    	res.send("No movies");
+		    	res.status(404).send('No movies found');
 		    } else {
 		    	res.render('index', {movies:results});
 		    }
@@ -67,9 +68,10 @@ module.exports = function(app, passport) {
 			[req.user.Username],
 			(err, result) => {
 				if (err) {
-					throw err;
+					console.log(err);
+					res.status(500).send('Internal Server Error');
 				} else if (result.length == 0) {
-					res.send("No user found!");
+					res.status(404).send("No user found!");
 				} else {
 					var password = (req.body.password.length) ?
 						bcrypt.hashSync(req.body.password, null, null) : result[0].Password;  
@@ -94,9 +96,10 @@ module.exports = function(app, passport) {
 						],
 						(err, result) => {
 							if (err) {
-								throw err;
+								console.log(err);
+								res.status(500).send('Internal Server Error');
 							} else {
-								res.send("You've successfully changed your profile settings!");
+								res.status(200).send('Successfully changed your profile settings!');
 							}
 						}
 					);
@@ -109,7 +112,8 @@ module.exports = function(app, passport) {
 	  var db = req.db; 
 	  db.query("SELECT * FROM Users;", (err, results, fields) => {
 	    if (err) {
-	        res.send("errordatabase");
+			console.log(err);
+	        res.status(500).send('Internal Server Error');
 	    } else{
 	        res.render('user', { title: "List of All Users",
 	                             users:results});
@@ -122,10 +126,11 @@ module.exports = function(app, passport) {
 		var getAllMovies = "SELECT * FROM Movies";
 		db.query(getAllMovies, (err, results, fields) => {
 		    if (err) {
-		        res.send("errordatabase");
+				console.log(err);
+		        res.status(500).send('Internal Server Error');
 		    } else if (results.length == 0) {
 		    	console.log(results);
-			    res.send("No data");
+			    res.status(404).send('No movies found');
 			} else {
 		        res.render('movies', {movies:results});
 		    }
@@ -140,10 +145,11 @@ module.exports = function(app, passport) {
 		GROUP BY Movies.Title ORDER BY Views DESC LIMIT 10;`;
 	  db.query(getHottestMovies, (err, results, fields) => {
 	    if (err) {
-	        res.send("errordatabase");
+			console.log(err);
+	        res.status(500).send('Internal Server Error');
 	    } else if (results.length == 0) {
 	    	console.log(results);
-		    res.send("No data");
+		    res.status(404).send('No movies found');
 		} else {
 	        res.render('hottestMovies', {movies:results});
 	    }
@@ -164,10 +170,11 @@ module.exports = function(app, passport) {
 			[req.body.title, req.body.ageRes, req.body.firstPr, req.body.lastPr, req.body.length],
 			(err, rows) => {
 				if (err) {
-					res.send("Insert movie error");
+					console.log(err);
+					res.status(500).send('Internal Server Error');
 				}
 				console.log("Inserted Movie!");
-				res.send("Movie added");
+				res.status(200).send('Movie added');
 			}
 		);
 	});
@@ -184,19 +191,21 @@ module.exports = function(app, passport) {
 			WHERE p.StartTime > NOW() AND m.Id = ${req.params.movieId};`;
 		db.query(getMovie, (err, results, fields) => {
 		    if (err) {
-		        res.send("errordatabase");
+				console.log(err);
+		        res.status(500).send('Internal Server Error');
 		    } else if (results.length == 0) {
 				if (req.user && req.user.Role != 'admin') {
-					res.send("No data");
+					res.status(404).send('No movie found');
 				}
 				getMovie = `SELECT m.Id AS MovieId, m.Title, m.FirstProjection, m.LastProjection,
 					m.Length, m.AgeRestriction FROM Movies AS m
 					WHERE m.Id = ${req.params.movieId};`;
 				db.query(getMovie, (err, results, fields) => {
 					if (err) {
-						res.send("errordatabase");
+						console.log(err);
+						res.status(500).send('Internal Server Error');
 					} else if (results.length == 0) {
-						res.send("No data");
+						res.status(404).send('No movie found');
 					} else {
 						res.render('movie', { movie:results, user:req.user });
 					}
@@ -212,9 +221,10 @@ module.exports = function(app, passport) {
 		var getMovie = "SELECT * FROM Movies WHERE Id = ?;";
 		db.query(getMovie, [req.params.movieId], (err, results, fields) => {
 			if (err) {
-		        res.send("errordatabase");
+				console.log(err);
+		        res.status(500).send('Internal Server Error');
 		    } else if (results.length == 0) {
-			    res.send("No data");
+			    res.status(404).send('No movie found');
 			} else {
 				res.render('editMovie', {movie:results});
 			}
@@ -227,9 +237,10 @@ module.exports = function(app, passport) {
 			[req.params.movieId],
 			(err, result) => {
 				if (err) {
-					throw err;
+					console.log(err);
+					res.status(500).send('Internal Server Error');
 				} else if (result.length == 0) {
-					res.send("No Movie Found");
+					res.status(404).send('No Movie Found');
 				} else {
 					var title = (req.body.title.length) ?
 						req.body.title : result[0].Title;
@@ -256,9 +267,10 @@ module.exports = function(app, passport) {
 						],
 						(err, result) => {
 							if (err) {
-								throw err;
+								console.log(err);
+								rest.status(500).send('Internal Server Error');
 							} else {
-								res.send("Successfully updated movie");
+								res.status(200).send('Successfully updated movie');
 							}
 						}
 					);
@@ -301,10 +313,10 @@ module.exports = function(app, passport) {
 			(err, rows) => {
 				if (err) {
 					console.log(err);
-					res.send("Insert projection error!");
+					res.status(500).send('Internal Server Error');
 				}
 				console.log("Inserted projection!");
-				res.send("Projection added!");
+				res.status(200).send('Projection added');
 			}
 		);
 	});
@@ -318,9 +330,10 @@ module.exports = function(app, passport) {
 			WHERE ProjectionViewers.Username = ?`;
 		db.query(getBoughtTickets, [req.user.Username], (err, results) => {
 			if (err) {
-				throw err;
+				console.log(err);
+				res.status(500).send('Internal Server Error');
 			} else if (results.length == 0) {
-				res.send("No data");
+				res.status(404).send('No bought tickets found');
 			} else {
 				res.render('boughtTickets', {projections: results});
 			}
@@ -333,7 +346,8 @@ module.exports = function(app, passport) {
 			[req.params.projectionId, req.user.Username], 
 			(err, rows) => {
 				if (err) {
-					throw err;
+					console.log(err);
+					res.status(500).send('Internal Server Error');
 				} else if (rows.length) {
 					res.send("You've already bought ticket for this projection!");
 				} else {
@@ -346,12 +360,11 @@ module.exports = function(app, passport) {
 						[req.params.projectionId, req.user.Username],
 						(err, rows) => {
 							if (err) {
-								console.log("Insert projection viewer error!");
 								console.log(err);
-								throw err;
+								res.status(500).send('Internal Server Error');
 							}
-							console.log("Inserted Projection Viewer!");
-							res.send("You've successfully bought a ticket!");
+							console.log("Inserted Projection Viewer");
+							res.status(200).send('Successfully bought a ticket');
 						}
 					);
 				}
@@ -364,7 +377,8 @@ module.exports = function(app, passport) {
 			[req.params.projectionId, req.user.Username], 
 			(err, rows) => {
 				if (err) {
-					throw err;
+					console.log(err);
+					res.status(500).send('Internal Server Error');
 				} else if (rows.length == 0) {
 					res.send("You are not registered for this projection!");
 				} else {
@@ -375,12 +389,10 @@ module.exports = function(app, passport) {
 						[req.params.projectionId, req.user.Username],
 						(err, rows) => {
 							if (err) {
-								console.log("Remove projection viewer error!");
 								console.log(err);
-								throw err;
+								res.status(500).send('Internal Server Error');
 							}
-							console.log("Successfully removed Projection Viewer!");
-							res.send("You've successfully returned a ticket!");
+							res.status(200).send('Successfully returned a ticket');
 						}
 					);
 				}
@@ -398,9 +410,10 @@ module.exports = function(app, passport) {
 			[req.params.projectionId],
 			(err, result) => {
 				if (err) {
-					throw err;
+					console.log(err);
+					res.status(500).send('Internal Server Error');
 				} else if (result.length == 0) {
-					res.send("No Projection Found");
+					res.status(404).send('No Projection Found');
 				} else {
 					var movieId = (req.body.movieId) ?
 						req.body.movieId : result[0].MovieId;
@@ -422,9 +435,10 @@ module.exports = function(app, passport) {
 						],
 						(err, result) => {
 							if (err) {
-								throw err;
+								console.log(err);
+								res.status(500).send('Internal Server Error');
 							} else {
-								res.send("Successfully updated projection");
+								res.status(200).send('Successfully updated projection');
 							}
 						}
 					);
@@ -439,9 +453,10 @@ module.exports = function(app, passport) {
 			[req.params.projectionId], 
 			(err, rows) => {
 				if (err) {
-					throw err;
+					console.log(err);
+					res.status(500).send('Internal Server Error');
 				} else if (rows.length == 0) {
-					res.send("Invalid projection!");
+					res.status(404).send('No projection found');
 				} else {
 					var removeProjection = `DELETE FROM Projections
 						WHERE Id = ?;`;
@@ -450,12 +465,11 @@ module.exports = function(app, passport) {
 						[req.params.projectionId],
 						(err, rows) => {
 							if (err) {
-								console.log("Remove projection error!");
 								console.log(err);
-								throw err;
+								res.status(500).send('Internal Server Error');
 							}
 							console.log("Successfully removed Projection!");
-							res.send("You've successfully removed a projection!");
+							res.status(200).send('Successfully removed a projection');
 						}
 					);
 				}
