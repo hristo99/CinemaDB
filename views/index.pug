@@ -9,21 +9,3 @@ block content
       li Age Restriction #{movie.AgeRestriction}
       li Length #{movie.Length}
       li 
-      
-  button#renderLogin(onClick='renderLogin()') Login
-  button#renderSignup(onClick='renderSignup()') Sign up
-  button#renderHottestMovies(onClick='renderHottestMovies()') Hottest Movies
-
-  script(type='text/javascript').
-     function renderLogin(){
-       $(location).attr('href','/login');
-     };
-
-     function renderSignup(){
-       $(location).attr('href','/signup');
-     };
-
-     function renderHottestMovies(){
-       $(location).attr('href','/movies/hottest');
-     };
-     

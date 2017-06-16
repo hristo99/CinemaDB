@@ -1,8 +1,13 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image: url("../images/128-197.jpg");
 }
 
 a {
   color: #00B7FF;
+}
+
+.container {
+  background: rgba(0,0,0,0.5);
+  color: #FFFFFF;
 }
