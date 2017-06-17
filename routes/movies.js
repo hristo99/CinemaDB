@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
             console.log(results);
             res.status(204).send('No movies found');
         } else {
-            res.render('movies', {movies:results});
+            res.render('movies', {movies:results, user:req.user});
         }
     })
 });
@@ -32,13 +32,13 @@ router.get('/hottest', (req, res) => {
         console.log(results);
         res.status(204).send('No movies found');
     } else {
-        res.render('hottestMovies', {movies:results});
+        res.render('hottestMovies', {movies:results, user:req.user});
     }
     })
 });
 
 router.get('/add', securityCheck.isAdmin, (req, res) => {
-    res.render('addMovie');
+    res.render('addMovie', {user:req.user});
 });
 
 router.post('/add', securityCheck.isAdmin, (req, res) => {
@@ -107,7 +107,7 @@ router.get('/:movieId/edit', securityCheck.isAdmin, (req, res) => {
         } else if (results.length == 0) {
             res.status(204).send('No movie found');
         } else {
-            res.render('editMovie', {movie:results});
+            res.render('editMovie', {movie:results, user:req.user});
         }
     });
 });
@@ -190,7 +190,7 @@ router.get('/:movieId/remove', securityCheck.isAdmin, (req, res) => {
 });
 
 router.get('/:movieId/addProjection', securityCheck.isAdmin, (req, res) => {
-    res.render('addProjection', { movieId: req.params.movieId});
+    res.render('addProjection', { movieId: req.params.movieId, user:req.user});
 });
 
 router.post('/:movieId/addProjection', securityCheck.isAdmin, (req, res) => {

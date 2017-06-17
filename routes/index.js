@@ -12,13 +12,13 @@ router.get('/', (req, res) => {
 		} else if (results.length == 0) {
 			res.status(204).send('No movies found');
 		} else {
-			res.render('index', {movies:results});
+			res.render('index', {movies:results, user:req.user});
 		}
 	});
 });
 
 router.get('/login', (req, res) => {
-	res.render('login', { message: req.flash('loginMessage') });
+	res.render('login', { message: req.flash('loginMessage'), user:req.user });
 });
 
 router.post('/login', passport.authenticate('local-login', {
@@ -38,7 +38,7 @@ router.post('/login', passport.authenticate('local-login', {
 });
 
 router.get('/signup', (req, res) => {
-	res.render('signup', { message: req.flash('signupMessage') });
+	res.render('signup', { message: req.flash('signupMessage'), user:req.user });
 });
 
 router.post('/signup', passport.authenticate('local-signup', {
@@ -60,7 +60,7 @@ router.get('/users', securityCheck.isAdmin, (req, res) => {
 		res.status(500).send('Internal Server Error');
 	} else{
 		res.render('user', { title: "List of All Users",
-								users:results});
+								users:results, user:req.user});
 	}
 	})
 });
@@ -79,7 +79,7 @@ router.get('/boughtTickets', securityCheck.isLoggedIn, (req, res) => {
 		} else if (results.length == 0) {
 			res.status(204).send('No bought tickets found');
 		} else {
-			res.render('boughtTickets', {projections: results});
+			res.render('boughtTickets', {projections: results, user:req.user});
 		}
 	})
 });

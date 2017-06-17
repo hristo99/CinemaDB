@@ -63,7 +63,7 @@ router.get('/:projectionId/returnTicket', securityCheck.isLoggedIn, (req, res) =
 });
 
 router.get('/:projectionId/edit', securityCheck.isAdmin, (req, res) => {
-	res.render('editProjection', { projectionId: req.params.projectionId});
+	res.render('editProjection', { projectionId: req.params.projectionId, user:req.user});
 });
 
 router.post('/:projectionId/edit', securityCheck.isAdmin, (req, res) => {

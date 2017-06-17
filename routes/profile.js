@@ -10,7 +10,7 @@ router.get('/', securityCheck.isLoggedIn, (req, res) => {
 });
 
 router.get('/settings', securityCheck.isLoggedIn, (req, res) => {
-    res.render('profileSettings');
+    res.render('profileSettings', {user:req.user});
 });
 
 router.post('/settings', securityCheck.isLoggedIn, (req, res) => {
