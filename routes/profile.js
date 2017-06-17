@@ -61,7 +61,7 @@ router.post('/settings', securityCheck.isLoggedIn, (req, res) => {
 });
 
 router.get('/delete', securityCheck.isLoggedIn, (req, res) => {
-	var db = req.db;
+    var db = req.db;
     var username = req.user.Username;
     req.logout();
     var deleteUser = `DELETE FROM Users
