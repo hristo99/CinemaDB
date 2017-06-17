@@ -2,7 +2,6 @@ extends layout
 
 block content
   h1= CinemaDB
-  br
   .row
     .panel-body
       form(method='POST' action='/profile/settings')
@@ -20,7 +19,7 @@ block content
           .col-md-8
             .form-group
               label Password
-              input.form-control(type='pasword' placeholder='Password' name='password')
+              input.form-control(type='password' placeholder='Password' name='password')
             .form-group
               label First name
               input.form-control(type='text' placeholder='First Name' name='firstName')
