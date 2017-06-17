@@ -1,17 +1,30 @@
 extends layout
 
 block content
-  h1= CinemaDB
-  p Sign up
-  #alert
-  form(method='POST' action='/signup')
-    label(for='username') username
-    input.form-control(type='text' name='username')
-    input.form-control(type='password' name='password')
-    input.form-control(type='text' name='firstName')
-    input.form-control(type='text' name='lastName')
-    input.form-control(type='number' name='age')
-    button(type='submit') Sign up
+  .row
+    .col-md-12.lead
+      | Sign up
+      hr
+  .row
+    .col-md-12
+      #alert
+      form(method='POST' action='/signup')
+        .form-group
+          label(for='username') Username
+          input.form-control(type='text' name='username')
+        .form-group
+          label(for='password') Password
+          input.form-control(type='password' name='password')
+        .form-group
+          label(for='firstName') First Name
+          input.form-control(type='text' name='firstName')
+        .form-group
+          label(for='lastName') Last Name
+          input.form-control(type='text' name='lastName')
+        .form-group
+          label(for='age') Age
+          input.form-control(type='number' name='age')
+        button.btn.btn-primary(type='submit') Sign up
   
   script(type='text/javascript').
      function renderLogin(){

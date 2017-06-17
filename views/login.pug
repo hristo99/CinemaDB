@@ -1,15 +1,22 @@
 extends layout
 
 block content
-  h1= CinemaDB
-  p Login
-  #alert
-  form(method='POST' action='/login')
-    label(for='username') username
-    input.form-control(type='text' name='username')
-    input.form-control(type='password' name='password')
-    button(type='submit') Login
-  
+  .row
+    .col-md-12.lead
+      | Log in
+      hr
+  .row
+    .col-md-12
+      #alert
+      form(method='POST' action='/login')
+        .form-group
+          label(for='username') Username
+          input.form-control(type='text' name='username')
+        .form-group
+          label(for='password') Password
+          input.form-control(type='password' name='password')
+        button.btn.btn-primary(type='submit') Login
+
   script(type='text/javascript').
      function renderLogin(){
        $(location).attr('href','/login');
