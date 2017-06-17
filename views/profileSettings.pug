@@ -2,10 +2,50 @@ extends layout
 
 block content
   h1= CinemaDB
-  p Profile Settings
-  form(method='POST' action='/profile/settings')
-    input.form-control(type='password' placeholder='Password' name='password')
-    input.form-control(type='text' placeholder='First Name' name='firstName')
-    input.form-control(type='text' placeholder='Last Name' name='lastName')
-    input.form-control(type='number' placeholder='Age' name='age')
-    button(type='submit') Submit
+  br
+  .row
+    .panel-body
+      form(method='POST' action='/profile/settings')
+        .row
+          .col-md-12.lead
+            | Profile Settings
+            hr
+        .row
+          .col-md-4.text-center
+            img.avatar.avatar-original.img-thumbnail(style='-webkit-user-select:none; \
+            display:block; margin:auto;', src='/images/No_picture_icon_2.jpg')
+            br
+            span.btn.btn-link.btn-file
+              input#upload-img(type='file')
+          .col-md-8
+            .form-group
+              label Password
+              input.form-control(type='pasword' placeholder='Password' name='password')
+            .form-group
+              label First name
+              input.form-control(type='text' placeholder='First Name' name='firstName')
+            .form-group
+              label Last name
+              input.form-control(type='text' placeholder='Last Name' name='lastName')
+            .form-group
+              label Age
+              input.form-control(type='number' placeholder='Age' name='age')
+            button.btn.btn-danger(type='button', data-toggle='modal', data-target='#delete-user-modal')
+              | Delete user
+        .row
+          .col-md-12
+            hr
+            button.btn.btn-primary.pull-right(type='submit')
+              i.glyphicon.glyphicon-floppy-disk
+              |  Save
+  #delete-user-modal.modal.fade
+    .modal-dialog
+      .modal-content
+        .modal-body
+          p Are you sure you want to delete account?
+        .modal-footer
+          button.btn.btn-default(type='button', data-dismiss='modal') Cancel
+          button.btn.btn-danger(type='button') Delete
+      // /.modal-content
+    // /.modal-dialog
+  // /.modal
