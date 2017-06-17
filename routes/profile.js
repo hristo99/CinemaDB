@@ -60,4 +60,23 @@ router.post('/settings', securityCheck.isLoggedIn, (req, res) => {
     );
 });
 
+router.get('/delete', securityCheck.isLoggedIn, (req, res) => {
+	var db = req.db;
+    var username = req.user.Username;
+    req.logout();
+    var deleteUser = `DELETE FROM Users
+        WHERE Username = ?;`;
+    db.query(
+        deleteUser,
+        [username],
+        err => {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Internal Server Error');
+            }
+            res.status(200).send('Successfully deleted profile');
+        }
+    );
+});
+
 module.exports = router;

@@ -76,7 +76,7 @@ Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
 ProjectionId INTEGER NOT NULL,
 Username VARCHAR(15) NOT NULL,
 FOREIGN KEY(ProjectionId) REFERENCES Projections(Id) ON DELETE CASCADE,
-FOREIGN KEY(Username) REFERENCES Users(Username)
+FOREIGN KEY(Username) REFERENCES Users(Username) ON DELETE CASCADE
 );`;
 connection.query(createTableProjectionViewers, err => {
     if (err) throw err;
