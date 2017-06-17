@@ -2,16 +2,24 @@ extends layout
 
 block content
   .row
-    .col-md-12.lead
-      | Add projection
-      hr
-  .row
-    .col-md-12
+    .panel-body
       form(method='POST' action=`/movies/${movieId}/addProjection`)
-        .form-group
-          label(for='hallId') HallId
-          input.form-control(type='number' placeholder='Hall Id' name='hallId')
-        .form-group
-          label(for='startTime') Start Time
-          input.form-control(type='text' placeholder='Start Time' name='startTime')
-        button.btn.btn-primary(type='submit') Submit
+        .row
+          .col-md-12.lead
+            | Add projection
+            hr
+        .row
+          .col-md-12
+            form(method='POST' action=`/movies/${movieId}/addProjection`)
+              .form-group
+                label(for='hallId') HallId
+                input.form-control(type='number' placeholder='Hall Id' name='hallId')
+              .form-group
+                label(for='startTime') Start Time
+                input.form-control(type='text' placeholder='Start Time' name='startTime')
+        .row
+          .col-md-12
+            hr
+            button.btn.btn-primary.pull-right(type='submit')
+              i.glyphicon.glyphicon-floppy-disk
+              |  Save
