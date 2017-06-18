@@ -3,31 +3,32 @@ extends layout
 block content
   .row
     .panel-body
-      form(method='POST' action='/movies/add')
-        .row
-          .col-md-12.lead
-            | Add movie
-            hr
-        .row
-          .col-md-12
-            .form-group
-              label(for='username') Title
-              input.form-control(type='text' placeholder='Title' name='title')
-            .form-group
-              label(for='password') Age Restriction
-              input.form-control(type='number' placeholder='AgeRestriction' name='ageRes')
-            .form-group
-              label(for='username') First Projection
-              input.form-control(type='text' placeholder='FirstProjecion' name='firstPr')
-            .form-group
-              label(for='username') Last Projection
-              input.form-control(type='text' placeholder='LastProjection' name='lastPr')
-            .form-group
-              label(for='username') Length
-              input.form-control(type='number' placeholder='Length' name='length')
-        .row
-          .col-md-12
-            hr
-            button.btn.btn-primary.pull-right(type='submit')
-              i.glyphicon.glyphicon-floppy-disk
-              |  Save
+      .col-md-6.col-md-offset-3
+        form(method='POST' action='/movies/add')
+          .row
+            .col-md-12.lead
+              | Add movie
+              hr
+          .row
+            .col-md-12
+              .form-group
+                label(for='username') Title
+                input.form-control(type='text' placeholder='Title' name='title')
+              .form-group
+                label(for='password') Age Restriction
+                input.form-control(type='number' placeholder='AgeRestriction' name='ageRes')
+              .form-group
+                label(for='username') First Projection
+                input.form-control(type='text' placeholder='FirstProjecion' name='firstPr')
+              .form-group
+                label(for='username') Last Projection
+                input.form-control(type='text' placeholder='LastProjection' name='lastPr')
+              .form-group
+                label(for='username') Length
+                input.form-control(type='number' placeholder='Length' name='length')
+          .row
+            .col-md-12
+              hr
+              button.btn.btn-primary.pull-right(type='submit')
+                i.glyphicon.glyphicon-floppy-disk
+                |  Save

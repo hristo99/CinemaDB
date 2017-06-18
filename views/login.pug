@@ -2,18 +2,19 @@ extends layout
 
 block content
   .row
-    .col-md-12.lead
-      | Log in
-      hr
-  .row
-    .col-md-12
-      #alert
-      form(method='POST' action='/login')
-        .form-group
-          label(for='username') Username
-          input.form-control(type='text' name='username')
-        .form-group
-          label(for='password') Password
-          input.form-control(type='password' name='password')
-        button.btn.btn-primary(type='submit') Login
-
+    .panel-body
+      .col-md-4.col-md-offset-4
+        form(method='POST' action='/login')
+          .row
+            .lead
+              | Log in
+              hr
+          .row
+            #alert
+            .form-group
+              label(for='username') Username
+              input.form-control(type='text' name='username')
+            .form-group
+              label(for='password') Password
+              input.form-control(type='password' name='password')
+            button.btn.btn-primary(type='submit') Login
