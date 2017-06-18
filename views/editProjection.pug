@@ -4,22 +4,22 @@ block content
   .row
     .panel-body
       .col-md-6.col-md-offset-3
-        form(method='POST' action=`/projections/${projectionId}/edit`)
+        form(method='POST' action=`/projections/${projection.Id}/edit`)
           .row
             .col-md-12.lead
-              | Projection #{projectionId} Settings
+              | Projection #{projection.Id} Settings
               hr
           .row
             .col-md-12
               .form-group
                 label Movie Id
-                input.form-control(type='number' placeholder='Movie Id' name='movieId')
+                input.form-control(type='number' placeholder=`${projection.MovieId}` name='movieId')
               .form-group
                 label Hall Id
-                input.form-control(type='number' placeholder='Hall Id' name='hallId')
+                input.form-control(type='number' placeholder=`${projection.HallId}` name='hallId')
               .form-group
                 label Start Time
-                input.form-control(type='text' placeholder='Start Time' name='startTime')
+                input.form-control(type='text' placeholder=`${projection.StartTime}` name='startTime')
           .row
             .col-md-12
               hr

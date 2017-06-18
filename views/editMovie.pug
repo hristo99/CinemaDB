@@ -4,28 +4,28 @@ block content
   .row
     .panel-body
       .col-md-6.col-md-offset-3
-        form(method='POST' action=`/movies/${movie[0].Id}/edit`)
+        form(method='POST' action=`/movies/${movie.Id}/edit`)
           .row
             .col-md-12.lead
-              | #{movie[0].Title} Settings
+              | #{movie.Title} Settings
               hr
           .row
             .col-md-12
               .form-group
                 label Title
-                input.form-control(type='text' placeholder='Title' name='title')
+                input.form-control(type='text' placeholder=`${movie.Title}` name='title')
               .form-group
                 label Age Restriction
-                input.form-control(type='number' placeholder='AgeRestriction' name='ageRes')
+                input.form-control(type='number' placeholder=`${movie.AgeRestriction}` name='ageRes')
               .form-group
                 label First Projection
-                input.form-control(type='text' placeholder='FirstProjecion' name='firstPr')
+                input.form-control(type='text' placeholder=`${movie.FirstProjection}` name='firstPr')
               .form-group
                 label Last Projection
-                input.form-control(type='text' placeholder='LastProjection' name='lastPr')
+                input.form-control(type='text' placeholder=`${movie.LastProjection}` name='lastPr')
               .form-group
                 label Length
-                input.form-control(type='number' placeholder='Length' name='length')
+                input.form-control(type='number' placeholder=`${movie.Length}` name='length')
           .row
             .col-md-12
               hr

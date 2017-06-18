@@ -18,16 +18,16 @@ block content
           .col-md-8
             .form-group
               label Password
-              input.form-control(type='password' placeholder='Password' name='password')
+              input.form-control(type='password' name='password')
             .form-group
               label First name
-              input.form-control(type='text' placeholder='First Name' name='firstName')
+              input.form-control(type='text' placeholder=`${user.FirstName}` name='firstName')
             .form-group
               label Last name
-              input.form-control(type='text' placeholder='Last Name' name='lastName')
+              input.form-control(type='text' placeholder=`${user.LastName}` name='lastName')
             .form-group
               label Age
-              input.form-control(type='number' placeholder='Age' name='age')
+              input.form-control(type='number' placeholder=`${user.Age}` name='age')
             button.btn.btn-danger(type='button' data-toggle='modal' data-target='#delete-user-modal')
               | Delete user
         .row

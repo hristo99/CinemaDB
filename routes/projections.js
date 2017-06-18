@@ -63,7 +63,20 @@ router.get('/:projectionId/returnTicket', securityCheck.isLoggedIn, (req, res) =
 });
 
 router.get('/:projectionId/edit', securityCheck.isAdmin, (req, res) => {
-	res.render('editProjection', { projectionId: req.params.projectionId, user:req.user});
+	var db = req.db;
+	db.query("SELECT * FROM Projections WHERE Id = ?;",
+		[req.params.projectionId],
+		(err, result) => {
+			if (err) {
+				console.log(err);
+				res.status(500).send('Internal Server Error');
+			} else if (result.length == 0) {
+				res.status(204).send('No Projection Found');
+			} else {
+				res.render('editProjection', {projection: result[0], user: req.user});
+			}
+		}
+	);
 });
 
 router.post('/:projectionId/edit', securityCheck.isAdmin, (req, res) => {

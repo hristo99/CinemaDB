@@ -107,7 +107,7 @@ router.get('/:movieId/edit', securityCheck.isAdmin, (req, res) => {
         } else if (results.length == 0) {
             res.status(204).send('No movie found');
         } else {
-            res.render('editMovie', {movie:results, user:req.user});
+            res.render('editMovie', {movie:results[0], user:req.user});
         }
     });
 });
