@@ -1,9 +1,41 @@
 extends layout
 
 block content
-	p Top 10 Hottest Movies
-		ul
-			each movie in movies
-				li #{movie.Title}
-				li Views #{movie.Views}
-				li
+  .row
+    .panel-body
+      .col-md-12
+        .row
+          .col-md-12.lead
+            | Hottest Movies
+            hr
+        each movie in movies
+          .row
+            .col-md-12
+              .media.col-md-3
+                figure
+                  span.glyphicon.glyphicon-film
+              .col-md-6
+                h4.list-group-item-heading #{movie.Title}
+                p.list-group-item-text
+                  | Eu eum corpora torquatos, ne postea constituto mea, quo tale lorem facer no. Ut sed odio appetere partiendo, quo meliore salutandi ex. Vix an sanctus vivendo, sed vocibus accumsan petentium ea.
+                  | Sed integre saperet at, no nec debet erant, quo dico incorrupte comprehensam ut. Et minimum consulatu ius, an dolores iracundia est, oportere vituperata interpretaris sea an. Sed id error quando indoctum, mel suas saperet at.
+              .col-md-3.text-center
+                h2
+                  | #{movie.Views}
+                  small  views
+                button.btn.btn-primary.btn-lg.btn-block(type='button' onClick=`openMovie(${movie.Id})`) See more
+                .stars
+                  span.glyphicon.glyphicon-star
+                  span.glyphicon.glyphicon-star
+                  span.glyphicon.glyphicon-star
+                  span.glyphicon.glyphicon-star
+                  span.glyphicon.glyphicon-star-empty
+                p
+                  | Average 3.9 
+                  small  / 
+                  |  5
+          hr
+  script(type='text/javascript').
+    function openMovie(id) {
+      $(location).attr('href', `/movies/${id}`);
+    }

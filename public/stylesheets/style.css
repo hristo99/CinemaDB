@@ -11,3 +11,23 @@ a {
   background: rgba(0,0,0,0.5);
   color: #FFFFFF;
 }
+
+a.list-group-item {
+    height:auto;
+    min-height:220px;
+    color: #FFFFFF;
+}
+a.list-group-item.active small {
+    color:#fff;
+}
+.stars {
+    margin:20px auto 1px;    
+}
+
+.glyphicon-film {
+  font-size: 180px;
+}
+
+figure {
+  text-align: center;
+}

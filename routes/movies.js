@@ -20,10 +20,11 @@ router.get('/', (req, res) => {
 
 router.get('/hottest', (req, res) => {
     var db = req.db;
-    var getHottestMovies = `SELECT Movies.Title, COUNT(Movies.Title) AS Views FROM Movies
+    var getHottestMovies = `SELECT Movies.Id, Movies.Title, 
+    COUNT(Movies.Title) AS Views FROM Movies
     INNER JOIN Projections ON Movies.Id = Projections.MovieId
     INNER JOIN ProjectionViewers ON Projections.Id = ProjectionViewers.ProjectionId
-    GROUP BY Movies.Title ORDER BY Views DESC LIMIT 10;`;
+    GROUP BY Movies.Id, Movies.Title ORDER BY Views DESC LIMIT 10;`;
     db.query(getHottestMovies, (err, results) => {
     if (err) {
         console.log(err);
