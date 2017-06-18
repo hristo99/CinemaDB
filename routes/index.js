@@ -71,7 +71,8 @@ router.get('/boughtTickets', securityCheck.isLoggedIn, (req, res) => {
 		FROM ProjectionViewers LEFT JOIN Projections
 		ON ProjectionViewers.ProjectionId = Projections.Id
 		LEFT JOIN Movies ON Projections.MovieId = Movies.Id
-		WHERE ProjectionViewers.Username = ?`;
+		WHERE ProjectionViewers.Username = ? AND Projections.StartTime >= NOW()
+		ORDER BY Projections.StartTime`;
 	db.query(getBoughtTickets, [req.user.Username], (err, results) => {
 		if (err) {
 			console.log(err);
