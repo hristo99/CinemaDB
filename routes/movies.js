@@ -45,11 +45,11 @@ router.get('/add', securityCheck.isAdmin, (req, res) => {
 router.post('/add', securityCheck.isAdmin, (req, res) => {
     var db = req.db;
     var insertMovie = `INSERT INTO Movies
-        (Title, AgeRestriction, FirstProjection, LastProjection, Length)
+        (Title, AgeRestriction, Premiere, Length)
     VALUES
-            (?, ?, ?, ?, ?);`;
+            (?, ?, ?, ?);`;
     db.query(insertMovie, 
-        [req.body.title, req.body.ageRes, req.body.firstPr, req.body.lastPr, req.body.length],
+        [req.body.title, req.body.ageRes, req.body.premiere, req.body.length],
         err => {
             if (err) {
                 console.log(err);
@@ -63,7 +63,7 @@ router.post('/add', securityCheck.isAdmin, (req, res) => {
 
 router.get('/:movieId', (req, res) => {
     var db = req.db;
-    var getMovie = `SELECT p.MovieId, m.Title, m.FirstProjection, m.LastProjection,
+    var getMovie = `SELECT p.MovieId, m.Title, m.Premiere,
         m.Length, m.AgeRestriction, p.Id, p.HallId, h.Seats, p.StartTime
         FROM Projections AS p
         LEFT JOIN Movies AS m
@@ -79,7 +79,7 @@ router.get('/:movieId', (req, res) => {
             if (req.user && req.user.Role != 'admin') {
                 res.status(204).send('No movie found');
             }
-            getMovie = `SELECT m.Id AS MovieId, m.Title, m.FirstProjection, m.LastProjection,
+            getMovie = `SELECT m.Id AS MovieId, m.Title, m.Premiere,
                 m.Length, m.AgeRestriction FROM Movies AS m
                 WHERE m.Id = ${req.params.movieId};`;
             db.query(getMovie, (err, results) => {
@@ -128,22 +128,18 @@ router.post('/:movieId/edit', securityCheck.isAdmin, (req, res) => {
                     req.body.title : result[0].Title;
                 var ageRes = (req.body.ageRes) ?
                     req.body.ageRes : result[0].AgeRestriction;
-                var firstPr = (req.body.firstPr.length) ?
-                    req.body.firstPr : result[0].FirstProjection;
-                var lastPr = (req.body.lastPr.length) ? 
-                    req.body.lastPr : result[0].LastProjection;
+                var premiere = (req.body.premiere.length) ?
+                    req.body.premiere : result[0].Premiere;
                 var length = (req.body.length) ?
                     req.body.length : result[0].Length;
                 var updateMovies = `UPDATE Movies SET
-                    Title = ?, AgeRestriction = ?, FirstProjection = ?,
-                    LastProjection = ?, Length = ?
-                    WHERE Id = ?;`;
+                    Title = ?, AgeRestriction = ?, Premiere = ?,
+                     Length = ? WHERE Id = ?;`;
                 db.query(updateMovies,
                     [
                         title,
                         ageRes,
                         firstPr,
-                        lastPr,
                         length,
                         req.params.movieId
                     ],

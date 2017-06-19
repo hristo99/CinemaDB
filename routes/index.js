@@ -5,7 +5,7 @@ var router = express.Router();
 
 router.get('/', (req, res) => {
 	var db = req.db; 
-	db.query("SELECT * FROM Movies ORDER BY FirstProjection DESC LIMIT 10;", (err, results) => {
+	db.query("SELECT * FROM Movies ORDER BY Premiere DESC LIMIT 10;", (err, results) => {
 		if (err) {
 			console.log(err);
 			res.status(500).send('Internal Server Error');

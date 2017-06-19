@@ -47,8 +47,7 @@ ExpressJS, pugJS, Bootstrap and MySQL.
 | Id (AUTO_INCREMENT) | INTEGER      | NOT NULL, PRIMARY KEY |
 | Title               | VARCHAR(100) | NOT NULL              |
 | AgeRestriction      | INTEGER      | NOT NULL              |
-| FirstProjection     | DATETIME     | NOT NULL              |
-| LastProjection      | DATETIME     | NOT NULL              |
+| Premiere            | DATETIME     | NOT NULL              |
 | Length              | INTEGER      | NOT NULL              |
 
 ### Halls

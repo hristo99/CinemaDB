@@ -40,8 +40,7 @@ var createTableMovies = `CREATE TABLE Movies (
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
 Title VARCHAR(100) NOT NULL,
 AgeRestriction INTEGER NOT NULL,
-FirstProjection DATETIME NOT NULL,
-LastProjection DATETIME NOT NULL,
+Premiere DATETIME NOT NULL,
 Length INTEGER NOT NULL
 );`;
 connection.query(createTableMovies, err => {
@@ -106,15 +105,15 @@ connection.query(insertUsers, err => {
 });
 
 var insertMovies = `INSERT INTO Movies
-    (Title, AgeRestriction, FirstProjection, LastProjection, Length)
+    (Title, AgeRestriction, Premiere, Length)
 VALUES
-    ( 'Pirates of the Carribean', 18, '2017-04-04 08:30:00', '2017-05-20 19:20:00', 120 ),
-    ( 'Sample Movie Name', 0, '2017-06-01 09:45:00', '2017-07-30 21:00:00', 100 ),
-    ( 'Finding Dory', 0, '2016-07-21 08:00:00', '2016-09-20 21:00:00', 83 ),
-    ( 'The Changeling', 12, '2017-01-03 07:00:00', '2017-04-30 22:15:00', 141 ),
-    ( 'Black Swan', 16, '2016-10-05 11:40:00', '2016-12-01 23:10:00', 135 ),
-    ( 'Star Wars', 0, '2017-11-30 08:50:00', '2018-02-18 19:25:00', 152 ),
-    ( 'The Dictator', 12, '2015-09-04 12:30:00', '2015-12-28 21:45:00', 93 );`;
+    ( 'Pirates of the Carribean', 18, '2017-04-04 08:30:00', 120 ),
+    ( 'Sample Movie Name', 0, '2017-06-01 09:45:00', 100 ),
+    ( 'Finding Dory', 0, '2016-07-21 08:00:00', 83 ),
+    ( 'The Changeling', 12, '2017-01-03 07:00:00', 141 ),
+    ( 'Black Swan', 16, '2016-10-05 11:40:00', 135 ),
+    ( 'Star Wars', 0, '2017-11-30 08:50:00', 152 ),
+    ( 'The Dictator', 12, '2015-09-04 12:30:00', 93 );`;
 connection.query(insertMovies, err => {
     if (err) throw err;
     console.log("Inserted movies");
