@@ -54,8 +54,8 @@ html
     .container
       block content
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js')
-    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     script(src='/javascripts/jquery.datetimepicker.full.min.js')
     script(type='text/javascript').
       $('#datetimepicker').datetimepicker({
@@ -63,4 +63,11 @@ html
       });
       $('#datepicker').datepicker({
         dateFormat: 'yy-mm-dd'
+      });
+      $('#return-ticket-modal').on('show.bs.modal', e => {
+      var projectionId = $(e.relatedTarget).data('projectionid');
+      $('.modal-footer').html(`
+          <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+          <button type="button" onclick="returnTicket(${projectionId})" class="btn btn-danger">Yes</button>
+        `);
       });

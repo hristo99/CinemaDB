@@ -38,13 +38,6 @@ block content
 
 
   script(type='text/javascript').
-    $('#return-ticket-modal').on('show.bs.modal', e => {
-      var projectionId = $(e.relatedTarget).data('projectionid');
-      $('.modal-footer').html(`
-        <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-        <button type="button" onclick="returnTicket(${projectionId})" class="btn btn-danger">Yes</button>
-      `);
-    });
     function returnTicket(id) {
       $(location).attr('href', `/projections/${id}/returnTicket`);
     };
