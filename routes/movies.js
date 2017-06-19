@@ -63,35 +63,15 @@ router.post('/add', securityCheck.isAdmin, (req, res) => {
 
 router.get('/:movieId', (req, res) => {
     var db = req.db;
-    var getMovie = `SELECT p.MovieId, m.Title, m.Premiere,
-        m.Length, m.AgeRestriction, p.Id, p.HallId, h.Seats, p.StartTime
-        FROM Projections AS p
-        LEFT JOIN Movies AS m
-        ON m.Id = p.MovieId
-        LEFT JOIN Halls AS h
-        ON p.HallId = h.Id
-        WHERE p.StartTime > NOW() AND m.Id = ${req.params.movieId};`;
+    var getMovie = `SELECT m.Id AS MovieId, m.Title, m.Premiere,
+        m.Length, m.AgeRestriction FROM Movies AS m
+        WHERE m.Id = ${req.params.movieId};`;
     db.query(getMovie, (err, results) => {
         if (err) {
             console.log(err);
             res.status(500).send('Internal Server Error');
         } else if (results.length == 0) {
-            if (req.user && req.user.Role != 'admin') {
-                res.status(204).send('No movie found');
-            }
-            getMovie = `SELECT m.Id AS MovieId, m.Title, m.Premiere,
-                m.Length, m.AgeRestriction FROM Movies AS m
-                WHERE m.Id = ${req.params.movieId};`;
-            db.query(getMovie, (err, results) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send('Internal Server Error');
-                } else if (results.length == 0) {
-                    res.status(204).send('No movie found');
-                } else {
-                    res.render('movie', { movie:results, user:req.user });
-                }
-            });
+            res.status(204).send('No movie found');
         } else {
             res.render('movie', { movie:results, user:req.user });
         }
@@ -139,7 +119,7 @@ router.post('/:movieId/edit', securityCheck.isAdmin, (req, res) => {
                     [
                         title,
                         ageRes,
-                        firstPr,
+                        premiere,
                         length,
                         req.params.movieId
                     ],
