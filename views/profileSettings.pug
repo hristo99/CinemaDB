@@ -26,8 +26,8 @@ block content
               label Last name
               input.form-control(type='text' placeholder=`${user.LastName}` name='lastName')
             .form-group
-              label Age
-              input.form-control(type='number' placeholder=`${user.Age}` name='age')
+              label Date of birth
+              input.form-control(type='text' placeholder=`${user.DateOfBirth}` name='dateOfBirth' id='datepicker')
             button.btn.btn-danger(type='button' data-toggle='modal' data-target='#delete-user-modal')
               | Delete user
         .row

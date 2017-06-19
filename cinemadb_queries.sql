@@ -8,7 +8,7 @@ CREATE TABLE Users (
     Password VARCHAR(60) NOT NULL,
     FirstName VARCHAR(30) NOT NULL,
     LastName VARCHAR(30) NOT NULL,
-    Age INTEGER NOT NULL,
+    DateOfBirth DATE NOT NULL,
     Role VARCHAR(20) NOT NULL
 );
 
@@ -16,12 +16,12 @@ CREATE TABLE Movies (
     Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
     Title VARCHAR(100) NOT NULL,
     AgeRestriction INTEGER NOT NULL,
-    Premiere DATETIME NOT NULL,
+    Premiere DATE NOT NULL,
     Length INTEGER NOT NULL
 );
 
 CREATE TABLE Halls (
-    Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    Id INTEGER NOT NULL PRIMARY KEY,
     Seats INTEGER NOT NULL
 );
 
@@ -55,22 +55,22 @@ VALUES
 INSERT INTO Movies 
     (Title, AgeRestriction, Premiere, Length)
 VALUES
-    ( 'Pirates of the Carribean', 18, '2017-04-04 08:30:00', 120 ),
-    ( 'Sample Movie Name', 0, '2017-06-01 09:45:00', 100 ),
-    ( 'Finding Dory', 0, '2016-07-21 08:00:00', 83 ),
-    ( 'The Changeling', 12, '2017-01-03 07:00:00', 141 ),
-    ( 'Black Swan', 16, '2016-10-05 11:40:00', 135 ),
-    ( 'Star Wars', 0, '2017-11-30 08:50:00', 152 ),
-    ( 'The Dictator', 12, '2015-09-04 12:30:00', 93 );
+    ( 'Pirates of the Carribean', 18, '2017-04-04', 120 ),
+    ( 'Sample Movie Name', 0, '2017-06-01', 100 ),
+    ( 'Finding Dory', 0, '2016-07-21', 83 ),
+    ( 'The Changeling', 12, '2017-01-03', 141 ),
+    ( 'Black Swan', 16, '2016-10-05', 135 ),
+    ( 'Star Wars', 0, '2017-11-30', 152 ),
+    ( 'The Dictator', 12, '2015-09-04', 93 );
 
 INSERT INTO Halls
-    (Seats)
+    (Id, Seats)
 VALUES
-    (50),
-    (84),
-    (50),
-    (148),
-    (74);
+    (1, 50),
+    (2, 84),
+    (3, 50),
+    (4, 148),
+    (5, 74);
 
 INSERT INTO Projections
     (MovieId, HallId, StartTime)

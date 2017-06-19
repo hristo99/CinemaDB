@@ -38,7 +38,7 @@ ExpressJS, pugJS, Bootstrap and MySQL.
 | Password    | VARCHAR(60) | NOT NULL              |
 | FirstName   | VARCHAR(30) | NOT NULL              |
 | LastName    | VARCHAR(30) | NOT NULL              |
-| Age         | INTEGER     | NOT NULL              |
+| DateOfBirth | DATE        | NOT NULL              |
 | Role        | VARCHAR(20) | NOT NULL              |
 
 ### Movies
@@ -47,13 +47,13 @@ ExpressJS, pugJS, Bootstrap and MySQL.
 | Id (AUTO_INCREMENT) | INTEGER      | NOT NULL, PRIMARY KEY |
 | Title               | VARCHAR(100) | NOT NULL              |
 | AgeRestriction      | INTEGER      | NOT NULL              |
-| Premiere            | DATETIME     | NOT NULL              |
+| Premiere            | DATE         | NOT NULL              |
 | Length              | INTEGER      | NOT NULL              |
 
 ### Halls
 | Column              | Data type    | Constraints           |
 |:-------------------:|:------------:|:---------------------:|
-| Id (AUTO_INCREMENT) | INTEGER      | NOT NULL, PRIMARY KEY |
+| Id                  | INTEGER      | NOT NULL, PRIMARY KEY |
 | Seats               | INTEGER      | NOT NULL              |
 
 ### Projections

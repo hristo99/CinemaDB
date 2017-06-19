@@ -4,8 +4,10 @@ var securityCheck = require('./../modules/securityCheck.js');
 var bcrypt = require('bcrypt-nodejs');
 
 router.get('/', securityCheck.isLoggedIn, (req, res) => {
+    var userAge = Math.floor((Date.now() - req.user.DateOfBirth)/(1000*60*60*24*365.25));
     res.render('profile', {
-        user : req.user
+        user : req.user,
+        userAge: userAge
     });
 });
 
@@ -31,11 +33,11 @@ router.post('/settings', securityCheck.isLoggedIn, (req, res) => {
                     req.body.firstName : result[0].FirstName;
                 var lastName = (req.body.lastName.length) ?
                     req.body.lastName : result[0].LastName;
-                var age = (req.body.age) ?
-                    req.body.age : result[0].Age;
+                var dateOfBirth = (req.body.dateOfBirth) ?
+                    req.body.dateOfBirth : result[0].DateOfBirth;
                 
                 var updateUser = `UPDATE Users SET
-                    Password = ?, FirstName = ?, LastName = ?, Age = ?
+                    Password = ?, FirstName = ?, LastName = ?, DateOfBirth = ?
                     WHERE Username = ?;`;
                 db.query(
                     updateUser,
@@ -43,7 +45,7 @@ router.post('/settings', securityCheck.isLoggedIn, (req, res) => {
                         password, 
                         firstName,
                         lastName,
-                        age,
+                        dateOfBirth,
                         req.user.Username
                     ],
                     err => {
