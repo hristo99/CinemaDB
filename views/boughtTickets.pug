@@ -26,7 +26,11 @@ block content
                     td #{projection.Length}
                     td #{projection.HallId}
                     td
+                      button.btn.btn-default(type='button' onclick=`getMovieInfo(${projection.MovieId})`)
+                        i.glyphicon.glyphicon-eye-open
+                        | Movie info
                       button.btn.btn-danger(type='button' data-toggle='modal' data-target='#return-ticket-modal' data-projectionId=`${projection.Id}`)
+                        i.glyphicon.glyphicon-remove
                         | Return ticket
   
   #return-ticket-modal.modal.fade
@@ -41,3 +45,7 @@ block content
     function returnTicket(id) {
       $(location).attr('href', `/projections/${id}/returnTicket`);
     };
+
+    function getMovieInfo(movieId) {
+      $(location).attr('href', `/movies/${movieId}`);
+    }

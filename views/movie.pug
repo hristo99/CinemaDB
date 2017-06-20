@@ -1,47 +1,110 @@
 extends layout
 
 block content
-	p Movie info
-	p #{movie[0].Title}
-	p Length #{movie[0].Length}
-	p Age Restriction #{movie[0].AgeRestriction}
-	if user && user.Role == 'admin'
-		button(onClick=`editMovie(${movie[0].MovieId})`) Edit movie
-	p ------
-	ul
-		each projection in movie
-			li #{projection.Title} #{projection.HallId} #{projection.Seats} #{projection.StartTime}
-				button(onclick=`buyTicket(${projection.Id})`) Buy Ticket
-				if user && user.Role == 'admin'
-					button(onclick=`editProjection(${projection.Id})`) Edit Projection
-					button(onclick=`removeProjection(${projection.Id})`) Remove Projection
-			li 
+  .row
+    .panel-body
+      .row
+        .col-md-12.lead
+          | Movie Info
+          hr
+      .row
+        .col-md-4.text-center
+          img.avatar.avatar-original.img-thumbnail(style='-webkit-user-select:none; \
+          display:block; margin:auto;', src=`${movie.Image}`)
+        .col-md-8
+          .row
+            .col-md-12
+              h1.only-bottom-margin #{movie.Title}
+          .row
+            .col-md-6
+              span.text-muted Length:
+              |  #{movie.Length}
+              br
+              span.text-muted Age Restriction:
+              |  #{movie.AgeRestriction}
+              br
+              span.text-muted Description:
+              |  #{movie.Description}
+      if user && user.Role == 'admin'
+        button.btn.btn-danger.pull-right(type='button' data-toggle='modal' data-target='#delete-movie-modal' data-movieId=`${movie.Id}`)
+          i.glyphicon.glyphicon-remove
+          | Delete movie
+        button.btn.btn-default.pull-right(onClick=`editMovie(${movie.MovieId})`)
+          i.glyphicon.glyphicon-pencil
+          |  Edit movie
+      .row
+        .col-md-12
+          hr
+  .row
+    .panel-body
+      .row
+        .col-md-12.lead
+          | Available Projections
+          if user && user.Role == 'admin'
+            button.btn.btn-default.pull-right(onClick=`addProjection(${movie.MovieId})`)
+              i.glyphicon.glyphicon-plus
+              | Add projection
+          hr
+      .row
+        .col-md-12
+          if projections.length > 0
+            .table-responsive
+              table.table
+                thead
+                  tr.row-name
+                    th Starts At
+                    th Length
+                    th Hall
+                    th Settings
+                tbody
+                  each projection in projections
+                    tr.row-content 
+                      td #{projection.StartTime}
+                      td #{projection.Length}
+                      td #{projection.HallId}
+                      td
+                        button.btn.btn-default(type='button' data-toggle='modal' data-target='#buy-ticket-modal' data-projectionId=`${projection.Id}`)
+                          i.glyphicon.glyphicon-share-alt
+                          | Buy Ticket
+          else
+            | Sorry, no upcoming projections
 
-	if user && user.Role == 'admin'
-		button(onClick=`addProjection(${movie[0].MovieId})`) Add projection
-		button(onClick=`deleteMovie(${movie[0].MovieId})`) Delete movie
+  #buy-ticket-modal.modal.fade
+    .modal-dialog
+      .modal-body
+        p Do you confirm buying ticket for this movie?
+      .modal-footer
+        button.btn.btn-default(type='button' data-dismiss='modal') Cancel
 
-	script(type='text/javascript').
-		function buyTicket(id) {
-			$(location).attr('href', `/projections/${id}/buyTicket`);
-		};
+  #delete-movie-modal.modal.fade
+    .modal-dialog
+      .modal-body
+        p Are you sure you want to delete a movie?
+      .modal-footer
+        button.btn.btn-default(type='button' data-dismiss='modal') Cancel
+        button.btn.btn-danger(onClick=`deleteMovie(${movie.MovieId})`) Yes
 
-		function editMovie(id) {
-			$(location).attr('href', `/movies/${id}/edit`);
-		};
+  script(type='text/javascript').
+    function buyTicket(id) {
+      $(location).attr('href', `/projections/${id}/buyTicket`);
+    };
 
-		function deleteMovie(id) {
-			$(location).attr('href', `/movies/${id}/remove`);
-		};
+    function editMovie(id) {
+      $(location).attr('href', `/movies/${id}/edit`);
+    };
 
-		function addProjection(id) {
-			$(location).attr('href', `/movies/${id}/addProjection`);
-		}
+    function deleteMovie(id) {
+      $(location).attr('href', `/movies/${id}/remove`);
+    };
 
-		function editProjection(id) {
-			$(location).attr('href', `/projections/${id}/edit`);
-		}
+    function addProjection(id) {
+      $(location).attr('href', `/movies/${id}/addProjection`);
+    }
 
-		function removeProjection(id) {
-			$(location).attr('href', `/projections/${id}/remove`);
-		}
+    function editProjection(id) {
+      $(location).attr('href', `/projections/${id}/edit`);
+    }
+
+    function removeProjection(id) {
+      $(location).attr('href', `/projections/${id}/remove`);
+    }

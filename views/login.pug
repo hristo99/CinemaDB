@@ -4,7 +4,7 @@ block content
   .row
     .panel-body
       .col-md-4.col-md-offset-4
-        form(method='POST' action='/login')
+        form(method='POST' action='/login' enctype='multipart/form-data')
           .row
             .lead
               | Log in
@@ -13,8 +13,8 @@ block content
             #alert
             .form-group
               label(for='username') Username
-              input.form-control(type='text' name='username')
+              input.form-control(type='text' name='username' required)
             .form-group
               label(for='password') Password
-              input.form-control(type='password' name='password')
+              input.form-control(type='password' name='password' required)
             button.btn.btn-primary(type='submit') Login

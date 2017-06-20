@@ -67,21 +67,25 @@ router.get('/users', securityCheck.isAdmin, (req, res) => {
 
 router.get('/boughtTickets', securityCheck.isLoggedIn, (req, res) => {
 	var db = req.db;
-	var getBoughtTickets = `SELECT Projections.Id, Movies.Title, Movies.Length, Projections.StartTime, Projections.HallId
+	var getBoughtTickets = `SELECT Projections.Id, Projections.MovieId, 
+		Movies.Title, Movies.Length, Projections.StartTime, Projections.HallId
 		FROM ProjectionViewers LEFT JOIN Projections
 		ON ProjectionViewers.ProjectionId = Projections.Id
 		LEFT JOIN Movies ON Projections.MovieId = Movies.Id
 		WHERE ProjectionViewers.Username = ? AND Projections.StartTime >= NOW()
 		ORDER BY Projections.StartTime`;
-	db.query(getBoughtTickets, [req.user.Username], (err, results) => {
-		if (err) {
-			console.log(err);
-			res.status(500).send('Internal Server Error');
-		} else if (results.length == 0) {
-			res.status(204).send('No bought tickets found');
-		} else {
-			res.render('boughtTickets', {projections: results, user:req.user});
-		}
+	db.query(
+		getBoughtTickets, 
+		[req.user.Username], 
+		(err, results) => {
+			if (err) {
+				console.log(err);
+				res.status(500).send('Internal Server Error');
+			} else if (results.length == 0) {
+				res.status(204).send('No bought tickets found');
+			} else {
+				res.render('boughtTickets', {projections: results, user:req.user});
+			}
 	})
 });
 

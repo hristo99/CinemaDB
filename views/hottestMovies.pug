@@ -13,17 +13,19 @@ block content
             .col-md-12
               .media.col-md-3
                 figure
-                  span.glyphicon.glyphicon-film
+                  img.avatar.avatar-original.img-thumbnail#img-preview-block(style='-webkit-user-select:none; \
+                  display:block; margin:auto;' src=`${movie.Image}`)
               .col-md-6
                 h4.list-group-item-heading #{movie.Title}
                 p.list-group-item-text
-                  | Eu eum corpora torquatos, ne postea constituto mea, quo tale lorem facer no. Ut sed odio appetere partiendo, quo meliore salutandi ex. Vix an sanctus vivendo, sed vocibus accumsan petentium ea.
-                  | Sed integre saperet at, no nec debet erant, quo dico incorrupte comprehensam ut. Et minimum consulatu ius, an dolores iracundia est, oportere vituperata interpretaris sea an. Sed id error quando indoctum, mel suas saperet at.
+                  | #{movie.Description}
               .col-md-3.text-center
                 h2
                   | #{movie.Views}
                   small  views
-                button.btn.btn-primary.btn-lg.btn-block(type='button' onClick=`openMovie(${movie.Id})`) See more
+                button.btn.btn-primary.btn-lg.btn-block(type='button' onClick=`openMovie(${movie.Id})`) 
+                  i.glyphicon.glyphicon-eye-open
+                  | See more
                 .stars
                   span.glyphicon.glyphicon-star
                   span.glyphicon.glyphicon-star

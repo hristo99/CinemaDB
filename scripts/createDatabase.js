@@ -40,8 +40,10 @@ connection.query(createTableUsers, err => {
 var createTableMovies = `CREATE TABLE Movies (
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
 Title VARCHAR(100) NOT NULL,
+Image VARCHAR(255) NOT NULL,
 AgeRestriction INTEGER NOT NULL,
 Premiere DATE NOT NULL,
+Description VARCHAR(1000) NOT NULL,
 Length INTEGER NOT NULL
 );`;
 connection.query(createTableMovies, err => {
@@ -106,15 +108,15 @@ connection.query(insertUsers, err => {
 });
 
 var insertMovies = `INSERT INTO Movies
-    (Title, AgeRestriction, Premiere, Length)
+    (Title, Image, AgeRestriction, Premiere, Description, Length)
 VALUES
-    ( 'Pirates of the Carribean', 18, '2017-04-04', 120 ),
-    ( 'Sample Movie Name', 0, '2017-06-01', 100 ),
-    ( 'Finding Dory', 0, '2016-07-21', 83 ),
-    ( 'The Changeling', 12, '2017-01-03', 141 ),
-    ( 'Black Swan', 16, '2016-10-05', 135 ),
-    ( 'Star Wars', 0, '2017-11-30', 152 ),
-    ( 'The Dictator', 12, '2015-09-04', 93 );`;
+    ( 'Pirates of the Carribean', '/images/519539-085_Movie-512.png', 18, '2017-04-04', 'Sample Description', 120 ),
+    ( 'Sample Movie Name', '/images/519539-085_Movie-512.png', 0, '2017-06-01', 'Sample Description', 100 ),
+    ( 'Finding Dory', '/images/519539-085_Movie-512.png', 0, '2016-07-21', 'Sample Description', 83 ),
+    ( 'The Changeling', '/images/519539-085_Movie-512.png', 12, '2017-01-03', 'Sample Description', 141 ),
+    ( 'Black Swan', '/images/519539-085_Movie-512.png', 16, '2016-10-05', 'Sample Description', 135 ),
+    ( 'Star Wars', '/images/519539-085_Movie-512.png', 0, '2017-11-30', 'Sample Description', 152 ),
+    ( 'The Dictator', '/images/519539-085_Movie-512.png', 12, '2015-09-04', 'Sample Description', 93 );`;
 connection.query(insertMovies, err => {
     if (err) throw err;
     console.log("Inserted movies");

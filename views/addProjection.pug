@@ -3,20 +3,40 @@ extends layout
 block content
   .row
     .panel-body
-      .col-md-6.col-md-offset-3
-        form(method='POST' action=`/movies/${movieId}/addProjection`)
+      .col-md-12
+        form(method='POST' action=`/movies/${movie.Id}/addProjection` enctype='multipart/form-data')
           .row
             .col-md-12.lead
               | Add projection
               hr
           .row
-            .col-md-12
+            .col-md-3.text-center
+              img.avatar.avatar-original.img-thumbnail(style='-webkit-user-select:none; \
+              display:block; margin:auto;', src=`${movie.Image}`)
+            .col-md-3
+              .row
+                .col-md-12
+                  h1.only-bottom-margin #{movie.Title}
+              .row
+                .col-md-12
+                  span.text-muted Premiere:
+                  |  #{movie.Premiere}
+                  br
+                  span.text-muted Length:
+                  |  #{movie.Length}
+                  br
+                  span.text-muted Age Restriction:
+                  |  #{movie.AgeRestriction}
+                  br
+                  span.text-muted Description:
+                  |  #{movie.Description}
+            .col-md-6
               .form-group
                 label(for='hallId') HallId
-                input.form-control(type='number' placeholder='Hall Id' name='hallId')
+                input.form-control(type='number' placeholder='Hall Id' name='hallId' required)
               .form-group
                 label(for='startTime') Start Time
-                input.form-control(type='text' placeholder='Start Time' name='startTime' id='datetimepicker')
+                input.form-control(type='text' placeholder='Start Time' name='startTime' id='datetimepicker' required)
           .row
             .col-md-12
               hr

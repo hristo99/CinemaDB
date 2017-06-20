@@ -59,7 +59,8 @@ router.post('/settings', securityCheck.isLoggedIn, (req, res) => {
                             console.log(err);
                             res.status(500).send('Internal Server Error');
                         } else {
-                            res.status(201).send('Successfully changed your profile settings!');
+                            // res.status(201).send('Successfully changed your profile settings!');
+                            res.status(201).redirect('/profile');
                         }
                     }
                 );
@@ -82,7 +83,8 @@ router.get('/delete', securityCheck.isLoggedIn, (req, res) => {
                 console.log(err);
                 res.status(500).send('Internal Server Error');
             }
-            res.status(200).send('Successfully deleted profile');
+            // res.status(200).send('Successfully deleted profile');
+            res.status(200).redirect('/');
         }
     );
 });

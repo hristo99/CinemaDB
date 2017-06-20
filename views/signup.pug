@@ -4,7 +4,7 @@ block content
   .row
     .panel-body
       .col-md-4.col-md-offset-4
-        form(method='POST' action='/signup')
+        form(method='POST' action='/signup' enctype='multipart/form-data')
           .row
             .col-md-12.lead
               | Sign up
@@ -14,17 +14,17 @@ block content
               #alert
               .form-group
                 label(for='username') Username
-                input.form-control(type='text' name='username')
+                input.form-control(type='text' name='username' required)
               .form-group
                 label(for='password') Password
-                input.form-control(type='password' name='password')
+                input.form-control(type='password' name='password' required)
               .form-group
                 label(for='firstName') First Name
-                input.form-control(type='text' name='firstName')
+                input.form-control(type='text' name='firstName' required)
               .form-group
                 label(for='lastName') Last Name
-                input.form-control(type='text' name='lastName')
+                input.form-control(type='text' name='lastName' required)
               .form-group
                 label(for='dateOfBirth') Date of Birth
-                input.form-control(type='text' name='dateOfBirth' id='datepicker')
+                input.form-control(type='text' name='dateOfBirth' id='datepicker' required)
               button.btn.btn-primary(type='submit') Sign up
