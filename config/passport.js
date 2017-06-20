@@ -2,7 +2,7 @@ var LocalStrategy   = require('passport-local').Strategy;
 var mysql = require('mysql');
 var bcrypt = require('bcrypt-nodejs');
 
-module.exports = function(passport, connection) {
+module.exports = (passport, connection) => {
 
     passport.serializeUser((user, done) => {
         done(null, user.Username);

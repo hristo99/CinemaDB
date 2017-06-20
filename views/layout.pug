@@ -81,16 +81,15 @@ html
           `);
       });
 
-      $(function() {
-        $("#upload-img").on("change", function()
-        {
+      $(() => {
+        $('#upload-img').on('change', function() {
           var files = !!this.files ? this.files : [];
             if (!files.length || !window.FileReader) return;
             if (/^image/.test( files[0].type)){
               var reader = new FileReader();
               reader.readAsDataURL(files[0]);
-              reader.onload = function(e) {
-                $("#img-preview-block").attr('src', e.target.result);
+              reader.onload = e => {
+                $('#img-preview-block').attr('src', e.target.result);
               }
             }
         });
