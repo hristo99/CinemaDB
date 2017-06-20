@@ -21,8 +21,10 @@ module.exports = function(passport, connection) {
         },
         (req, username, password, done) => {
             connection.query("SELECT * FROM Users WHERE Username = ?",[username], (err, rows) => {
-                if (err)
+                if (err) {
+                    console.log(err);
                     return done(err);
+                }
                 if (rows.length) {
                     return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
                 } else {
@@ -31,16 +33,29 @@ module.exports = function(passport, connection) {
                         Password: bcrypt.hashSync(password, null, null),
                         FirstName: req.body.firstName,
                         LastName: req.body.lastName,
-                        Age: req.body.age,
+                        DateOfBirth: req.body.dateOfBirth,
+                        ProfilePic: '/images/No_picture_icon_2.jpg',
                         Role: 'user'
                     };
 
-                    var insertQuery = "INSERT INTO Users ( Username, Password, FirstName, LastName, Age, Role ) values (?,?,?,?,?,?)";
+                    var insertQuery = `INSERT INTO Users 
+                        ( Username, Password, FirstName, LastName, DateOfBirth, ProfilePic, Role ) 
+                    VALUES 
+                        (?,?,?,?,?,?,?)`;
 
                     connection.query(
                         insertQuery,
-                        [newUserMysql.Username, newUserMysql.Password, newUserMysql.FirstName, newUserMysql.LastName, newUserMysql.Age, newUserMysql.Role],
+                        [
+                            newUserMysql.Username, 
+                            newUserMysql.Password, 
+                            newUserMysql.FirstName, 
+                            newUserMysql.LastName, 
+                            newUserMysql.DateOfBirth,
+                            newUserMysql.ProfilePic, 
+                            newUserMysql.Role
+                        ],
                         err => {
+                            console.log(err);
                             return done(null, newUserMysql);
                     });
                 }
@@ -55,8 +70,10 @@ module.exports = function(passport, connection) {
         },
         (req, username, password, done) => {
             connection.query("SELECT * FROM Users WHERE Username = ?",[username], (err, rows) => {
-                if (err)
+                if (err) {
+                    console.log(err);
                     return done(err);
+                }
                 if (!rows.length)
                     return done(null, false, req.flash('loginMessage', 'No user found.'));
                 if (!bcrypt.compareSync(password, rows[0].Password)) 
