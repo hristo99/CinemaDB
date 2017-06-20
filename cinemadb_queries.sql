@@ -9,6 +9,7 @@ CREATE TABLE Users (
     FirstName VARCHAR(30) NOT NULL,
     LastName VARCHAR(30) NOT NULL,
     DateOfBirth DATE NOT NULL,
+    ProfilePic VARCHAR(255) NOT NULL,
     Role VARCHAR(20) NOT NULL
 );
 

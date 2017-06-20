@@ -9,6 +9,8 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var flash = require('connect-flash');
 var dbconfig = require('./config/database');
+var multer = require('multer');
+var upload = multer({ dest: './public/uploads' });
 
 var app = express();
 
@@ -35,6 +37,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(upload.any());
 
 app.use(session({
   secret: 'daimophilosophics',

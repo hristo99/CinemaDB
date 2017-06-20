@@ -36,8 +36,13 @@ router.post('/settings', securityCheck.isLoggedIn, (req, res) => {
                 var dateOfBirth = (req.body.dateOfBirth) ?
                     req.body.dateOfBirth : result[0].DateOfBirth;
                 
+                // store profilePics in /public/images, very ugly, but for now it works
+                var profilePic = (req.files.length) ?
+                    `/uploads/${req.files[0].filename}` : result[0].ProfilePic;
+
                 var updateUser = `UPDATE Users SET
-                    Password = ?, FirstName = ?, LastName = ?, DateOfBirth = ?
+                    Password = ?, FirstName = ?, LastName = ?,
+                    DateOfBirth = ?, ProfilePic = ?
                     WHERE Username = ?;`;
                 db.query(
                     updateUser,
@@ -46,6 +51,7 @@ router.post('/settings', securityCheck.isLoggedIn, (req, res) => {
                         firstName,
                         lastName,
                         dateOfBirth,
+                        profilePic,
                         req.user.Username
                     ],
                     err => {

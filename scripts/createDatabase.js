@@ -29,6 +29,7 @@ Password VARCHAR(60) NOT NULL,
 FirstName VARCHAR(30) NOT NULL,
 LastName VARCHAR(30) NOT NULL,
 DateOfBirth DATE NOT NULL,
+ProfilePic VARCHAR(255) NOT NULL,
 Role VARCHAR(20) NOT NULL
 );`;
 connection.query(createTableUsers, err => {
@@ -90,15 +91,15 @@ var santapass = bcrypt.hashSync('northpole', null, null);
 var dontpass = bcrypt.hashSync('123456', null, null);
 var adminPass = bcrypt.hashSync('adminPass', null, null);
 var insertUsers = `INSERT INTO Users 
-    (Username, Password, FirstName, LastName, DateOfBirth, Role)
+    (Username, Password, FirstName, LastName, DateOfBirth, ProfilePic, Role)
 VALUES
-    ( 'test', '${testpass}', 'Testing', 'Tester', '2000-11-11', 'user' ),
-    ( 'test2', '${test2pass}', 'Another', 'Tester', '2000-10-20', 'user' ),
-    ( 'hspasov', '${hspasovpass}', 'Hristo', 'Spasov', '1999-12-09', 'user' ),
-    ( 'radito3', '${radito3pass}', 'Rangel', 'Ivanov', '1999-12-27', 'user' ),
-    ( 'santa', '${santapass}', 'Santa', 'Claus', '1817-01-01', 'user' ),
-    ( 'dont', '${dontpass}', 'Donald', 'Trump', '1954-03-08', 'user' ),
-    ( 'admin', '${adminPass}', 'Kiril', 'Mitov', '1985-04-15', 'admin');`;
+    ( 'test', '${testpass}', 'Testing', 'Tester', '2000-11-11', '/images/No_picture_icon_2.jpg', 'user' ),
+    ( 'test2', '${test2pass}', 'Another', 'Tester', '2000-10-20', '/images/No_picture_icon_2.jpg', 'user' ),
+    ( 'hspasov', '${hspasovpass}', 'Hristo', 'Spasov', '1999-12-09', '/images/No_picture_icon_2.jpg', 'user' ),
+    ( 'radito3', '${radito3pass}', 'Rangel', 'Ivanov', '1999-12-27', '/images/No_picture_icon_2.jpg', 'user' ),
+    ( 'santa', '${santapass}', 'Santa', 'Claus', '1817-01-01', '/images/No_picture_icon_2.jpg', 'user' ),
+    ( 'dont', '${dontpass}', 'Donald', 'Trump', '1954-03-08', '/images/No_picture_icon_2.jpg', 'user' ),
+    ( 'admin', '${adminPass}', 'Kiril', 'Mitov', '1985-04-15', '/images/No_picture_icon_2.jpg', 'admin');`;
 connection.query(insertUsers, err => {
     if (err) throw err;
     console.log("Inserted users");

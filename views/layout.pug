@@ -61,13 +61,34 @@ html
       $('#datetimepicker').datetimepicker({
         format: 'Y-m-d H:i'
       });
+
       $('#datepicker').datepicker({
         dateFormat: 'yy-mm-dd'
       });
+      
       $('#return-ticket-modal').on('show.bs.modal', e => {
-      var projectionId = $(e.relatedTarget).data('projectionid');
-      $('.modal-footer').html(`
-          <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-          <button type="button" onclick="returnTicket(${projectionId})" class="btn btn-danger">Yes</button>
-        `);
+        var projectionId = $(e.relatedTarget).data('projectionid');
+        $('.modal-footer').html(`
+            <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+            <button type="button" onclick="returnTicket(${projectionId})" class="btn btn-danger">Yes</button>
+          `);
+      });
+
+      $(function() {
+        $("#upload-img").on("change", function()
+        {
+          var files = !!this.files ? this.files : [];
+            if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
+    
+            if (/^image/.test( files[0].type)){ // only image file
+              console.log("super");
+              var reader = new FileReader(); // instance of the FileReader
+              reader.readAsDataURL(files[0]); // read the local file
+    
+              reader.onload = function(e) { // set image data as background of div
+                
+                $("#img-preview-block").attr('src', e.target.result);
+              }
+            }
+        });
       });

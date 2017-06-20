@@ -32,14 +32,15 @@ ExpressJS, pugJS, Bootstrap and MySQL.
 
 ## Database tables
 ### Users
-| Column      | Data type   | Constraints           |
-|:-----------:|:-----------:|:---------------------:|
-| Username    | VARCHAR(15) | NOT NULL, PRIMARY KEY |
-| Password    | VARCHAR(60) | NOT NULL              |
-| FirstName   | VARCHAR(30) | NOT NULL              |
-| LastName    | VARCHAR(30) | NOT NULL              |
-| DateOfBirth | DATE        | NOT NULL              |
-| Role        | VARCHAR(20) | NOT NULL              |
+| Column      | Data type    | Constraints           |
+|:-----------:|:------------:|:---------------------:|
+| Username    | VARCHAR(15)  | NOT NULL, PRIMARY KEY |
+| Password    | VARCHAR(60)  | NOT NULL              |
+| FirstName   | VARCHAR(30)  | NOT NULL              |
+| LastName    | VARCHAR(30)  | NOT NULL              |
+| DateOfBirth | DATE         | NOT NULL              |
+| ProfilePic  | VARCHAR(255) | NOT NULL              |
+| Role        | VARCHAR(20)  | NOT NULL              |
 
 ### Movies
 | Column              | Data type    | Constraints           |
