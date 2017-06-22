@@ -28,8 +28,8 @@ figure {
   text-align: center;
 }
 
-.carousel .item.left img{
-    width: 100% !important;
+.carousel .item img{
+    height: 500px !important;
 }
 
 #carousel-example-generic {

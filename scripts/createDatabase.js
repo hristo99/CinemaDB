@@ -95,13 +95,13 @@ var adminPass = bcrypt.hashSync('adminPass', null, null);
 var insertUsers = `INSERT INTO Users 
     (Username, Password, FirstName, LastName, DateOfBirth, ProfilePic, Role)
 VALUES
-    ( 'test', '${testpass}', 'Testing', 'Tester', '2000-11-11', '/images/No_picture_icon_2.jpg', 'user' ),
+    ( 'test', '${testpass}', 'Testing', 'Tester', '2000-11-11', '/images/facebook-default--profile-pic.jpg', 'user' ),
     ( 'test2', '${test2pass}', 'Another', 'Tester', '2000-10-20', '/images/No_picture_icon_2.jpg', 'user' ),
     ( 'hspasov', '${hspasovpass}', 'Hristo', 'Spasov', '1999-12-09', '/images/No_picture_icon_2.jpg', 'user' ),
     ( 'radito3', '${radito3pass}', 'Rangel', 'Ivanov', '1999-12-27', '/images/No_picture_icon_2.jpg', 'user' ),
     ( 'santa', '${santapass}', 'Santa', 'Claus', '1817-01-01', '/images/No_picture_icon_2.jpg', 'user' ),
     ( 'dont', '${dontpass}', 'Donald', 'Trump', '1954-03-08', '/images/No_picture_icon_2.jpg', 'user' ),
-    ( 'admin', '${adminPass}', 'Kiril', 'Mitov', '1985-04-15', '/images/No_picture_icon_2.jpg', 'admin');`;
+    ( 'admin', '${adminPass}', 'Admin', 'Admin', '1985-04-15', '/images/admin.jpg', 'admin');`;
 connection.query(insertUsers, err => {
     if (err) throw err;
     console.log("Inserted users");
@@ -110,13 +110,13 @@ connection.query(insertUsers, err => {
 var insertMovies = `INSERT INTO Movies
     (Title, Image, AgeRestriction, Premiere, Description, Length)
 VALUES
-    ( 'Pirates of the Carribean', '/images/519539-085_Movie-512.png', 18, '2017-04-04', 'Sample Description', 120 ),
+    ( 'Pirates of the Carribean', '/images/Pirates-Of-The-Caribbean-Wallpapers-On-Stranger-Tides-1920x1200-4.jpg', 13, '2011-05-20', 'Jack Sparrow and Barbossa embark on a quest to find the elusive fountain of youth, only to discover that Blackbeard and his daughter are after it too.', 136 ),
     ( 'Sample Movie Name', '/images/519539-085_Movie-512.png', 0, '2017-06-01', 'Sample Description', 100 ),
-    ( 'Finding Dory', '/images/519539-085_Movie-512.png', 0, '2016-07-21', 'Sample Description', 83 ),
-    ( 'The Changeling', '/images/519539-085_Movie-512.png', 12, '2017-01-03', 'Sample Description', 141 ),
-    ( 'Black Swan', '/images/519539-085_Movie-512.png', 16, '2016-10-05', 'Sample Description', 135 ),
-    ( 'Star Wars', '/images/519539-085_Movie-512.png', 0, '2017-11-30', 'Sample Description', 152 ),
-    ( 'The Dictator', '/images/519539-085_Movie-512.png', 12, '2015-09-04', 'Sample Description', 93 );`;
+    ( 'Finding Dory', '/images/finding-dory-wallpaper-movie-poster-nemo.jpg', 0, '2016-06-17', 'The friendly but forgetful blue tang fish, Dory, begins a search for her long-lost parents, and everyone learns a few things about the real meaning of family along the way.', 97 ),
+    ( 'Changeling', '/images/Changeling.jpg', 12, '2008-10-31', 'A grief-stricken mother takes on the LAPD to her own detriment when it stubbornly tries to pass off an obvious impostor as her missing child, while also refusing to give up hope that she will find him one day.', 141 ),
+    ( 'Black Swan', '/images/natalie-portman-in-black-swan_083878.jpg', 16, '2010-12-17', 'A committed dancer wins the lead role in a production of Tchaikovskys "Swan Lake" only to find herself struggling to maintain her sanity.', 108 ),
+    ( 'Star Wars', '/images/Star-Wars-2.jpg', 13, '2015-12-18', 'Three decades after the Empires defeat, a new threat arises in the militant First Order. Stormtrooper defector Finn and spare parts scavenger Rey are caught up in the Resistances search for the missing Luke Skywalker.', 136 ),
+    ( 'The Dictator', '/images/The-Dictator.jpg', 16, '2012-05-16', 'The heroic story of a dictator who risked his life to ensure that democracy would never come to the country he so lovingly oppressed.', 83 );`;
 connection.query(insertMovies, err => {
     if (err) throw err;
     console.log("Inserted movies");
