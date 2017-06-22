@@ -11,7 +11,7 @@ router.get('/:projectionId/buyTicket', securityCheck.isLoggedIn, (req, res) => {
 				console.log(err);
 				res.status(500).send('Internal Server Error');
 			} else if (rows.length) {
-				res.send("You've already bought ticket for this projection!");
+				res.redirect('/boughtTickets');
 			} else {
 				var insertProjectionViewer = `INSERT INTO ProjectionViewers
 					(ProjectionId, Username)
@@ -25,8 +25,7 @@ router.get('/:projectionId/buyTicket', securityCheck.isLoggedIn, (req, res) => {
 							console.log(err);
 							res.status(500).send('Internal Server Error');
 						}
-						console.log("Inserted Projection Viewer");
-						res.status(201).send('Successfully bought a ticket');
+						res.status(201).redirect('/boughtTickets');
 					}
 				);
 			}
@@ -54,7 +53,7 @@ router.get('/:projectionId/returnTicket', securityCheck.isLoggedIn, (req, res) =
 							console.log(err);
 							res.status(500).send('Internal Server Error');
 						}
-						res.status(200).send('Successfully returned a ticket');
+						res.status(200).redirect('/boughtTickets');
 					}
 				);
 			}
@@ -113,7 +112,7 @@ router.post('/:projectionId/edit', securityCheck.isAdmin, (req, res) => {
 							console.log(err);
 							res.status(500).send('Internal Server Error');
 						} else {
-							res.status(201).send('Successfully updated projection');
+							res.status(201).redirect(`/projections/${req.params.projectionId}`);
 						}
 					}
 				);
@@ -135,6 +134,7 @@ router.get('/:projectionId/remove', securityCheck.isAdmin, (req, res) => {
 			} else if (rows.length == 0) {
 				res.status(204).send('No projection found');
 			} else {
+				var movieId = rows[0].MovieId;
 				var removeProjection = `DELETE FROM Projections
 					WHERE Id = ?;`;
 				db.query(
@@ -145,7 +145,7 @@ router.get('/:projectionId/remove', securityCheck.isAdmin, (req, res) => {
 							console.log(err);
 							res.status(500).send('Internal Server Error');
 						}
-						res.status(200).send('Successfully removed a projection');
+						res.status(200).redirect(`/movies/${movieId}`);
 					}
 				);
 			}

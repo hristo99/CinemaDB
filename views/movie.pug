@@ -66,6 +66,10 @@ block content
                         button.btn.btn-default(type='button' data-toggle='modal' data-target='#buy-ticket-modal' data-projectionId=`${projection.Id}`)
                           i.glyphicon.glyphicon-share-alt
                           | Buy Ticket
+                        if user && user.Role == 'admin'
+                          button.btn.btn-danger(type='button' data-toggle='modal' data-target='#remove-projection-modal' data-projectionId=`${projection.Id}`)
+                            i.glyphicon.glyphicon-remove
+                            | Remove projection
           else
             | Sorry, no upcoming projections
 
@@ -83,6 +87,13 @@ block content
       .modal-footer
         button.btn.btn-default(type='button' data-dismiss='modal') Cancel
         button.btn.btn-danger(onClick=`deleteMovie(${movie.MovieId})`) Yes
+
+  #remove-projection-modal.modal.fade
+    .modal-dialog
+      .modal-body
+        p Are you sure you want to delete a projection?
+      .modal-footer
+        button.btn.btn-default(type='button' data-dismiss='modal') Cancel
 
   script(type='text/javascript').
     function buyTicket(id) {

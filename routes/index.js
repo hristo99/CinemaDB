@@ -9,8 +9,6 @@ router.get('/', (req, res) => {
 		if (err) {
 			console.log(err);
 			res.status(500).send('Internal Server Error');
-		} else if (results.length == 0) {
-			res.status(204).send('No movies found');
 		} else {
 			res.render('index', {movies:results, user:req.user});
 		}
@@ -81,8 +79,6 @@ router.get('/boughtTickets', securityCheck.isLoggedIn, (req, res) => {
 			if (err) {
 				console.log(err);
 				res.status(500).send('Internal Server Error');
-			} else if (results.length == 0) {
-				res.status(204).send('No bought tickets found');
 			} else {
 				res.render('boughtTickets', {projections: results, user:req.user});
 			}

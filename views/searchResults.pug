@@ -20,9 +20,10 @@ block content
                 p.list-group-item-text
                   | #{movie.Description}
               .col-md-3.text-center
-                h2
-                  | #{movie.Views}
-                  small  views
+                if pageTitle == 'Hottest Movies'
+                    h2
+                    | #{movie.Views}
+                    small  views
                 button.btn.btn-primary.btn-lg.btn-block(type='button' onClick=`openMovie(${movie.Id})`) 
                   i.glyphicon.glyphicon-eye-open
                   | See more

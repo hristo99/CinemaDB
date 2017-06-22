@@ -28,8 +28,6 @@ router.get('/search', (req, res) => {
             if (err) {
                 console.log(err);
                 res.status(500).send('Internal Server Error');
-            } else if (results.length == 0) {
-                res.status(404).send('Sorry, no movies found');
             } else {
                 res.render('searchResults', {movies:results, user:req.user, pageTitle:'Search Results'});
             }
@@ -48,9 +46,6 @@ router.get('/hottest', (req, res) => {
     if (err) {
         console.log(err);
         res.status(500).send('Internal Server Error');
-    } else if (results.length == 0) {
-        console.log(results);
-        res.status(204).send('No movies found');
     } else {
         res.render('searchResults', {movies:results, user:req.user, pageTitle:'Hottest Movies'});
     }
@@ -79,13 +74,13 @@ router.post('/add', securityCheck.isAdmin, (req, res) => {
             req.body.description,
             req.body.length
         ],
-        err => {
+        (err, result) => {
             if (err) {
                 console.log(err);
                 res.status(500).send('Internal Server Error');
+            } else {
+                res.status(201).redirect(`/movies/${result.insertId}`);
             }
-            console.log("Inserted Movie!");
-            res.status(201).send('Movie added');
         }
     );
 });
@@ -182,12 +177,13 @@ router.post('/:movieId/edit', securityCheck.isAdmin, (req, res) => {
                         length,
                         req.params.movieId
                     ],
-                    err => {
+                    (err, result) => {
                         if (err) {
                             console.log(err);
                             rest.status(500).send('Internal Server Error');
                         } else {
-                            res.status(201).send('Successfully updated movie');
+                            console.log(result);
+                            res.status(201).redirect(`/movies/${req.params.movieId}`);
                         }
                     }
                 );
@@ -213,12 +209,13 @@ router.get('/:movieId/remove', securityCheck.isAdmin, (req, res) => {
             db.query(
                 removeMovie,
                 [req.params.movieId],
-                err => {
+                (err, result) => {
                     if (err) {
                         console.log(err);
                         res.status(500).send('Internal Server Error');
+                    } else {
+                        res.redirect('/');
                     }
-                    res.status(200).send('Successfuly removed Movie');
                 }
             );
         }
@@ -264,8 +261,7 @@ router.post('/:movieId/addProjection', securityCheck.isAdmin, (req, res) => {
                 console.log(err);
                 res.status(500).send('Internal Server Error');
             } else {
-                console.log("Inserted projection!");
-                res.status(201).send('Projection added');
+                res.status(201).redirect(`/movies/${req.params.movieId}`);
             }
         }
     );
