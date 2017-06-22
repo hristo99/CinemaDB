@@ -27,9 +27,9 @@ html
                   a(href='/movies/add') Add movie
             li
               a(href='/movies/hottest') Hottest Movies
-          form.navbar-form.navbar-left
+          form.navbar-form.navbar-left(method='GET' action='/movies/search')
             .form-group
-              input.form-control(type='text', placeholder='Search')
+              input.form-control(method='GET' type='text' name='movie' placeholder='Search name')
             button.btn.btn-default(type='submit') Submit
           ul.nav.navbar-nav.navbar-right
             if !user

@@ -17,21 +17,23 @@ block content
             .carousel-inner(role="listbox")
               .item.active
                 .img-thumbnail
-                  img.img-responsive(src=`${movies[0].Image}`)
-                  |       
-                  .carousel-caption
-                    h2
-                      | #{movies[0].Title}
-                  |
-              each movie in movies
-                .item
-                  .img-thumbnail
-                    img.img-responsive(src=`${movie.Image}`)
+                  a(href=`/movies/${movies[0].Id}`)
+                    img.img-responsive(src=`${movies[0].Image}`)
                     |       
                     .carousel-caption
                       h2
-                        | #{movie.Title}
+                        | #{movies[0].Title}
                     |
+              each movie in movies
+                .item
+                  .img-thumbnail
+                    a(href=`/movies/${movie.Id}`)
+                      img.img-responsive(src=`${movie.Image}`)
+                      |
+                      .carousel-caption
+                        h2
+                          | #{movie.Title}
+                      |
             a.left.carousel-control(data-target="#carousel-example-generic", role="button", data-slide="prev")
               span.glyphicon.glyphicon-chevron-left(aria-hidden="true")
               |     

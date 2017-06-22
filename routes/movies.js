@@ -18,6 +18,25 @@ router.get('/', (req, res) => {
     })
 });
 
+router.get('/search', (req, res) => {
+    var db = req.db;
+    var findMovie = "SELECT * FROM Movies WHERE Title = ?";
+    db.query(
+        findMovie,
+        [req.query.movie],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Internal Server Error');
+            } else if (results.length == 0) {
+                res.status(404).send('Sorry, no movies found');
+            } else {
+                res.render('searchResults', {movies:results, user:req.user, pageTitle:'Search Results'});
+            }
+        }
+    );
+});
+
 router.get('/hottest', (req, res) => {
     var db = req.db;
     var getHottestMovies = `SELECT Movies.Id, Movies.Title, Movies.Image, Movies.Description,
@@ -33,7 +52,7 @@ router.get('/hottest', (req, res) => {
         console.log(results);
         res.status(204).send('No movies found');
     } else {
-        res.render('hottestMovies', {movies:results, user:req.user});
+        res.render('searchResults', {movies:results, user:req.user, pageTitle:'Hottest Movies'});
     }
     })
 });
