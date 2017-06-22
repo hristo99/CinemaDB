@@ -27,3 +27,7 @@ a.list-group-item.active small {
 figure {
   text-align: center;
 }
+
+.carousel .item.left img{
+    width: 100% !important;
+}

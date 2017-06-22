@@ -11,23 +11,27 @@ block content
         .row
           #carousel-example-generic.carousel.slide(data-ride="carousel")
             ol.carousel-indicators
-              each index in Array.from(new Array(10), (x,i) => i+1)
+              each index in Array.from(new Array(10), (x,i) => i)
                 li.active(data-target="#carousel-example-generic", data-slide-to=`${index}`)
                 |
             .carousel-inner(role="listbox")
               .item.active
-                img(src=`${movies[0].Image}`)
-                |       
-                .carousel-caption
-                  | #{movies[0].Title}
-                |
-              each movie in movies     
-                .item
-                  img(src=`${movie.Image}`)
+                .img-thumbnail
+                  img.img-responsive(src=`${movies[0].Image}`)
                   |       
                   .carousel-caption
-                    | #{movie.Title}
-                |
+                    h2
+                      | #{movies[0].Title}
+                  |
+              each movie in movies
+                .item
+                  .img-thumbnail
+                    img.img-responsive(src=`${movie.Image}`)
+                    |       
+                    .carousel-caption
+                      h2
+                        | #{movie.Title}
+                    |
             a.left.carousel-control(data-target="#carousel-example-generic", role="button", data-slide="prev")
               span.glyphicon.glyphicon-chevron-left(aria-hidden="true")
               |     
