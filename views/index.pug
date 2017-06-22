@@ -1,11 +1,39 @@
 extends layout
 
 block content
-  h1= CinemaDB
-  p Top 10 Newest Movies
-  ul
-    each movie in movies
-      li #{movie.Title}
-      li Age Restriction #{movie.AgeRestriction}
-      li Length #{movie.Length}
-      li 
+  .row
+    .panel-body
+      .col-md-12
+        .row
+          .lead
+            | Featured Movies
+            hr
+        .row
+          #carousel-example-generic.carousel.slide(data-ride="carousel")
+            ol.carousel-indicators
+              each index in Array.from(new Array(10), (x,i) => i+1)
+                li.active(data-target="#carousel-example-generic", data-slide-to=`${index}`)
+                |
+            .carousel-inner(role="listbox")
+              .item.active
+                img(src=`${movies[0].Image}`)
+                |       
+                .carousel-caption
+                  | #{movies[0].Title}
+                |
+              each movie in movies     
+                .item
+                  img(src=`${movie.Image}`)
+                  |       
+                  .carousel-caption
+                    | #{movie.Title}
+                |
+            a.left.carousel-control(data-target="#carousel-example-generic", role="button", data-slide="prev")
+              span.glyphicon.glyphicon-chevron-left(aria-hidden="true")
+              |     
+              span.sr-only Previous
+            |   
+            a.right.carousel-control(data-target="#carousel-example-generic", role="button", data-slide="next")
+              span.glyphicon.glyphicon-chevron-right(aria-hidden="true")
+              |     
+              span.sr-only Next
