@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var securityCheck = require('./../modules/securityCheck.js');
+var age = require('./../modules/age.js');
 var bcrypt = require('bcrypt-nodejs');
 
 router.get('/', securityCheck.isLoggedIn, (req, res) => {
-    var userAge = Math.floor((Date.now() - req.user.DateOfBirth)/(1000*60*60*24*365.25));
+    var userAge = age.calculate(req.user.DateOfBirth);
     res.render('profile', {
         user : req.user,
         userAge: userAge
@@ -36,7 +37,7 @@ router.post('/settings', securityCheck.isLoggedIn, (req, res) => {
                 var dateOfBirth = (req.body.dateOfBirth) ?
                     req.body.dateOfBirth : result[0].DateOfBirth;
                 
-                // store profilePics in /public/images, very ugly, but for now it works
+                // store profilePics in /public/uploads, very ugly, but for now it works
                 var profilePic = (req.files.length) ?
                     `/uploads/${req.files[0].filename}` : result[0].ProfilePic;
 

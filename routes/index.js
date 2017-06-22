@@ -57,7 +57,7 @@ router.get('/users', securityCheck.isAdmin, (req, res) => {
 		console.log(err);
 		res.status(500).send('Internal Server Error');
 	} else{
-		res.render('user', { title: "List of All Users",
+		res.render('users', { title: "List of All Users",
 								users:results, user:req.user});
 	}
 	})
