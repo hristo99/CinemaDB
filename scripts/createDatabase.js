@@ -1,8 +1,8 @@
-var mysql = require('mysql');
-var bcrypt = require('bcrypt-nodejs');
-var dbconfig = require('../config/database');
+const mysql = require('mysql');
+const bcrypt = require('bcrypt-nodejs');
+const dbconfig = require('../config/database');
 
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
   host : dbconfig.connection.host,
   user: dbconfig.connection.user,
   password: dbconfig.connection.password
@@ -23,8 +23,8 @@ connection.query(`USE ${dbconfig.database};`, err => {
     console.log(`Using ${dbconfig.database}`);
 });
 
-var createTableUsers = `CREATE TABLE Users (
-Username VARCHAR(15) NOT NULL PRIMARY KEY,
+const createTableUsers = `CREATE TABLE Users (
+Username VARCHAR(30) NOT NULL PRIMARY KEY,
 Password VARCHAR(60) NOT NULL,
 FirstName VARCHAR(30) NOT NULL,
 LastName VARCHAR(30) NOT NULL,
@@ -37,47 +37,138 @@ connection.query(createTableUsers, err => {
     console.log("Created Users table");
 });
 
-var createTableMovies = `CREATE TABLE Movies (
+const createTableMovies = `CREATE TABLE Movies (
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
 Title VARCHAR(100) NOT NULL,
 Image VARCHAR(255) NOT NULL,
 AgeRestriction INTEGER NOT NULL,
 Premiere DATE NOT NULL,
 Description VARCHAR(1000) NOT NULL,
-Length INTEGER NOT NULL
+Language VARCHAR(30) NOT NULL,
+Length INTEGER NOT NULL,
+Trailer VARCHAR(60)
 );`;
 connection.query(createTableMovies, err => {
     if (err) throw err;
     console.log("Created Movies table");
 });
 
-var createTableHalls = `CREATE TABLE Halls (
+const createTableCountries = `CREATE TABLE Countries(
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
-Seats INTEGER NOT NULL
+Name VARCHAR(60) NOT NULL
+);`;
+connection.query(createTableCountries, err => {
+    if (err) throw err;
+    console.log("Created Countries table");
+});
+
+const createTableCities = `CREATE TABLE Cities(
+Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+Name VARCHAR(100) NOT NULL,
+CountryId INTEGER NOT NULL,
+FOREIGN KEY(CountryId) REFERENCES Countries(Id)
+);`;
+connection.query(createTableCities, err => {
+    if (err) throw err;
+    console.log("Created Cities table");
+});
+
+const createTableCinemaAddresses = `CREATE TABLE CinemaAddresses(
+Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+CityId INTEGER NOT NULL,
+FullAddress VARCHAR(100),
+FOREIGN KEY(CityId) REFERENCES Cities(Id)
+);`;
+connection.query(createTableCinemaAddresses, err => {
+    if (err) throw err;
+    console.log("Created CinemaAddresses table");
+});
+
+const createTableCinemas = `CREATE TABLE Cinemas (
+Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+Name VARCHAR(30) NOT NULL,
+AddressId INTEGER NOT NULL,
+FOREIGN KEY(AddressId) REFERENCES CinemaAddresses(Id)
+);`;
+connection.query(createTableCinemas, err => {
+    if (err) throw err;
+    console.log("Created Cinemas table");
+});
+
+const createTableHalls = `CREATE TABLE Halls (
+Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+CinemaId INTEGER NOT NULL,
+FOREIGN KEY(CinemaId) REFERENCES Cinemas(Id) ON DELETE CASCADE
 );`;
 connection.query(createTableHalls, err => {
     if (err) throw err;
     console.log("Created Halls table");
 });
 
-var createTableProjections = `CREATE TABLE Projections (
+const createTablePriceCategories = `CREATE TABLE PriceCategories(
+Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+Regular DECIMAL NOT NULL,
+Reduced DECIMAL NOT NULL
+);`;
+connection.query(createTablePriceCategories, err => {
+    if (err) throw err;
+    console.log("Created PriceCategories table");
+});
+
+const createTableProjections = `CREATE TABLE Projections (
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
 MovieId INTEGER NOT NULL,
 HallId INTEGER NOT NULL,
 StartTime DATETIME NOT NULL,
+VideoFormat VARCHAR(15),
+Translation VARCHAR(15),
+PriceCategoryId INTEGER,
 FOREIGN KEY(MovieId) REFERENCES Movies(Id) ON DELETE CASCADE,
-FOREIGN KEY(HallId) REFERENCES Halls(Id)
+FOREIGN KEY(HallId) REFERENCES Halls(Id) ON DELETE CASCADE,
+FOREIGN KEY(PriceCategoryId) REFERENCES PriceCategories(Id)
 );`;
 connection.query(createTableProjections, err => {
     if (err) throw err;
     console.log("Created Projections table");
 });
 
-var createTableProjectionViewers = `CREATE TABLE ProjectionViewers (
+const createTableViewersGroups = `CREATE TABLE ViewersGroups (
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
 ProjectionId INTEGER NOT NULL,
-Username VARCHAR(15) NOT NULL,
-FOREIGN KEY(ProjectionId) REFERENCES Projections(Id) ON DELETE CASCADE,
+FOREIGN KEY(ProjectionId) REFERENCES Projections(Id) ON DELETE CASCADE
+);`;
+connection.query(createTableViewersGroups, err => {
+    if (err) throw err;
+    console.log("Created ViewersGroups table");
+});
+
+const createTableGenres = `CREATE TABLE Genres (
+Name VARCHAR(30) NOT NULL PRIMARY KEY,
+Description VARCHAR(200)
+);`;
+connection.query(createTableGenres, err => {
+    if (err) throw err;
+    console.log("Created Genres table");
+});
+
+const createTableMovieGenres = `CREATE TABLE MovieGenres (
+Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+MovieId INTEGER NOT NULL,
+GenreName VARCHAR(30) NOT NULL,
+FOREIGN KEY(GenreName) REFERENCES Genres(Name)
+);`;
+connection.query(createTableMovieGenres, err => {
+    if (err) throw err;
+    console.log("Created MovieGenres table");
+});
+
+const createTableProjectionViewers = `CREATE TABLE ProjectionViewers (
+Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+Username VARCHAR(30) NOT NULL,
+Row INTEGER NOT NULL,
+Position INTEGER NOT NULL,
+ViewersGroupId INTEGER NOT NULL,
+FOREIGN KEY(ViewersGroupId) REFERENCES ViewersGroups(Id) ON DELETE CASCADE,
 FOREIGN KEY(Username) REFERENCES Users(Username) ON DELETE CASCADE
 );`;
 connection.query(createTableProjectionViewers, err => {
@@ -85,14 +176,77 @@ connection.query(createTableProjectionViewers, err => {
     console.log("Created ProjectionViewers table");
 });
 
-var testpass = bcrypt.hashSync('test', null, null);
-var test2pass = bcrypt.hashSync('test2', null, null);
-var hspasovpass = bcrypt.hashSync('1234567890', null , null);
-var radito3pass = bcrypt.hashSync('0987654321', null, null);
-var santapass = bcrypt.hashSync('northpole', null, null);
-var dontpass = bcrypt.hashSync('123456', null, null);
-var adminPass = bcrypt.hashSync('adminPass', null, null);
-var insertUsers = `INSERT INTO Users 
+const createTableComments = `CREATE TABLE Comments (
+Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+MovieId INTEGER NOT NULL,
+Username VARCHAR(30) NOT NULL,
+Text VARCHAR(500) NOT NULL,
+Date DATETIME NOT NULL,
+FOREIGN KEY(MovieId) REFERENCES Movies(Id) ON DELETE CASCADE,
+FOREIGN KEY(Username) REFERENCES Users(Username) ON DELETE CASCADE
+);`;
+connection.query(createTableComments, err => {
+    if (err) throw err;
+    console.log("Created Comments table");
+});
+
+const createTableSeats = `CREATE TABLE Seats(
+Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+HallId INTEGER NOT NULL,
+Row INTEGER NOT NULL,
+Position INTEGER NOT NULL,
+FOREIGN KEY(HallId) REFERENCES Halls(Id) ON DELETE CASCADE
+);`;
+connection.query(createTableSeats, err => {
+    if (err) throw err;
+    console.log("Created Seats table");
+});
+
+const createTableNotifications = `CREATE TABLE Notifications(
+Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+Username VARCHAR(30) NOT NULL,
+Information JSON NOT NULL,
+FOREIGN KEY(Username) REFERENCES Users(Username) ON DELETE CASCADE
+);`;
+connection.query(createTableNotifications, err => {
+    if (err) throw err;
+    console.log("Created Notifications table");
+});
+
+const createTableRatings = `CREATE TABLE Ratings(
+Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+Username VARCHAR(30) NOT NULL,
+MovieId INTEGER NOT NULL,
+Date DATETIME NOT NULL,
+Rating INTEGER NOT NULL,
+FOREIGN KEY(Username) REFERENCES Users(Username) ON DELETE CASCADE,
+FOREIGN KEY(MovieId) REFERENCES Movies(Id) ON DELETE CASCADE
+);`;
+connection.query(createTableRatings, err => {
+    if (err) throw err;
+    console.log("Created Ratings table");
+});
+
+const createUsersFriends = `CREATE TABLE UsersFriends(
+Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+Username VARCHAR(30) NOT NULL,
+FriendUsername VARCHAR(30) NOT NULL,
+FOREIGN KEY(Username) REFERENCES Users(Username) ON DELETE CASCADE,
+FOREIGN KEY(FriendUsername) REFERENCES Users(Username) ON DELETE CASCADE
+);`;
+connection.query(createUsersFriends, err => {
+    if (err) throw err;
+    console.log("Created UsersFriends table");
+});
+
+/*const testpass = bcrypt.hashSync('test', null, null);
+const test2pass = bcrypt.hashSync('test2', null, null);
+const hspasovpass = bcrypt.hashSync('1234567890', null , null);
+const radito3pass = bcrypt.hashSync('0987654321', null, null);
+const santapass = bcrypt.hashSync('northpole', null, null);
+const dontpass = bcrypt.hashSync('123456', null, null);
+const adminPass = bcrypt.hashSync('adminPass', null, null);
+const insertUsers = `INSERT INTO Users
     (Username, Password, FirstName, LastName, DateOfBirth, ProfilePic, Role)
 VALUES
     ( 'test', '${testpass}', 'Testing', 'Tester', '2000-11-11', '/images/facebook-default--profile-pic.jpg', 'user' ),
@@ -107,7 +261,7 @@ connection.query(insertUsers, err => {
     console.log("Inserted users");
 });
 
-var insertMovies = `INSERT INTO Movies
+const insertMovies = `INSERT INTO Movies
     (Title, Image, AgeRestriction, Premiere, Description, Length)
 VALUES
     ( 'Pirates of the Carribean', '/images/Pirates-Of-The-Caribbean-Wallpapers-On-Stranger-Tides-1920x1200-4.jpg', 13, '2011-05-20', 'Jack Sparrow and Barbossa embark on a quest to find the elusive fountain of youth, only to discover that Blackbeard and his daughter are after it too.', 136 ),
@@ -122,7 +276,7 @@ connection.query(insertMovies, err => {
     console.log("Inserted movies");
 });
 
-var insertHalls = `INSERT INTO Halls
+const insertHalls = `INSERT INTO Halls
     (Id, Seats)
 VALUES
     (1, 50),
@@ -135,7 +289,7 @@ connection.query(insertHalls, err => {
     console.log("Inserted halls");
 });
 
-var insertProjections = `INSERT INTO Projections
+const insertProjections = `INSERT INTO Projections
     (MovieId, HallId, StartTime)
 VALUES
     (1, 3, '2017-04-04 08:30:00'),
@@ -193,7 +347,7 @@ connection.query(insertProjections, err => {
     console.log("Inserted Projections");
 });
 
-var insertProjectionViewers = `INSERT INTO ProjectionViewers
+const insertProjectionViewers = `INSERT INTO ProjectionViewers
     (ProjectionId, Username)
 VALUES
     (46, 'test'),
@@ -233,6 +387,6 @@ VALUES
 connection.query(insertProjectionViewers, err => {
     if (err) throw err;
     console.log("Inserted ProjectionViewers");
-});
+});*/
 
 connection.end();
