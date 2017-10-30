@@ -24,7 +24,8 @@ connection.query(`USE ${dbconfig.database};`, err => {
 });
 
 const createTableUsers = `CREATE TABLE Users (
-Username VARCHAR(30) NOT NULL PRIMARY KEY,
+Id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+Username VARCHAR(30) NOT NULL,
 Password VARCHAR(60) NOT NULL,
 FirstName VARCHAR(30) NOT NULL,
 LastName VARCHAR(30) NOT NULL,
@@ -143,7 +144,8 @@ connection.query(createTableViewersGroups, err => {
 });
 
 const createTableGenres = `CREATE TABLE Genres (
-Name VARCHAR(30) NOT NULL PRIMARY KEY,
+Id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+Name VARCHAR(30) NOT NULL,
 Description VARCHAR(200)
 );`;
 connection.query(createTableGenres, err => {
@@ -154,8 +156,8 @@ connection.query(createTableGenres, err => {
 const createTableMovieGenres = `CREATE TABLE MovieGenres (
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
 MovieId INTEGER NOT NULL,
-GenreName VARCHAR(30) NOT NULL,
-FOREIGN KEY(GenreName) REFERENCES Genres(Name)
+GenreId INTEGER NOT NULL,
+FOREIGN KEY(GenreId) REFERENCES Genres(Id)
 );`;
 connection.query(createTableMovieGenres, err => {
     if (err) throw err;
@@ -164,12 +166,12 @@ connection.query(createTableMovieGenres, err => {
 
 const createTableProjectionViewers = `CREATE TABLE ProjectionViewers (
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
-Username VARCHAR(30) NOT NULL,
+UserId INTEGER NOT NULL,
 Row INTEGER NOT NULL,
 Position INTEGER NOT NULL,
 ViewersGroupId INTEGER NOT NULL,
 FOREIGN KEY(ViewersGroupId) REFERENCES ViewersGroups(Id) ON DELETE CASCADE,
-FOREIGN KEY(Username) REFERENCES Users(Username) ON DELETE CASCADE
+FOREIGN KEY(UserId) REFERENCES Users(Id) ON DELETE CASCADE
 );`;
 connection.query(createTableProjectionViewers, err => {
     if (err) throw err;
@@ -179,11 +181,11 @@ connection.query(createTableProjectionViewers, err => {
 const createTableComments = `CREATE TABLE Comments (
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
 MovieId INTEGER NOT NULL,
-Username VARCHAR(30) NOT NULL,
+UserId INTEGER NOT NULL,
 Text VARCHAR(500) NOT NULL,
 Date DATETIME NOT NULL,
 FOREIGN KEY(MovieId) REFERENCES Movies(Id) ON DELETE CASCADE,
-FOREIGN KEY(Username) REFERENCES Users(Username) ON DELETE CASCADE
+FOREIGN KEY(UserId) REFERENCES Users(Id) ON DELETE CASCADE
 );`;
 connection.query(createTableComments, err => {
     if (err) throw err;
@@ -202,11 +204,22 @@ connection.query(createTableSeats, err => {
     console.log("Created Seats table");
 });
 
+const createTableNotficationTypes = `CREATE TABLE NotificationTypes(
+Id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+Subject VARCHAR(30) NOT NULL
+);`;
+connection.query(createTableNotficationTypes, err => {
+    if (err) throw err;
+    console.log("Created NotificationTypes table");
+});
+
 const createTableNotifications = `CREATE TABLE Notifications(
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
-Username VARCHAR(30) NOT NULL,
+UserId INTEGER NOT NULL,
 Information JSON NOT NULL,
-FOREIGN KEY(Username) REFERENCES Users(Username) ON DELETE CASCADE
+TypeId INTEGER NOT NULL,
+FOREIGN KEY(UserId) REFERENCES Users(Id) ON DELETE CASCADE,
+FOREIGN KEY(TypeId) REFERENCES NotificationTypes(Id) ON DELETE CASCADE
 );`;
 connection.query(createTableNotifications, err => {
     if (err) throw err;
@@ -215,11 +228,11 @@ connection.query(createTableNotifications, err => {
 
 const createTableRatings = `CREATE TABLE Ratings(
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
-Username VARCHAR(30) NOT NULL,
+UserId INTEGER NOT NULL,
 MovieId INTEGER NOT NULL,
 Date DATETIME NOT NULL,
 Rating INTEGER NOT NULL,
-FOREIGN KEY(Username) REFERENCES Users(Username) ON DELETE CASCADE,
+FOREIGN KEY(UserId) REFERENCES Users(Id) ON DELETE CASCADE,
 FOREIGN KEY(MovieId) REFERENCES Movies(Id) ON DELETE CASCADE
 );`;
 connection.query(createTableRatings, err => {
@@ -229,10 +242,10 @@ connection.query(createTableRatings, err => {
 
 const createUsersFriends = `CREATE TABLE UsersFriends(
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
-Username VARCHAR(30) NOT NULL,
-FriendUsername VARCHAR(30) NOT NULL,
-FOREIGN KEY(Username) REFERENCES Users(Username) ON DELETE CASCADE,
-FOREIGN KEY(FriendUsername) REFERENCES Users(Username) ON DELETE CASCADE
+UserId INTEGER NOT NULL,
+FriendUserId INTEGER NOT NULL,
+FOREIGN KEY(UserId) REFERENCES Users(Id) ON DELETE CASCADE,
+FOREIGN KEY(FriendUserId) REFERENCES Users(Id) ON DELETE CASCADE
 );`;
 connection.query(createUsersFriends, err => {
     if (err) throw err;
