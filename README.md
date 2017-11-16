@@ -40,7 +40,7 @@ npm start
 ExpressJS, pugJS, Bootstrap and MySQL.
 
 ## Database tables
-Coming soon...
+Coming soon<sup>TM</sup>
 
 ## Contributors
 Hristo Spasov - hristo.b.spasov@gmail.com
