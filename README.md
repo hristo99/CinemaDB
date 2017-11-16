@@ -2,7 +2,16 @@
 A DB systems project
 
 ## Introduction
-CinemaDB is a web application for managing movies, projections and projection viewers in cinemas.
+CinemaDB is a web application for managing cinemas.
+
+## Description
+CinemaDB is a system for managing multiple cinemas in different countries and providing information to users.
+Users can get information about movies, cinemas and movie projections. They can add other users to their friend list and write messages to them. A notification system is available, so no one would accidentally miss a projection they bought tickets for. Users can also buy tickets for a projection for themselves and their friends. They can share their opinions about different movies by writing comments and rating them.
+
+There are also different types of administrators: system administrator, movies administrator and cinema administrator
+A cinema administrator can create, edit and delete a cinema, the halls in it, add movies and create projections. He can set the price of tickets for each projection. The cinema has a name and an address. The address information - country and a city, can be added if it doesn't exist.
+A movie administrator can create, edit and delete movies. Each movie has the following information: title, age restriction, movie length, language, description, film poster and genre.
+The system administrator has full control of the system. He is responsible for adding, editing and deleting the genres.
 
 ## Instruction Manual
 1. Make sure you have NodeJS installed and an active MySQL service is available.
@@ -31,46 +40,7 @@ npm start
 ExpressJS, pugJS, Bootstrap and MySQL.
 
 ## Database tables
-### Users
-| Column      | Data type    | Constraints           |
-|:-----------:|:------------:|:---------------------:|
-| Username    | VARCHAR(15)  | NOT NULL, PRIMARY KEY |
-| Password    | VARCHAR(60)  | NOT NULL              |
-| FirstName   | VARCHAR(30)  | NOT NULL              |
-| LastName    | VARCHAR(30)  | NOT NULL              |
-| DateOfBirth | DATE         | NOT NULL              |
-| ProfilePic  | VARCHAR(255) | NOT NULL              |
-| Role        | VARCHAR(20)  | NOT NULL              |
-
-### Movies
-| Column              | Data type    | Constraints           |
-|:-------------------:|:------------:|:---------------------:|
-| Id (AUTO_INCREMENT) | INTEGER      | NOT NULL, PRIMARY KEY |
-| Title               | VARCHAR(100) | NOT NULL              |
-| AgeRestriction      | INTEGER      | NOT NULL              |
-| Premiere            | DATE         | NOT NULL              |
-| Length              | INTEGER      | NOT NULL              |
-
-### Halls
-| Column              | Data type    | Constraints           |
-|:-------------------:|:------------:|:---------------------:|
-| Id                  | INTEGER      | NOT NULL, PRIMARY KEY |
-| Seats               | INTEGER      | NOT NULL              |
-
-### Projections
-| Column              | Data type    | Constraints                                 |
-|:-------------------:|:------------:|:-------------------------------------------:|
-| Id (AUTO_INCREMENT) | INTEGER      | NOT NULL, PRIMARY KEY                       |
-| MovieId             | INTEGER      | NOT NULL, FOREIGN KEY REFERENCES Movies(Id) |
-| HallId              | INTEGER      | NOT NULL, FOREIGN KEY REFERENCES Halls(Id)  |
-| StartTime           | DATETIME     | NOT NULL                                    |
-
-### ProjectionViewers
-| Column              | Data type    | Constraints                                      |
-|:-------------------:|:------------:|:------------------------------------------------:|
-| Id (AUTO_INCREMENT) | INTEGER      | NOT NULL, PRIMARY KEY                            |
-| ProjectionId        | INTEGER      | NOT NULL, FOREIGN KEY REFERENCES Projections(Id) |
-| Username            | VARCHAR(15)  | NOT NULL, FOREIGN KEY REFERENCES Users(Username) |
+Coming soon...
 
 ## Contributors
 Hristo Spasov - hristo.b.spasov@gmail.com
