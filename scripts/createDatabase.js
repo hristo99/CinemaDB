@@ -95,6 +95,18 @@ connection.query(createTableCinemas, err => {
     console.log("Created Cinemas table");
 });
 
+const createTableCinemaMovies = `CREATE TABLE CinemaMovies (
+    Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    CinemaId INTEGER NOT NULL,
+    MovieId INTEGER NOT NULL,
+    FOREIGN KEY(CinemaId) REFERENCES Cinemas(Id),
+    FOREIGN KEY(MovieId) REFERENCES Movies(Id)
+);`;
+connection.query(createTableCinemaMovies, err => {
+    if (err) throw err;
+    console.log("Created CinemaMovies table");
+})
+
 const createTableHalls = `CREATE TABLE Halls (
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
 CinemaId INTEGER NOT NULL,
@@ -340,6 +352,26 @@ VALUES
 connection.query(insertCinemas, err => {
     if (err) throw err;
     console.log("Inserted cinemas");
+});
+
+const insertCinemaMovies = `INSERT INTO CinemaMovies
+    (CinemaId, MovieId)
+VALUES
+    (1, 1),
+    (2, 1),
+    (3, 1),
+    (1, 2),
+    (1, 3),
+    (2, 3),
+    (3, 3),
+    (1, 4),
+    (2, 4),
+    (3, 4),
+    (1, 5),
+    (3, 7);`;
+connection.query(insertCinemaMovies, err => {
+    if (err) throw err;
+    console.log("Inserted cinema movies");
 });
 
 const insertHalls = `INSERT INTO Halls
