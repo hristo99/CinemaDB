@@ -136,6 +136,7 @@ connection.query(createTableProjections, err => {
 const createTableViewersGroups = `CREATE TABLE ViewersGroups (
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
 ProjectionId INTEGER NOT NULL,
+Date DATETIME NOT NULL,
 FOREIGN KEY(ProjectionId) REFERENCES Projections(Id) ON DELETE CASCADE
 );`;
 connection.query(createTableViewersGroups, err => {
@@ -411,12 +412,12 @@ connection.query(insertProjections, err => {
 });
 
 const insertViewerGroups = `INSERT INTO ViewersGroups
-    (ProjectionId)
+    (ProjectionId, Date)
 VALUES
-    (2),
-    (2),
-    (9),
-    (10);`;
+    (2, '2017-12-09 13:55:01'),
+    (2, '2017-12-10 12:09:01'),
+    (9, '2017-12-10 12:00:10'),
+    (10, '2017-12-08 11:42:17');`;
 connection.query(insertViewerGroups, err => {
     if (err) throw err;
     console.log("Inserted viewers groups");
@@ -476,7 +477,7 @@ VALUES
     (5, 2, 5, 2),
     (6, 1, 4, 3),
     (2, 2, 2, 4),
-    (2, 3, 2, 4);`;
+    (3, 3, 2, 4);`;
 connection.query(insertProjectionViewers, err => {
     if (err) throw err;
     console.log("Inserted projection viewers");
@@ -653,21 +654,63 @@ const insertNotificationTypes = `INSERT INTO NotificationTypes
 VALUES
     ('friend request'),
     ('projection reminder'),
-    ('viewers group request'),
-    ('viewers group info');`;
+    ('viewers group created'),
+    ('viewers group cancelled');`;
 connection.query(insertNotificationTypes, err => {
     if (err) throw err;
     console.log("Inserted notification types");
 });
 
-// const insertNotifications = `INSERT INTO Notifications
-//     (UserId, Information, TypeId, Date)
-// VALUES
-//     (1, '{"friendId": 3}', 1, '2017-11-13 18:00:00'),
-//     (1, '{"friendId": 5, ""}', 2, '2017-12-25 01:00:00');`;
-// connection.query(insertNotifications, err => {
-//     if (err) throw err;
-//     console.log("Inserted notifications");
-// });
+const insertNotifications = `INSERT INTO Notifications
+    (UserId, Information, TypeId, Date)
+VALUES
+    (1, '{"friend": "hspasov"}', 1, '2017-11-13 18:00:00'),
+    (1, '{"movie": "Pirates of the Carribean", "viewersgroup": ["test2", "hspasov", "radito3", "santa"]}', 2, '2017-12-10 13:50:00'),
+    (2, '{"movie": "Pirates of the Carribean", "viewersgroup": ["test", "hspasov", "radito3", "santa"]}', 2, '2017-12-10 13:50:00'),
+    (3, '{"movie": "Pirates of the Carribean", "viewersgroup": ["test", "test2", "radito3", "santa"]}', 2, '2017-12-10 13:50:00'),
+    (4, '{"movie": "Pirates of the Carribean", "viewersgroup": ["test", "hspasov", "test2", "santa"]}', 2, '2017-12-10 13:50:00'),
+    (5, '{"movie": "Pirates of the Carribean", "viewersgroup": ["test", "hspasov", "radito3", "test2"]}', 2, '2017-12-10 13:50:00'),
+    (3, '{"movie": "Pirates of the Carribean", "viewersgroup": ["test2"]}', 3, '2017-12-08 11:42:17'),
+    (2, '{"movie": "Pirates of the Carribean", "viewersgroup": ["test3"], "rejector": "test2"}', 4, '2017-12-08 12:02:16');`;
+connection.query(insertNotifications, err => {
+    if (err) throw err;
+    console.log("Inserted notifications");
+});
+
+const insertRatings = `INSERT INTO Ratings
+    (UserId, MovieId, Date, Rating)
+VALUES
+    (1, 1, '2017-12-15 18:55:01', 8),
+    (1, 3, '2017-12-25 18:25:21', 7),
+    (2, 7, '2017-12-15 10:01:09', 10),
+    (3, 2, '2017-12-07 11:32:12', 10),
+    (3, 3, '2017-12-01 18:05:18', 8),
+    (3, 6, '2017-12-13 15:45:06', 2),
+    (5, 6, '2017-12-11 05:55:01', 5),
+    (6, 7, '2018-01-07 20:29:59', 10);`;
+connection.query(insertRatings, err => {
+    if (err) throw err;
+    console.log("Inserted ratings");
+});
+
+const insertUserFriends = `INSERT INTO UsersFriends
+    (UserId, FriendUserId)
+VALUES
+    (1, 2),
+    (2, 1),
+    (1, 3),
+    (3, 1),
+    (2, 3),
+    (3, 4),
+    (4, 3),
+    (5, 1),
+    (5, 2),
+    (5, 3),
+    (5, 4),
+    (5, 6);`;
+connection.query(insertUserFriends, err => {
+    if (err) throw err;
+    console.log("Inserted user friends");
+});
 
 connection.end();
