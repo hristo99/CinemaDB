@@ -3,7 +3,7 @@ module.exports = {
         if (req.user && req.user.Role == 'admin') {
             return next();
         }
-        res.status(401).send('Not authorised');
+        res.status(401).send('Not authorized');
     },
     isLoggedIn(req, res, next) {
         if (req.isAuthenticated())
