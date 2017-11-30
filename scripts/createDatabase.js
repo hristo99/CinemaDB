@@ -170,7 +170,8 @@ const createTableMovieGenres = `CREATE TABLE MovieGenres (
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
 MovieId INTEGER NOT NULL,
 GenreId INTEGER NOT NULL,
-FOREIGN KEY(GenreId) REFERENCES Genres(Id)
+FOREIGN KEY(GenreId) REFERENCES Genres(Id) ON DELETE CASCADE,
+FOREIGN KEY(MovieId) REFERENCES Movies(Id) ON DELETE CASCADE
 );`;
 connection.query(createTableMovieGenres, err => {
     if (err) throw err;
