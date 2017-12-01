@@ -130,13 +130,13 @@ connection.query(createTablePriceCategories, err => {
 
 const createTableProjections = `CREATE TABLE Projections (
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
-MovieId INTEGER NOT NULL,
+CinemaMovieId INTEGER NOT NULL,
 HallId INTEGER NOT NULL,
 StartTime DATETIME NOT NULL,
 VideoFormat VARCHAR(15),
 Translation VARCHAR(15),
 PriceCategoryId INTEGER,
-FOREIGN KEY(MovieId) REFERENCES Movies(Id) ON DELETE CASCADE,
+FOREIGN KEY(CinemaMovieId) REFERENCES CinemaMovies(Id) ON DELETE CASCADE,
 FOREIGN KEY(HallId) REFERENCES Halls(Id) ON DELETE CASCADE,
 FOREIGN KEY(PriceCategoryId) REFERENCES PriceCategories(Id)
 );`;
