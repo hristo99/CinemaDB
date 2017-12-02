@@ -88,7 +88,9 @@ const createTableCinemas = `CREATE TABLE Cinemas (
 Id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
 Name VARCHAR(30) NOT NULL,
 AddressId INTEGER NOT NULL,
-FOREIGN KEY(AddressId) REFERENCES CinemaAddresses(Id)
+Admin INTEGER NOT NULL,
+FOREIGN KEY(AddressId) REFERENCES CinemaAddresses(Id),
+FOREIGN KEY(Admin) REFERENCES Users(Id)
 );`;
 connection.query(createTableCinemas, err => {
     if (err) throw err;
@@ -345,11 +347,11 @@ connection.query(insertCinemaAddresses, err => {
 });
 
 const insertCinemas = `INSERT INTO Cinemas
-    (Name, AddressId)
+    (Name, AddressId, Admin)
 VALUES
-    ( 'CinemaOne', 1 ),
-    ( 'CinemaTwo', 2 ),
-    ( 'CinemaThree', 3);`;
+    ( 'CinemaOne', 1, 1 ),
+    ( 'CinemaTwo', 2, 1 ),
+    ( 'CinemaThree', 3, 2);`;
 connection.query(insertCinemas, err => {
     if (err) throw err;
     console.log("Inserted cinemas");
