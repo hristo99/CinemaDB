@@ -1,4 +1,4 @@
-var mysql = require('mysql');
+var mysql = require('promise-mysql');
 var express = require('express');
 var session  = require('express-session');
 var path = require('path');
@@ -18,7 +18,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-var db = mysql.createConnection({
+var db = mysql.createPool({
   host : dbconfig.connection.host,
   user: dbconfig.connection.user,
   password: dbconfig.connection.password,

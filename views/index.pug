@@ -8,3 +8,37 @@ block content
           .lead
             | Featured Movies
             hr
+            each m in movies
+              li(onclick=`getMovieData(${m.Id})`) #{m.Title}
+              br
+            a(href='#' onclick='clickSomeKindOfALink()')
+              | Some kind of a link
+            input.form-control#socketId(type='text' placeholder='peer id')
+            input.form-control#socketInput(type="text" placeholder='message')
+            button#socketButton(onclick='sendMessage()')
+              | Send
+            p#receivedMessage
+              | sample
+            script(src='/socket.io/socket.io.js')
+            script(type='text/javascript').
+              var socket = io();
+
+              function clickSomeKindOfALink() {
+                socket.emit("someKindOfAClick", {impossible: "its impossible"});
+              }
+
+              socket.on("hello from the server side", () => {
+                console.log("server side");
+              });
+
+              function sendMessage() {
+                var peerId = document.getElementById("socketId").value;
+                var message = document.getElementById("socketInput").value;
+                socket.emit("sendMessage", peerId, message);
+              }
+
+              socket.on("sendMessage", message => {
+                console.log(message);
+                document.getElementById("receivedMessage").innerHTML = message;
+              });
+
