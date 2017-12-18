@@ -22,4 +22,8 @@ router.get('/:movieId', (req, res) => {
     
 });
 
+// router.get('/:movieId/edit', (req, res) => {
+
+// });
+
 module.exports = router;

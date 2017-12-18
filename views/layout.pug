@@ -22,7 +22,7 @@ html
               li
                 a(href='/boughtTickets')
                   | Bought Tickets
-              if user.Role == 'admin'
+              if user.Role == 'cinemaAdmin'
                 li
                   a(href='/movies/add') Add movie
             li
