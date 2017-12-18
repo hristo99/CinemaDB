@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  .row
+    .panel-body
+      .row
+        .col-md-12.lead
+          | Movie Info
+          hr
+      .row
+        .col-md-4.text-center
+          img.avatar.avatar-original.img-thumbnail(style='-webkit-user-select:none; \
+          display:block; margin:auto;', src=`${movie.Image}`)
+        .col-md-8
+          .row
+            .col-md-12
+              h1.only-bottom-margin #{movie.Title}
+          .row
+            .col-md-6
+              span.text-muted Length:
+              |  #{movie.Length}
+              br
+              span.text-muted Age Restriction:
+              |  #{movie.AgeRestriction}
+              br
+              span.text-muted Description:
+              | #{movie.Description}

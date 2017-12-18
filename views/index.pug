@@ -42,3 +42,7 @@ block content
                 document.getElementById("receivedMessage").innerHTML = message;
               });
 
+              function getMovieData(movieId) {
+                $(location).attr('href',`/movies/${movieId}`);
+              }
+
