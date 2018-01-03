@@ -22,14 +22,17 @@ html
               li
                 a(href='/boughtTickets')
                   | Bought Tickets
-              if user.Role == 'cinemaAdmin' || user.Role == 'movieAdmin' || user.Role == 'systemAdmin'
+              if user.Role == 'movieAdmin'
                 li
                   a(href='/movies/add') Add movie
-                  a(href='/movies')
+                  a(href='/movies') Movies
               if user.Role == 'systemAdmin'
                 li
                   a(href='/cinemas/add') Add Cinema 
                   a(href='/cinemas') Cinemas
+              if user.Role == 'cinemaAdmin'
+                li
+                  a(href='/movies') Movies
             li
               a(href='/movies/hottest') Hottest Movies
           form.navbar-form.navbar-left(method='GET' action='/movies/search')
@@ -44,14 +47,14 @@ html
                 a(href='/signup') Sign up
             if user
               li.dropdown
+                a Notification placeholder
+              li.dropdown
                 a.dropdown-toggle(data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
                   | #{user.FirstName} #{user.LastName}
                   span.caret
                 ul.dropdown-menu
                   li
                     a(href='/profile') View profile
-                  li
-                    a(href='/profile/settings') Profile settings
                   li.divider(role='separator')
                   li
                     a(href='/logout') Log out

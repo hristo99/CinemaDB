@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt-nodejs');
 const dbconfig = require('../config/database');
 
 const connection = mysql.createConnection({
-  host : dbconfig.connection.host,
+  host: dbconfig.connection.host,
   user: dbconfig.connection.user,
   password: dbconfig.connection.password
 });
@@ -349,9 +349,9 @@ connection.query(insertCinemaAddresses, err => {
 const insertCinemas = `INSERT INTO Cinemas
     (Name, AddressId, Admin)
 VALUES
-    ( 'CinemaOne', 1, 1 ),
-    ( 'CinemaTwo', 2, 1 ),
-    ( 'CinemaThree', 3, 2);`;
+    ( 'CinemaOne', 1, 9 ),
+    ( 'CinemaTwo', 2, 10 ),
+    ( 'CinemaThree', 3, 11);`;
 connection.query(insertCinemas, err => {
     if (err) throw err;
     console.log("Inserted cinemas");
