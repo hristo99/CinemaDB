@@ -22,9 +22,14 @@ html
               li
                 a(href='/boughtTickets')
                   | Bought Tickets
-              if user.Role == 'cinemaAdmin'
+              if user.Role == 'cinemaAdmin' || user.Role == 'movieAdmin' || user.Role == 'systemAdmin'
                 li
                   a(href='/movies/add') Add movie
+                  a(href='/movies')
+              if user.Role == 'systemAdmin'
+                li
+                  a(href='/cinemas/add') Add Cinema 
+                  a(href='/cinemas') Cinemas
             li
               a(href='/movies/hottest') Hottest Movies
           form.navbar-form.navbar-left(method='GET' action='/movies/search')
@@ -90,7 +95,7 @@ html
       });
 
       $(() => {
-        $('#upload-img').on('change', function() {
+        $('#upload-img').on('change', () => {
           var files = !!this.files ? this.files : [];
             if (!files.length || !window.FileReader) return;
             if (/^image/.test( files[0].type)){
@@ -103,4 +108,4 @@ html
         });
       });
 
-      $('.carousel').carousel()
+      $('.carousel').carousel();
