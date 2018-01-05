@@ -1,26 +1,32 @@
-module.exports = {
-    isLoggedIn(req, res, next) {
-        if (req.isAuthenticated()) {
-            return next();
-        }
-        res.redirect('/login');
-    },
-    isCinemaAdmin(req, res, next) {
-        if (req.user && req.user.Role == 'cinemaAdmin') {
-            return next();
-        }
-        res.status(401).send('Not authorized');
-    },
-    isMovieAdmin(req, res, next) {
-        if (req.user && req.user.Role == 'movieAdmin') {
-            return next();
-        }
-        res.status(401).send('Not authorized');
-    },
-    isSystemAdmin(req, res, next) {
-        if (req.user && req.user.Role == 'systemAdmin') {
-            return next();
-        }
-        res.status(401).send('Not authorized');
-    }
+function isLoggedIn(req) {
+    return req.isAuthenticated();
 }
+
+function isCinemaAdmin(req) {
+    return req.user && req.user.Role == 'cinemaAdmin';
+}
+
+function isMovieAdmin(req) {
+    return req.user && req.user.Role == 'movieAdmin';
+}
+
+function isSystemAdmin(req) {
+    return req.user && req.user.Role == 'systemAdmin';
+}
+
+function verify(...checks) {
+    return (req, res, next) => {
+        for (let check of checks) {
+            if (check(req)) return next();
+        }
+        res.status(401).send('Not authorized');
+    };
+}
+
+module.exports = {
+    isLoggedIn,
+    isCinemaAdmin,
+    isMovieAdmin,
+    isSystemAdmin,
+    verify
+};

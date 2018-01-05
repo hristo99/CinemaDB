@@ -48,11 +48,15 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
+require("./config/passport")(passport, db);
+
 var index = require('./routes/index');
 var movies = require('./routes/movies');
+const projections = require('./routes/projections');
 
 app.use('/', index);
 app.use('/movies', movies);
+app.use('/cinemas/:cinemaId/projections', projections);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
