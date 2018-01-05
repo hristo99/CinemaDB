@@ -18,9 +18,10 @@ router.get('/:movieId', (req, res) => {
         ON cm.MovieId = Movies.Id
         WHERE Movies.Id = ? AND cm.CinemaId = ?;`;
 
-    db.query(movieData, [req.params.movieId, cinemaId], (err, result) => {
-        if (err) throw err;
+    db.query(movieData, [req.params.movieId, cinemaId]).then(result => {
         res.render('movie', { movie: result[0] });
+    }).catch(error => {
+        throw error;
     });
 
 });
@@ -28,15 +29,14 @@ router.get('/:movieId', (req, res) => {
 router.get('/:movieId/edit', (req, res) => {
     var db = req.db;
     var getMovie = "SELECT * FROM Movies WHERE Id = ?;";
-    db.query(getMovie, [req.params.movieId], (err, results) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send('Internal Server Error');
-        } else if (results.length == 0) {
+    db.query(getMovie, [req.params.movieId]).then(result => {
+        if (results.length == 0) {
             res.status(204).send('No movie found');
         } else {
-            res.render('editMovie', { movie: results[0], user: req.user });
+            res.render('editMovie', { movie: result[0], user: req.user });
         }
+    }).catch(error => {
+        throw error;
     });
 });
 
