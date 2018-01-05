@@ -5,8 +5,8 @@ router.get('/', (req, res) => { //this is done in the index page right now
     let db = req.db;
     let moviesData = `SELECT * FROM Movies;`;
 
-    db.query(moviesData).then(movies => {
-        res.render('movies', { movies });
+    db.query(moviesData).then(result => {
+        res.render('movies', { movies: result[0] });
     });
 });
 
@@ -18,12 +18,11 @@ router.get('/:movieId', (req, res) => {
         ON cm.MovieId = Movies.Id
         WHERE Movies.Id = ? AND cm.CinemaId = ?;`;
 
-    db.query(movieData, [req.params.movieId, cinemaId], (err, movie) => {
+    db.query(movieData, [req.params.movieId, cinemaId], (err, result) => {
         if (err) throw err;
-        console.log(movie);
-        res.render('movie', { movie });
+        res.render('movie', { movie: result[0] });
     });
-    
+
 });
 
 router.get('/:movieId/edit', (req, res) => {
