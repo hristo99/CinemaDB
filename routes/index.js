@@ -3,6 +3,7 @@ var passport = require('passport');
 var router = express.Router();
 
 router.get('/', (req, res) => {
+	console.log("wtf");
 	req.db.query(`SELECT * FROM Movies`).then(movies => {
 		res.render('index', { movies });
 	}).catch(error => {

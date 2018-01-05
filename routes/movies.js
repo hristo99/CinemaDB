@@ -3,7 +3,6 @@ var router = express.Router();
 
 router.get('/', (req, res) => { //this is done in the index page right now
     let db = req.db;
-
     let moviesData = `SELECT * FROM Movies;`;
 
     db.query(moviesData).then(movies => {
@@ -14,7 +13,6 @@ router.get('/', (req, res) => { //this is done in the index page right now
 router.get('/:movieId', (req, res) => {
     let db = req.db;
     let cinemaId = 1; //temporary
-
     let movieData = `SELECT * FROM Movies
         RIGHT JOIN CinemaMovies AS cm
         ON cm.MovieId = Movies.Id
@@ -22,7 +20,8 @@ router.get('/:movieId', (req, res) => {
 
     db.query(movieData, [req.params.movieId, cinemaId], (err, movie) => {
         if (err) throw err;
-        res.render('movie', { movie });    
+        console.log(movie);
+        res.render('movie', { movie });
     });
     
 });
