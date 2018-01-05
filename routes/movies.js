@@ -15,19 +15,14 @@ router.get('/:movieId', (req, res) => {
     let db = req.db;
     let cinemaId = 1; //temporary
 
-    let resultId = `SELECT MovieId 
-        FROM CinemaMovies
-        WHERE CinemaMovies.CinemaId = ? AND CinemaMovies.MovieId = ?;`;
-    
     let movieData = `SELECT * FROM Movies
-        WHERE Movies.Id = ?;`;
+        RIGHT JOIN CinemaMovies AS cm
+        ON cm.MovieId = Movies.Id
+        WHERE Movies.Id = ? AND cm.CinemaId = ?;`;
 
-    db.query(resultId, [cinemaId, req.params.movieId]).then(id => {
-        return db.query(movieData, [id]);
-    }).then(movie => {
-        res.render('movie', { movie });
-    }).catch(err => {
-        throw err;
+    db.query(movieData, [req.params.movieId, cinemaId], (err, movie) => {
+        if (err) throw err;
+        res.render('movie', { movie });    
     });
     
 });
@@ -42,7 +37,7 @@ router.get('/:movieId/edit', (req, res) => {
         } else if (results.length == 0) {
             res.status(204).send('No movie found');
         } else {
-            res.render('editMovie', { movie:results[0], user:req.user });
+            res.render('editMovie', { movie: results[0], user: req.user });
         }
     });
 });
