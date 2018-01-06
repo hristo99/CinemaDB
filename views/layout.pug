@@ -33,8 +33,8 @@ html
               if user.Role == 'cinemaAdmin'
                 li
                   a(href='/movies') Movies
-            li
-              a(href='/movies/hottest') Hottest Movies
+            //- li
+            //-   a(href='/movies/hottest') Hottest Movies this should be in the index page
           form.navbar-form.navbar-left(method='GET' action='/movies/search')
             .form-group
               input.form-control(method='GET' type='text' name='movie' placeholder='Search name')
@@ -47,7 +47,11 @@ html
                 a(href='/signup') Sign up
             if user
               li.dropdown
-                a Notification placeholder
+                button.btn.btn-primary.dropdown-toggle Notification placeholder
+                  span.caret
+              //- li
+              //-   mixin nav_item_dropdown('/', 'dropdown', 'active')
+              //-     | test
               li.dropdown
                 a.dropdown-toggle(data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
                   | #{user.FirstName} #{user.LastName}

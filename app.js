@@ -50,13 +50,17 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 require("./config/passport")(passport, db);
 
-var index = require('./routes/index');
-var movies = require('./routes/movies');
+const index = require('./routes/index');
+const movies = require('./routes/movies');
 const projections = require('./routes/projections');
+const profile = require('./routes/profile');
+const cinemas = require('./routes/cinemas');
 
 app.use('/', index);
 app.use('/movies', movies);
 app.use('/cinemas/:cinemaId/projections', projections);
+app.use('/profile', profile);
+app.use('/cinemas', cinemas);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

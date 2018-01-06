@@ -3,9 +3,14 @@ const passport = require('passport');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-	console.log("wtf");
-	req.db.query(`SELECT * FROM Movies`).then(movies => {
-		res.render('index', { movies });
+	let hottestMovies = `SELECT Movies.Id, Movies.Title, Movies.Image, Movies.Description,
+    COUNT(Movies.Title) AS Views FROM Movies
+    INNER JOIN Projections ON Movies.Id = Projections.CinemaMovieId
+    INNER JOIN ViewersGroups ON Projections.Id = ViewersGroups.ProjectionId
+    GROUP BY Movies.Id, Movies.Title, Movies.Description ORDER BY Views DESC LIMIT 10;`;
+
+	req.db.query(hottestMovies).then(result => {
+		res.render('index', { movies: result });
 	}).catch(error => {
 		throw error;
 	});
@@ -19,7 +24,7 @@ router.post('/login', passport.authenticate('local-login', {
 		successRedirect : '/profile',
 		failureRedirect : '/login',
 		failureFlash : true
-}),
+	}),
 	(req, res) => {
 		if (req.body.remember) {
 			req.session.cookie.maxAge = 1000 * 60 * 3;

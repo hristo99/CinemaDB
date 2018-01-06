@@ -290,10 +290,10 @@ VALUES
     ( 'santa', '${santapass}', 'Santa', 'Claus', '1817-01-01', '/images/No_picture_icon_2.jpg', 'user' ),
     ( 'dont', '${dontpass}', 'Donald', 'Trump', '1954-03-08', '/images/No_picture_icon_2.jpg', 'user' ),
     ( 'sysadmin', '${sysadminPass}', 'System', 'Admin', '1985-04-15', '/images/admin.jpg', 'systemAdmin'),
-    ( 'movieAdmin', '${movadminPass}', 'Movie', 'Admin', '1970-01-01', '', 'movieAdmin'),
-    ( 'cinemaOneAdmin', '${cinoneadminPass}', 'CinemaOne', 'Admin', '1970-01-01', '', 'cinemaAdmin' ),
-    ( 'cinemaTwoAdmin', '${cintwoadminPass}', 'CinemaTwo', 'Admin', '1970-01-01', '', 'cinemaAdmin' ),
-    ( 'cinemaThreeAdmin', '${cinthreeadminPass}', 'CinemaThree', 'Admin', '1970-01-01', '', 'cinemaAdmin' )`;
+    ( 'movieAdmin', '${movadminPass}', 'Movie', 'Admin', '1970-01-01', '/images/No_picture_icon_2.jpg', 'movieAdmin'),
+    ( 'cinemaOneAdmin', '${cinoneadminPass}', 'CinemaOne', 'Admin', '1970-01-01', '/images/No_picture_icon_2.jpg', 'cinemaAdmin' ),
+    ( 'cinemaTwoAdmin', '${cintwoadminPass}', 'CinemaTwo', 'Admin', '1970-01-01', '/images/No_picture_icon_2.jpg', 'cinemaAdmin' ),
+    ( 'cinemaThreeAdmin', '${cinthreeadminPass}', 'CinemaThree', 'Admin', '1970-01-01', '/images/No_picture_icon_2.jpg', 'cinemaAdmin' )`;
 connection.query(insertUsers, err => {
     if (err) throw err;
     console.log("Inserted users");
