@@ -65,50 +65,50 @@ html
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     script(src='/javascripts/jquery.datetimepicker.full.min.js')
     script(type='text/javascript').
-      //- $('#datetimepicker').datetimepicker({
-      //-   format: 'Y-m-d H:i'
-      //- });
+      $('#datetimepicker').datetimepicker({
+        format: 'Y-m-d H:i'
+      });
 
-      //- $('#datepicker').datepicker({
-      //-   dateFormat: 'yy-mm-dd'
-      //- });
+      $('#datepicker').datepicker({
+        dateFormat: 'yy-mm-dd'
+      });
       
-      //- $('#return-ticket-modal').on('show.bs.modal', e => {
-      //-   var projectionId = $(e.relatedTarget).data('projectionid');
-      //-   $('.modal-footer').html(`
-      //-       <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-      //-       <button type="button" onclick="returnTicket(${projectionId})" class="btn btn-danger">Yes</button>
-      //-     `);
-      //- });
+      $('#return-ticket-modal').on('show.bs.modal', e => {
+        var projectionId = $(e.relatedTarget).data('projectionid');
+        $('.modal-footer').html(`
+            <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+            <button type="button" onclick="returnTicket(${projectionId})" class="btn btn-danger">Yes</button>
+          `);
+      });
 
-      //- $('#buy-ticket-modal').on('show.bs.modal', e => {
-      //-   var projectionId = $(e.relatedTarget).data('projectionid');
-      //-   $('.modal-footer').html(`
-      //-       <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-      //-       <button type="button" onclick="buyTicket(${projectionId})" class="btn btn-danger">Yes</button>
-      //-     `);
-      //- });
+      $('#buy-ticket-modal').on('show.bs.modal', e => {
+        var projectionId = $(e.relatedTarget).data('projectionid');
+        $('.modal-footer').html(`
+            <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+            <button type="button" onclick="buyTicket(${projectionId})" class="btn btn-danger">Yes</button>
+          `);
+      });
 
-      //- $('#remove-projection-modal').on('show.bs.modal', e => {
-      //-   var projectionId = $(e.relatedTarget).data('projectionid');
-      //-   $('.modal-footer').html(`
-      //-       <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-      //-       <button type="button" onclick="removeProjection(${projectionId})" class="btn btn-danger">Yes</button>
-      //-     `);
-      //- });
+      $('#remove-projection-modal').on('show.bs.modal', e => {
+        var projectionId = $(e.relatedTarget).data('projectionid');
+        $('.modal-footer').html(`
+            <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+            <button type="button" onclick="removeProjection(${projectionId})" class="btn btn-danger">Yes</button>
+          `);
+      });
 
-      //- $(() => {
-      //-   $('#upload-img').on('change', () => {
-      //-     var files = !!this.files ? this.files : [];
-      //-       if (!files.length || !window.FileReader) return;
-      //-       if (/^image/.test( files[0].type)){
-      //-         var reader = new FileReader();
-      //-         reader.readAsDataURL(files[0]);
-      //-         reader.onload = e => {
-      //-           $('#img-preview-block').attr('src', e.target.result);
-      //-         }
-      //-       }
-      //-   });
-      //- });
+      $(() => {
+        $('#upload-img').on('change', () => {
+          var files = !!this.files ? this.files : [];
+            if (!files.length || !window.FileReader) return;
+            if (/^image/.test( files[0].type)){
+              var reader = new FileReader();
+              reader.readAsDataURL(files[0]);
+              reader.onload = e => {
+                $('#img-preview-block').attr('src', e.target.result);
+              }
+            }
+        });
+      });
 
       $('.carousel').carousel();

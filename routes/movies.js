@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', (req, res) => { //this is done in the index page right now
+router.get('/', (req, res) => {
     let db = req.db;
     let moviesData = `SELECT * FROM Movies;`;
 
     db.query(moviesData).then(result => {
-        res.render('movies', { movies: result[0] });
+        res.render('movies', { movies: result });
     });
 });
 
