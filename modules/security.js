@@ -17,9 +17,9 @@ function isSystemAdmin(req) {
 function verify(...checks) {
     return (req, res, next) => {
         for (let check of checks) {
-            if (check(req)) return next();
+            if (!check(req)) res.status(401).send('Not authorized');
         }
-        res.status(401).send('Not authorized');
+        return next();
     };
 }
 

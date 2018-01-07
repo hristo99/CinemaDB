@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
     let moviesData = `SELECT * FROM Movies;`;
 
     db.query(moviesData).then(result => {
-        res.render('movies', { movies: result });
+        res.render('movies', { movies: result, user: req.user });
     });
 });
 
@@ -19,7 +19,7 @@ router.get('/:movieId', (req, res) => {
         WHERE Movies.Id = ? AND cm.CinemaId = ?;`;
 
     db.query(movieData, [req.params.movieId, cinemaId]).then(result => {
-        res.render('movie', { movie: result[0] });
+        res.render('movie', { movie: result[0], user: req.user });
     }).catch(error => {
         throw error;
     });

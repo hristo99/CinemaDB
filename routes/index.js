@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
     GROUP BY Movies.Id, Movies.Title, Movies.Description ORDER BY Views DESC LIMIT 10;`;
 
 	req.db.query(hottestMovies).then(result => {
-		res.render('index', { movies: result });
+		res.render('index', { movies: result, user: req.user });
 	}).catch(error => {
 		throw error;
 	});
@@ -21,18 +21,28 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', passport.authenticate('local-login', {
-		successRedirect : '/profile',
-		failureRedirect : '/login',
-		failureFlash : true
-	}),
-	(req, res) => {
-		if (req.body.remember) {
-			req.session.cookie.maxAge = 1000 * 60 * 3;
-		} else {
-			req.session.cookie.expires = false;
-		}
+	successRedirect : '/profile',
+	failureRedirect : '/login',
+	failureFlash : true
+}),
+(req, res) => {
+	if (req.body.remember) {
+		req.session.cookie.maxAge = 1000 * 60 * 3;
+	} else {
+		req.session.cookie.expires = false;
+	}
 	res.redirect('/');
 });
+
+router.get('/signup', (req, res) => {
+	res.render('signup', { message: req.flash('signupMessage'), user: req.user });
+});
+
+router.post('/signup', passport.authenticate('local-signup', {
+	successRedirect : '/profile',
+	failureRedirect : '/signup',
+	failureFlash : true
+}));
 
 router.get('/logout', (req, res) => {
 	req.logout();

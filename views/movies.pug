@@ -1,19 +1,21 @@
 extends layout
 
 block content
+
+  script(type='text/javascript').
+    function getMovieData(id) {
+      $(location).attr('href',`/movies/${id}`);
+    };
+
+    function addMovieToCinema(id) {
+      $(location).attr('href', `/cinemas/addMovie/${id}`);
+    }
+
   p Movies
   ul
     each m in movies
       li(onclick=`getMovieData(${m.Id})`) #{m.Title}
-        if user && user.Role == 'cinemaAdmin'
-            button.btn.btn-primary(onclick=`addMovieToCinema(${m.Id})`) Add movie
+        if user 
+          if user.Role == 'cinemaAdmin'
+            button.btn.btn-primary.pull-right(onclick=`addMovieToCinema(${m.Id})`) Add movie
       br
-
-script(type='text/javascript').
-  function getMovieData(id) {
-    $(location).attr('href',`/movies/${id}`);
-  };
-
-  function addMovieToCinema(id) {
-    $(location).attr('href', `/cinemas/addMovie/${id}`);
-  }
