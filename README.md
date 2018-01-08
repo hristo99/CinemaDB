@@ -93,6 +93,108 @@ ExpressJS, pugJS, Bootstrap and MySQL.
 | AddressId           | INTEGER     | NOT NULL, FOREIGN KEY REFERENCES CinemaAddresses(Id) |
 | Admin               | INTEGER     | NOT NULL, FOREIGN KEY REFERENCES Users(Id)           |
 
+### CinemaMovies
+| Column              | Data type | Constraints                                  |
+|:-------------------:|:---------:|:--------------------------------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY                        |
+| CinemaId            | INTEGER   | NOT NULL, FOREIGN KEY REFERENCES Cinemas(Id) |
+| MovieId             | INTEGER   | NOT NULL, FOREIGN KEY REFERENCES Movies(Id)  |
+
+### Halls
+| Column              | Data type   | Constraints                                  |
+|:-------------------:|:-----------:|:--------------------------------------------:|
+| Id (AUTO_INCREMENT) | INTEGER     | NOT NULL, PRIMARY KEY                        |
+| CinemaId            | INTEGER     | NOT NULL, FOREIGN KEY REFERENCES Cinemas(Id) |
+| Label               | VARCHAR(30) | NOT NULL                                     |
+
+### PriceCategories
+| Column              | Data type | Constraints           |
+|:-------------------:|:---------:|:---------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
+| Regular             | DECIMAL   | NOT NULL              |
+| Reduced             | DECIMAL   | NOT NULL              |
+
+### Projections
+| Column              | Data type   | Constraints                                          |
+|:-------------------:|:-----------:|:----------------------------------------------------:|
+| Id (AUTO_INCREMENT) | INTEGER     | NOT NULL, PRIMARY KEY                                |
+| CinemaMovieId       | INTEGER     | NOT NULL, FOREIGN KEY REFERENCES CinemaMovies(Id)    |
+| HallId              | INTEGER     | NOT NULL, FOREIGN KEY REFERENCES Halls(Id)           |
+| StartTime           | DATETIME    | NOT NULL                                             |
+| VideoFormat         | VARCHAR(15) | NOT NULL                                             |
+| Translation         | VARCHAR(15) | NOT NULL                                             |
+| PriceCategoryId     | INTEGER     | NOT NULL, FOREIGN KEY REFERENCES PriceCategories(Id) |
+
+### ViewersGroups
+| Column              | Data type | Constraints           |
+|:-------------------:|:---------:|:---------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
+| Regular             | DECIMAL   | NOT NULL              |
+| Reduced             | DECIMAL   | NOT NULL              |
+
+### Genres
+| Column              | Data type | Constraints           |
+|:-------------------:|:---------:|:---------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
+| Regular             | DECIMAL   | NOT NULL              |
+| Reduced             | DECIMAL   | NOT NULL              |
+
+### MovieGenres
+| Column              | Data type | Constraints           |
+|:-------------------:|:---------:|:---------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
+| Regular             | DECIMAL   | NOT NULL              |
+| Reduced             | DECIMAL   | NOT NULL              |
+
+### ProjectionViewers
+| Column              | Data type | Constraints           |
+|:-------------------:|:---------:|:---------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
+| Regular             | DECIMAL   | NOT NULL              |
+| Reduced             | DECIMAL   | NOT NULL              |
+
+### Comments
+| Column              | Data type | Constraints           |
+|:-------------------:|:---------:|:---------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
+| Regular             | DECIMAL   | NOT NULL              |
+| Reduced             | DECIMAL   | NOT NULL              |
+
+### Seats
+| Column              | Data type | Constraints           |
+|:-------------------:|:---------:|:---------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
+| Regular             | DECIMAL   | NOT NULL              |
+| Reduced             | DECIMAL   | NOT NULL              |
+
+### NotificationTypes
+| Column              | Data type | Constraints           |
+|:-------------------:|:---------:|:---------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
+| Regular             | DECIMAL   | NOT NULL              |
+| Reduced             | DECIMAL   | NOT NULL              |
+
+### Notifications
+| Column              | Data type | Constraints           |
+|:-------------------:|:---------:|:---------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
+| Regular             | DECIMAL   | NOT NULL              |
+| Reduced             | DECIMAL   | NOT NULL              |
+
+### Ratings
+| Column              | Data type | Constraints           |
+|:-------------------:|:---------:|:---------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
+| Regular             | DECIMAL   | NOT NULL              |
+| Reduced             | DECIMAL   | NOT NULL              |
+
+### UsersFriends
+| Column              | Data type | Constraints           |
+|:-------------------:|:---------:|:---------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
+| Regular             | DECIMAL   | NOT NULL              |
+| Reduced             | DECIMAL   | NOT NULL              |
+
 
 ## Contributors
 Hristo Spasov - hristo.b.spasov@gmail.com
