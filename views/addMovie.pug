@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  .row
+    .panel-body
+      .col-md-12
+        form(method='POST' action='/movies/add' enctype='multipart/form-data')
+          .row
+            .col-md-12.lead
+              | Add movie
+              hr
+          .row
+            .col-md-4.text-center
+              span.btn.btn-link.btn-file
+                input#upload-img(type='file' name='image')
+            .col-md-8
+              .form-group
+                label Title
+                input.form-control(type='text' placeholder='Title' name='title')
+              .form-group
+                label Age Restriction
+                input.form-control(type='number' placeholder='Age Restriction' name='ageRes')
+              .form-group
+                label Language
+                input.form-control(type='text' placeholder='Language' name='language')
+              .form-group
+                label Length
+                input.form-control(type='number' placeholder='Length' name='length')
+              .form-group
+                label Description
+                textarea.form-control(rows='3' placeholder='Description' name='description')
+              .form-group
+                label Trailer
+                input.form-control(type='text' placeholder='Trailer link' name='trailer')
+          .row
+            .col-md-12
+              hr
+              button.btn.btn-primary.pull-right(type='submit')
+                i.glyphicon.glyphicon-floppy-disk
+                | Save
