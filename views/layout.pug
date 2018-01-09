@@ -25,10 +25,12 @@ html
               if user.Role == 'movieAdmin'
                 li
                   a(href='/movies/add') Add movie
+                li
                   a(href='/movies') Movies
               if user.Role == 'systemAdmin'
                 li
                   a(href='/cinemas/add') Add Cinema 
+                li
                   a(href='/cinemas') Cinemas
               if user.Role == 'cinemaAdmin'
                 li
@@ -46,7 +48,7 @@ html
               li
                 a(href='/signup') Sign up
             if user
-              li.dropdown
+              li(style={position:'relative'}).dropdown
                 button.btn.btn-primary.dropdown-toggle Notification placeholder
                   span.caret
               //- li
