@@ -126,74 +126,82 @@ ExpressJS, pugJS, Bootstrap and MySQL.
 | PriceCategoryId     | INTEGER     | NOT NULL, FOREIGN KEY REFERENCES PriceCategories(Id) |
 
 ### ViewersGroups
-| Column              | Data type | Constraints           |
-|:-------------------:|:---------:|:---------------------:|
-| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
-| Regular             | DECIMAL   | NOT NULL              |
-| Reduced             | DECIMAL   | NOT NULL              |
+| Column              | Data type | Constraints                                      |
+|:-------------------:|:---------:|:------------------------------------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY                            |
+| PojectionId         | INTEGER   | NOT NULL, FOREIGN KEY REFERENCES Projections(Id) |
+| Date                | DATETIME  | NOT NULL                                         |
 
 ### Genres
-| Column              | Data type | Constraints           |
-|:-------------------:|:---------:|:---------------------:|
-| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
-| Regular             | DECIMAL   | NOT NULL              |
-| Reduced             | DECIMAL   | NOT NULL              |
+| Column              | Data type    | Constraints           |
+|:-------------------:|:------------:|:---------------------:|
+| Id (AUTO_INCREMENT) | INTEGER      | NOT NULL, PRIMARY KEY |
+| Name                | VARCHAR(30)  | NOT NULL              |
+| Description         | VARCHAR(500) | NOT NULL              |
 
 ### MovieGenres
 | Column              | Data type | Constraints           |
-|:-------------------:|:---------:|:---------------------:|
-| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
-| Regular             | DECIMAL   | NOT NULL              |
-| Reduced             | DECIMAL   | NOT NULL              |
+|:-------------------:|:---------:|:-------------------------------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY                       |
+| MovieId             | INTEGER   | NOT NULL, FOREIGN KEY REFERENCES Movies(Id) |
+| GenreId             | INTEGER   | NOT NULL, FOREIGN KEY REFERENCES Genres(Id) |
 
 ### ProjectionViewers
-| Column              | Data type | Constraints           |
-|:-------------------:|:---------:|:---------------------:|
-| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
-| Regular             | DECIMAL   | NOT NULL              |
-| Reduced             | DECIMAL   | NOT NULL              |
+| Column              | Data type | Constraints                                       |
+|:-------------------:|:---------:|:-------------------------------------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY                             |
+| UserId              | INTEGER   | NOT NULL, FOREIGN KEY REFERENCES Users(Id)        |
+| Row                 | INTEGER   | NOT NULL                                          |
+| Position            | INTEGER   | NOT NULL                                          |
+| ViewersGroupId      | INTEGER   | NOT NULL, FOREIGN KEY REFERENCES ViewersGroup(Id) |
 
 ### Comments
-| Column              | Data type | Constraints           |
-|:-------------------:|:---------:|:---------------------:|
-| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
-| Regular             | DECIMAL   | NOT NULL              |
-| Reduced             | DECIMAL   | NOT NULL              |
+| Column              | Data type    | Constraints                                 |
+|:-------------------:|:------------:|:-------------------------------------------:|
+| Id (AUTO_INCREMENT) | INTEGER      | NOT NULL, PRIMARY KEY                       |
+| MovieId             | DECIMAL      | NOT NULL, FOREIGN KEY REFERENCES Movies(Id) |
+| UserId              | DECIMAL      | NOT NULL, FOREIGN KEY REFERENCES Users(Id)  |
+| Text                | VARCHAR(500) | NOT NULL                                    |
+| Date                | DATETIME     | NOT NULL                                    |
 
 ### Seats
-| Column              | Data type | Constraints           |
-|:-------------------:|:---------:|:---------------------:|
-| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
-| Regular             | DECIMAL   | NOT NULL              |
-| Reduced             | DECIMAL   | NOT NULL              |
+| Column              | Data type | Constraints                                |
+|:-------------------:|:---------:|:------------------------------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY                      |
+| HallId              | INTEGER   | NOT NULL, FOREIGN KEY REFERENCES Halls(Id) |
+| Row                 | INTEGER   | NOT NULL                                   |
+| Position            | INTEGER   | NOT NULL                                   |
 
 ### NotificationTypes
-| Column              | Data type | Constraints           |
-|:-------------------:|:---------:|:---------------------:|
-| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
-| Regular             | DECIMAL   | NOT NULL              |
-| Reduced             | DECIMAL   | NOT NULL              |
+| Column              | Data type   | Constraints           |
+|:-------------------:|:-----------:|:---------------------:|
+| Id (AUTO_INCREMENT) | INTEGER     | NOT NULL, PRIMARY KEY |
+| Subject             | VARCHAR(30) | NOT NULL              |
 
 ### Notifications
-| Column              | Data type | Constraints           |
-|:-------------------:|:---------:|:---------------------:|
-| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
-| Regular             | DECIMAL   | NOT NULL              |
-| Reduced             | DECIMAL   | NOT NULL              |
+| Column              | Data type | Constraints                                            |
+|:-------------------:|:---------:|:------------------------------------------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY                                  |
+| UserId              | INTEGER   | NOT NULL, FOREIGN KEY REFERENCES Users(Id)             |
+| Information         | JSON      | NOT NULL                                               |
+| TypeId              | INTEGER   | NOT NULL, FOREIGN KEY REFERENCES NotificationTypes(Id) |
+| Date                | DATETIME  | NOT NULL                                               |
 
 ### Ratings
-| Column              | Data type | Constraints           |
-|:-------------------:|:---------:|:---------------------:|
-| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
-| Regular             | DECIMAL   | NOT NULL              |
-| Reduced             | DECIMAL   | NOT NULL              |
+| Column              | Data type | Constraints                                 |
+|:-------------------:|:---------:|:-------------------------------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY                       |
+| UserId              | INTEGER   | NOT NULL, FOREIGN KEY REFERENCES Users(Id)  |
+| MovieId             | INTEGER   | NOT NULL, FOREIGN KEY REFERENCES Movies(Id) |
+| Date                | DATETIME  | NOT NULL                                    |
+| Rating              | INTEGER   | NOT NULL                                    |
 
 ### UsersFriends
-| Column              | Data type | Constraints           |
-|:-------------------:|:---------:|:---------------------:|
-| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY |
-| Regular             | DECIMAL   | NOT NULL              |
-| Reduced             | DECIMAL   | NOT NULL              |
+| Column              | Data type | Constraints                                |
+|:-------------------:|:---------:|:------------------------------------------:|
+| Id (AUTO_INCREMENT) | INTEGER   | NOT NULL, PRIMARY KEY                      |
+| UserId              | INTEGER   | NOT NULL, FOREIGN KEY REFERENCES Users(Id) |
+| FriendUserId        | INTEGER   | NOT NULL, FOREIGN KEY REFERENCES Users(Id) |
 
 
 ## Contributors
