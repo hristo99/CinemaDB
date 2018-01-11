@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-const { verify, isLoggedIn } = require('../modules/security');
+const { verify } = require('../modules/security');
 var age = require('../modules/age.js');
 var bcrypt = require('bcrypt-nodejs');
 
-router.get('/', verify(isLoggedIn), (req, res) => {
+router.get('/', verify(), (req, res) => {
     let userAge = age.calculate(req.user.DateOfBirth);
     res.render('profile', {
         user: req.user,
@@ -12,11 +12,11 @@ router.get('/', verify(isLoggedIn), (req, res) => {
     });
 });
 
-router.get('/settings', verify(isLoggedIn), (req, res) => {
+router.get('/settings', verify(), (req, res) => {
     res.render('profileSettings', {user: req.user});
 });
 
-router.post('/settings', verify(isLoggedIn), (req, res) => {
+router.post('/settings', verify(), (req, res) => {
     let db = req.db;
     db.query("SELECT * FROM Users WHERE Id = ?;", [req.user.Id]).then(result => {
         if (result.length == 0) {
@@ -50,7 +50,7 @@ router.post('/settings', verify(isLoggedIn), (req, res) => {
     });
 });
 
-router.get('/delete', verify(isLoggedIn), (req, res) => {
+router.get('/delete', verify(), (req, res) => {
     let db = req.db;
     let id = req.user.Id;
     req.logout();

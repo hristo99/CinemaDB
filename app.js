@@ -62,10 +62,12 @@ const movies = require('./routes/movies');
 const projections = require('./routes/projections');
 const profile = require('./routes/profile');
 const cinemas = require('./routes/cinemas');
+const cinemaMovies = require('./routes/cinemaMovies');
 
 app.use('/', index);
 app.use('/movies', movies);
 app.use('/cinemas/:cinemaId/projections', projections);
+app.use('/cinemas/:cinemaId/movies', cinemaMovies);
 app.use('/profile', profile);
 app.use('/cinemas', cinemas);
 

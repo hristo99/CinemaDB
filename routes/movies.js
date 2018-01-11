@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var { verify, isLoggedIn, isMovieAdmin} = require('../modules/security');
+var { verify, isMovieAdmin} = require('../modules/security');
 
-router.get('/', verify(isLoggedIn), (req, res) => {
+router.get('/', verify(), (req, res) => {
     let db = req.db;
     let moviesData = `SELECT * FROM Movies;`;
 
@@ -11,11 +11,11 @@ router.get('/', verify(isLoggedIn), (req, res) => {
     });
 });
 
-router.get('/add', verify(isLoggedIn, isMovieAdmin), (req, res) => {
+router.get('/add', verify(isMovieAdmin), (req, res) => {
     res.render('addMovie', { user: req.user });
 });
 
-router.post('/add', verify(isLoggedIn, isMovieAdmin), (req, res) => {
+router.post('/add', verify(isMovieAdmin), (req, res) => {
     let db = req.db;
     let insertMovie = `INSERT INTO Movies
         (Title, Image, AgeRestriction, Description, Language, Length, Trailer)
@@ -24,12 +24,12 @@ router.post('/add', verify(isLoggedIn, isMovieAdmin), (req, res) => {
 
     var image = (req.files.length) ?
         `/uploads/${req.files[0].filename}` : '/images/519539-085_Movie-512.png';
-    db.query(insertMovie, 
+    db.query(insertMovie,
         [
-            req.body.title, 
+            req.body.title,
             image,
-            req.body.ageRes, 
-            req.body.description, 
+            req.body.ageRes,
+            req.body.description,
             req.body.language,
             req.body.length,
             req.body.trailer
